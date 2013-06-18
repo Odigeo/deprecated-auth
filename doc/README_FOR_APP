@@ -1,0 +1,51 @@
+Notes for authorisation
+
+
+
+Query format
+============
+
+	<service>:<resource>:<hyperlink>:<verb>:<app>:<context>
+
+A complete authorisation request to get individual Text resources from all apps and contexts
+might look like this:
+
+	https://api.example.com/authentications/4Lp6hdZ99jtCpU9yx3N5zBaljmQ?query=cms:texts:self:GET:*:*
+                                                                              ^^^^^^^^^^^^^^^^^^^^^^
+
+
+Default authorisation components
+================================
+
+Action		hyperlink	verb
+----------	---------	----
+index		self		GET*
+show		self		GET
+create		self		POST
+update 		self		PUT		
+destroy		self		DELETE
+
+connect		connect		PUT
+disconnect	connect		DELETE
+
+
+The hyperlinks "creator" and "updater" can't be restricted specifically for each resource, since
+they result in ApiUser GET accesses. The client either has GET access to ApiUsers or not, no matter
+how the hyperlink is obtained (self, creator, updater, whatever). It is of course quite possible to
+restrict access to ApiUsers to a specific app and context.
+
+
+
+
+Containment chain for Rights
+============================
+
+A Role has many Rights
+
+A Group has many Rights 
+        and many Roles which each have many Rights
+
+An ApiUser has many Roles which have many Rights,
+           and many Groups which have many Rights,
+                                  and many Roles which each have many Rights.
+
