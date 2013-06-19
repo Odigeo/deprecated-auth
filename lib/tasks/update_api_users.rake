@@ -8,7 +8,7 @@
 # by TeamCity agents or of environments such as master, staging, and prod.
 #
 
-namespace :soa do
+namespace :ocean do
   
   desc "Updates password, email and real name for all system API users"
   task :update_api_users => :environment do

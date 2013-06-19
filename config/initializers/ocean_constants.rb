@@ -16,21 +16,21 @@
 # Thus, if you are a frontend developer, you override the string
 # constant here to reflect the Chef environment (master, staging)
 # you wish to run your local tests against by defining the environment
-# variable OVERRIDE_SOA_API_HOST.
+# variable OVERRIDE_OCEAN_API_HOST.
 #
 # When TeamCity runs its tests, it will set these constants to values
 # appropriate for the Chef environment for which the tests are run.
 # Thus, TeamCity will always run master branch frontend tests against
 # the master Chef environment. However, you can run a personal build
-# and specify the SOA_API_HOST value as an environment param in the
+# and specify the OCEAN_API_HOST value as an environment param in the
 # build dialog.
 #
 
-SOA_API_HOST = (Rails.env == 'test' && "forbidden.#{BASE_DOMAIN}") ||
-               (ENV['OVERRIDE_SOA_API_HOST'] || 
-                ENV['SOA_API_HOST'] || 
-                "master-api.#{BASE_DOMAIN}").sub("<default>", "master")
+OCEAN_API_HOST = (Rails.env == 'test' && "forbidden.#{BASE_DOMAIN}") ||
+                 (ENV['OVERRIDE_OCEAN_API_HOST'] || 
+                  ENV['OCEAN_API_HOST'] || 
+                  "master-api.#{BASE_DOMAIN}").sub("<default>", "master")
                 
-SOA_API_URL = "https://#{SOA_API_HOST}"
+OCEAN_API_URL = "https://#{OCEAN_API_HOST}"
 
-INTERNAL_SOA_API_URL = SOA_API_URL.sub("https", "http").sub("api.", "lb.")
+INTERNAL_OCEAN_API_URL = OCEAN_API_URL.sub("https", "http").sub("api.", "lb.")

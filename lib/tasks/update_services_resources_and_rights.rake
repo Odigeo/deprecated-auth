@@ -7,7 +7,7 @@
 #
 require 'pp'
 
-namespace :soa do
+namespace :ocean do
   
   desc "Updates the basic set of Services, Resources and Rights"
   task :update_services_resources_and_rights => :environment do
