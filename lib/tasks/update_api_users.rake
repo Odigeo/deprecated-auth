@@ -17,15 +17,15 @@ namespace :ocean do
     
     email = 'peter@peterbengtson.com'
     email2 = 'lasse.edlund@odigeo.com'
-    [['god',                     password: '0mn1p0t3ns', email: email,  real_name: 'God'],
-     ['auth',                    password: 'subr0s4',    email: email,  real_name: 'Auth service'],
-     ['cms',                     password: '4l3x4ndr14', email: email,  real_name: 'CMS service'],
-     ['log',                     password: 't1mb3r',     email: email,  real_name: 'Log service'],
-     ['media',                   password: 'mult1',      email: email,  real_name: 'Media service'],
-     ['admin_client',            password: 'f1stpump',   email: email2, real_name: 'Admin client'],
-     ['admin_client_testuser',   password: 'test123',    email: email2, real_name: 'Admin client test user'],
-     ['webshop_client',          password: 'blah0nga',   email: email2, real_name: 'Webshop client'],
-     ['webshop_client_testuser', password: 'test123',    email: email2, real_name: 'Webshop client test user']
+    [['god',                     password: 'aaaaaaaa', email: email,  real_name: 'The Ocean Superuser'],
+     ['auth',                    password: 'ssssssss', email: email,  real_name: 'Auth service'],
+     ['cms',                     password: 'dddddddd', email: email,  real_name: 'CMS service'],
+     ['log',                     password: 'eeeeeeee', email: email,  real_name: 'Log service'],
+     ['media',                   password: 'ffffffff', email: email,  real_name: 'Media service'],
+     ['admin_client',            password: 'gggggggg', email: email2, real_name: 'Admin client'],
+     ['admin_client_testuser',   password: 'hhhhhhhh', email: email2, real_name: 'Admin client test user'],
+     ['webshop_client',          password: 'iiiiiiii', email: email2, real_name: 'Webshop client'],
+     ['webshop_client_testuser', password: 'jjjjjjjj', email: email2, real_name: 'Webshop client test user']
     ].each do |username, data|
       user = ApiUser.find_by_username username
       if user
