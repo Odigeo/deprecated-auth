@@ -14,19 +14,24 @@ namespace :ocean do
   task :update_api_users => :environment do
 
     require 'api_user'
-    
-    email = 'peter@peterbengtson.com'
-    email2 = 'lasse.edlund@odigeo.com'
-    [['god',                     password: 'aaaaaaaa', email: email,  real_name: 'The Ocean Superuser'],
-     ['auth',                    password: 'ssssssss', email: email,  real_name: 'Auth service'],
-     ['cms',                     password: 'dddddddd', email: email,  real_name: 'CMS service'],
-     ['log',                     password: 'eeeeeeee', email: email,  real_name: 'Log service'],
-     ['media',                   password: 'ffffffff', email: email,  real_name: 'Media service'],
-     ['admin_client',            password: 'gggggggg', email: email2, real_name: 'Admin client'],
-     ['admin_client_testuser',   password: 'hhhhhhhh', email: email2, real_name: 'Admin client test user'],
-     ['webshop_client',          password: 'iiiiiiii', email: email2, real_name: 'Webshop client'],
-     ['webshop_client_testuser', password: 'jjjjjjjj', email: email2, real_name: 'Webshop client test user']
-    ].each do |username, data|
+
+    f = File.join(Rails.root, "config/seeding_data.yml")
+    unless File.exists?(f)
+      puts
+      puts "-----------------------------------------------------------------------"
+      puts "The tailored seeding data file is missing. Please copy"
+      puts "config/seeding_data.yml.example to config/seeding_data.yml and tailor"
+      puts "its contents to suit your dev setup."
+      puts
+      puts "NB: seeding_data.yml is excluded from git version control as it will" 
+      puts "    contain data private to your Ocean system."
+      puts "-----------------------------------------------------------------------"
+      puts
+      abort
+    end
+    api_users = YAML.load(File.read(f))['required_api_users']
+
+    api_users.each do |username, data|
       user = ApiUser.find_by_username username
       if user
         puts "Updating #{username}."

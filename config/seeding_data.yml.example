@@ -1,0 +1,60 @@
+##########################################################################################
+# In order to seed the database with initial data, a file named config/seeding_data.yml 
+# must exist in the config directory. This file is a template for that file: simply
+# copy it, rename it and tailor its contents to suit your system.
+# 
+# NB: the Chef recipes used to deploy this Ocean app to the production environment will
+#     replace config/seeding_data.yml with an auto-generated file. The data in the 
+#     auto-generated file is taken from the Chef encrypted data bags set up in the 
+#     chef-repo git repository.
+##########################################################################################
+
+
+# The following are the ApiUsers which must exist in the system.
+required_api_users:
+
+  - - god
+    - :real_name: The Ocean Superuser
+      :email:     someone@example.com     # Change this
+      :password:  changeme                # Change this
+
+  - - auth
+    - :real_name: Auth service
+      :email:     someone@example.com     # Change this
+      :password:  changeme                # Change this
+
+  - - cms
+    - :real_name: CMS service
+      :email:     someone@example.com     # Change this
+      :password:  changeme                # Change this
+
+  - - log
+    - :real_name: Log service
+      :email:     someone@example.com     # Change this
+      :password:  changeme                # Change this
+
+  - - media
+    - :real_name: Media service
+      :email:     someone@example.com     # Change this
+      :password:  changeme                # Change this
+
+  - - admin_client
+    - :real_name: Admin client
+      :email:     someone@example.com     # Change this
+      :password:  changeme                # Change this
+
+  - - admin_client_testuser
+    - :real_name: Admin client test user
+      :email:     someone@example.com     # Change this
+      :password:  changeme                # Change this
+
+  - - webshop_client
+    - :real_name: Webshop client
+      :email:     someone@example.com     # Change this
+      :password:  changeme                # Change this
+
+  - - webshop_client_testuser
+    - :real_name: Webshop client test user
+      :email:     someone@example.com     # Change this
+      :password:  changeme                # Change this
+

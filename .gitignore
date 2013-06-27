@@ -32,3 +32,6 @@
 
 # Ignore the tailored config.yml file
 config/config.yml
+
+# Ignore the tailored seeding_data.yml file
+config/seeding_data.yml
