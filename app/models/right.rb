@@ -36,13 +36,13 @@ class Right < ActiveRecord::Base
   # Validations
   validates :name,        presence: true
   validates :resource_id, presence: true
-  validates :hyperlink,   format: { with: /^(\*|[a-z][a-z0-9_]*)$/,
+  validates :hyperlink,   format: { with: /\A(\*|[a-z][a-z0-9_]*)\z/,
                                     message: "may only contain the characters a-z, 0-9, and underscores, and must start with a lowercase letter" }
   validates :verb,        inclusion: { in: ['*', 'POST', 'GET', 'GET*', 'PUT', 'DELETE'],
                                        message: "must be one of *, POST, GET, GET*, PUT, or DELETE" }
-  validates :app,         format: { with: /^(\*|[A-Za-z0-9_-]+)$/,
+  validates :app,         format: { with: /\A(\*|[A-Za-z0-9_-]+)\z/,
                                     message: "may only contain the characters A-Z, a-z, 0-9, underscore and hyphen" }
-  validates :context,     format: { with: /^(\*|[A-Za-z0-9_-]+)$/,
+  validates :context,     format: { with: /\A(\*|[A-Za-z0-9_-]+)\z/,
                                     message: "may only contain the characters A-Z, a-z, 0-9, underscore and hyphen" }
   
   before_validation do

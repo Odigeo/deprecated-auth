@@ -79,7 +79,7 @@ class ServicesController < ApplicationController
   # GET /services/1/resources
   def resources
     expires_in 0, 's-maxage' => 30.minutes
-    if stale?(collection_etag(@service.resources.scoped))
+    if stale?(collection_etag(@service.resources))
       render partial: "resources/resource", collection: @service.resources
     end
   end

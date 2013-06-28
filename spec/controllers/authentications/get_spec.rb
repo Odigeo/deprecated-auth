@@ -7,8 +7,8 @@ describe AuthenticationsController do
   describe "GET" do
     
     before :each do
-      request.env['HTTP_ACCEPT'] = "application/json"
-      request.env['X-API-Token'] = "whatever"
+      request.headers['HTTP_ACCEPT'] = "application/json"
+      request.headers['X-API-Token'] = "whatever"
     end
     
 
@@ -27,7 +27,7 @@ describe AuthenticationsController do
     end
     
     it "should not require an X-API-Token" do
-      request.env['X-API-Token'] = nil
+      request.headers['X-API-Token'] = nil
       Authentication.should_receive(:find_by_token).and_return(create :authentication)
       Authentication.any_instance.stub(:authorized?).and_return(true)
       get :show, id: "ea243542300fcbe", query: "serv:res:self:GET:*:*"

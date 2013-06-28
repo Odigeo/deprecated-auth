@@ -93,7 +93,7 @@ class ApiUsersController < ApplicationController
   # GET /api_users/1/roles
   def roles
     expires_in 0, 's-maxage' => 30.minutes
-    if stale?(collection_etag(@api_user.roles.scoped))
+    if stale?(collection_etag(@api_user.roles))
       render partial: "roles/role", collection: @api_user.roles
     end
   end
@@ -102,7 +102,7 @@ class ApiUsersController < ApplicationController
   # GET /api_users/1/groups
   def groups
     expires_in 0, 's-maxage' => 30.minutes
-    if stale?(collection_etag(@api_user.groups.scoped))
+    if stale?(collection_etag(@api_user.groups))
       render partial: "groups/group", collection: @api_user.groups
     end
   end

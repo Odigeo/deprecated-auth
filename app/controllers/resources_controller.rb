@@ -75,7 +75,7 @@ class ResourcesController < ApplicationController
   # GET /resources/1/rights
   def rights
     expires_in 0, 's-maxage' => 30.minutes
-    if stale?(collection_etag(@resource.rights.scoped))
+    if stale?(collection_etag(@resource.rights))
       render partial: "rights/right", collection: @resource.rights
     end
   end

@@ -11,8 +11,8 @@ describe ApiUsersController do
                                                :body => {'authentication' => {'user_id' => 123}}))
       @auth = create :authentication
       @auth.expired?.should == false
-      request.env['HTTP_ACCEPT'] = "application/json"
-      request.env['X-API-Token'] = @auth.token
+      request.headers['HTTP_ACCEPT'] = "application/json"
+      request.headers['X-API-Token'] = @auth.token
     end
 
 
@@ -23,13 +23,13 @@ describe ApiUsersController do
     end
     
     it "should return a 400 if the X-API-Token header is missing" do
-      request.env['X-API-Token'] = nil
+      request.headers['X-API-Token'] = nil
       post :create, username: "berit", password: "sub_rosa", email: "berit@example.com"
       response.status.should == 400
     end
     
     it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
-      request.env['X-API-Token'] = 'unknown, matey'
+      request.headers['X-API-Token'] = 'unknown, matey'
       Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       post :create, username: "berit", password: "sub_rosa", email: "berit@example.com"
       response.status.should == 400
@@ -39,7 +39,7 @@ describe ApiUsersController do
     it "should return a 400 if the authentication represented by the X-API-Token has expired" do
       @auth = create :authentication, created_at: 1.year.ago.utc, expires_at: 1.year.ago.utc
       @auth.expired?.should == true
-      request.env['X-API-Token'] = @auth.token
+      request.headers['X-API-Token'] = @auth.token
       Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       post :create, username: "berit", password: "sub_rosa", email: "berit@example.com"
       response.status.should == 400

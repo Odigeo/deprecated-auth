@@ -12,8 +12,8 @@ describe ApiUsersController do
       @auth = create :authentication
       @auth.expired?.should == false
       @api_user = create :api_user
-      request.env['HTTP_ACCEPT'] = "application/json"
-      request.env['X-API-Token'] = @auth.token
+      request.headers['HTTP_ACCEPT'] = "application/json"
+      request.headers['X-API-Token'] = @auth.token
     end
 
 
@@ -24,14 +24,14 @@ describe ApiUsersController do
     
     it "should return a 400 if the X-API-Token header is missing" do
       Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
-      request.env['X-API-Token'] = nil
+      request.headers['X-API-Token'] = nil
       delete :destroy, id: @api_user
       response.status.should == 400
     end
     
     it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
       Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
-      request.env['X-API-Token'] = 'unknown, matey'
+      request.headers['X-API-Token'] = 'unknown, matey'
       delete :destroy, id: @api_user
       response.status.should == 400
       response.content_type.should == "application/json"
@@ -41,7 +41,7 @@ describe ApiUsersController do
       Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       @auth = create :authentication, created_at: 1.year.ago.utc, expires_at: 1.year.ago.utc
       @auth.expired?.should == true
-      request.env['X-API-Token'] = @auth.token
+      request.headers['X-API-Token'] = @auth.token
       delete :destroy, id: @api_user
       response.status.should == 400
       response.content_type.should == "application/json"

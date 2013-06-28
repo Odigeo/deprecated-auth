@@ -11,8 +11,8 @@ describe AuthenticationsController do
                                                :body => {'authentication' => {'user_id' => 123}}))
       @auth = create :authentication
       @auth.expired?.should == false
-      request.env['HTTP_ACCEPT'] = "application/json"
-      request.env['X-API-Token'] = @auth.token
+      request.headers['HTTP_ACCEPT'] = "application/json"
+      request.headers['X-API-Token'] = @auth.token
     end
 
 

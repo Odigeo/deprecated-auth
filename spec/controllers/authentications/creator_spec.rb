@@ -11,8 +11,8 @@ describe AuthenticationsController do
                                                :body => {'authentication' => {'user_id' => 123}}))
       @it = create :authentication
       @it.expired?.should == false
-      request.env['HTTP_ACCEPT'] = "application/json"
-      request.env['X-API-Token'] = @it.token
+      request.headers['HTTP_ACCEPT'] = "application/json"
+      request.headers['X-API-Token'] = @it.token
     end
     
     
@@ -27,14 +27,14 @@ describe AuthenticationsController do
     end
     
     it "should not require a X-API-Token header" do
-      request.env['X-API-Token'] = nil
+      request.headers['X-API-Token'] = nil
       get :creator, id: @it.token
       response.status.should == 200
       response.content_type.should == "application/json"
     end
     
     it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
-      request.env['X-API-Token'] = 'unknown, matey'
+      request.headers['X-API-Token'] = 'unknown, matey'
       Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       get :creator, id: @it.token
       response.status.should == 400
@@ -44,7 +44,7 @@ describe AuthenticationsController do
     it "should return a 400 if the authentication represented by the X-API-Token has expired" do
       @it = create :authentication, created_at: 1.year.ago.utc, expires_at: 1.year.ago.utc
       @it.expired?.should == true
-      request.env['X-API-Token'] = @it.token
+      request.headers['X-API-Token'] = @it.token
       Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       get :creator, id: @it.token
       response.status.should == 400

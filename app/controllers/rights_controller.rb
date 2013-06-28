@@ -94,7 +94,7 @@ class RightsController < ApplicationController
   # GET /rights/1/roles
   def roles
     expires_in 0, 's-maxage' => 30.minutes
-    if stale?(collection_etag(@right.roles.scoped))
+    if stale?(collection_etag(@right.roles))
       render partial: "roles/role", collection: @right.roles
     end
   end

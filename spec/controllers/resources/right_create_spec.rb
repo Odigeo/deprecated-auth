@@ -9,8 +9,8 @@ describe ResourcesController do
     before :each do
       Api.stub!(:permitted?).and_return(double(:status => 200, 
                                                :body => {'authentication' => {'user_id' => 123}}))
-      request.env['HTTP_ACCEPT'] = "application/json"
-      request.env['X-API-Token'] = "incredibly-fake!"
+      request.headers['HTTP_ACCEPT'] = "application/json"
+      request.headers['X-API-Token'] = "incredibly-fake!"
       ri = build(:right)
       @resource = ri.resource
       @args = {id: @resource, name: ri.name, description: ri.description,
@@ -29,13 +29,13 @@ describe ResourcesController do
     end
     
     it "should return a 400 if the X-API-Token header is missing" do
-      request.env['X-API-Token'] = nil
+      request.headers['X-API-Token'] = nil
       post :right_create, @args
       response.status.should == 400
     end
     
     it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
-      request.env['X-API-Token'] = 'unknown, matey'
+      request.headers['X-API-Token'] = 'unknown, matey'
       Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       post :right_create, @args
       response.status.should == 400

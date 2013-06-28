@@ -12,8 +12,8 @@ describe RolesController do
       @auth = create :authentication
       @auth.expired?.should == false
       @x = create :role
-      request.env['HTTP_ACCEPT'] = "application/json"
-      request.env['X-API-Token'] = @auth.token
+      request.headers['HTTP_ACCEPT'] = "application/json"
+      request.headers['X-API-Token'] = @auth.token
       @api_user = create :api_user
       @group = create :group
       @right = create :right
@@ -26,13 +26,13 @@ describe RolesController do
     end
     
     it "should return a 400 if the X-API-Token header is missing" do
-      request.env['X-API-Token'] = nil
+      request.headers['X-API-Token'] = nil
       put :connect, id: @x
       response.status.should == 400
     end
 
     it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
-      request.env['X-API-Token'] = 'unknown, matey'
+      request.headers['X-API-Token'] = 'unknown, matey'
       Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       put :connect, id: @x
       response.status.should == 400
@@ -42,7 +42,7 @@ describe RolesController do
     it "should return a 400 if the authentication represented by the X-API-Token has expired" do
       @auth = create :authentication, created_at: 1.year.ago.utc, expires_at: 1.year.ago.utc
       @auth.expired?.should == true
-      request.env['X-API-Token'] = @auth.token
+      request.headers['X-API-Token'] = @auth.token
       Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       put :connect, id: @x
       response.status.should == 400

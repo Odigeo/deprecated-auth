@@ -13,8 +13,8 @@ describe ApiUsersController do
       @it.authentications << create(:authentication)
       @it.authentications << create(:authentication)
       @it.authentications << create(:authentication)
-      request.env['HTTP_ACCEPT'] = "application/json"
-      request.env['X-API-Token'] = "boy-is-this-fake"
+      request.headers['HTTP_ACCEPT'] = "application/json"
+      request.headers['X-API-Token'] = "boy-is-this-fake"
     end
         
     
@@ -29,14 +29,14 @@ describe ApiUsersController do
     end
     
     it "should return a 400 if the X-API-Token header is missing" do
-      request.env['X-API-Token'] = nil
+      request.headers['X-API-Token'] = nil
       get :authentications, id: @it
       response.status.should == 400
       response.content_type.should == "application/json"
     end
     
     it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
-      request.env['X-API-Token'] = 'unknown, matey'
+      request.headers['X-API-Token'] = 'unknown, matey'
       Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       get :authentications, id: @it
       response.status.should == 400

@@ -27,7 +27,7 @@ class Resource < ActiveRecord::Base
   
   # Validations
   validates :name, presence: true
-  validates :name, :format => /^[a-z][a-z0-9_]*$/
+  validates :name, :format => /\A[a-z][a-z0-9_]*\z/
 
   validates :service_id, presence: true
   

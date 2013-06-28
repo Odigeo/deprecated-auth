@@ -18,8 +18,8 @@ describe AuthenticationsController do
       create :authentication, api_user: @joe
       create :authentication, api_user: @sarah
       create :authentication, api_user: @sarah
-      request.env['HTTP_ACCEPT'] = "application/json"
-      request.env['X-API-Token'] = @auth.token
+      request.headers['HTTP_ACCEPT'] = "application/json"
+      request.headers['X-API-Token'] = @auth.token
     end
     
 
@@ -34,14 +34,14 @@ describe AuthenticationsController do
     end
     
     it "should return a 400 if the X-API-Token header is missing" do
-      request.env['X-API-Token'] = nil
+      request.headers['X-API-Token'] = nil
       get :index
       response.status.should == 400
       response.content_type.should == "application/json"
     end
     
     it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
-      request.env['X-API-Token'] = 'unknown, matey'
+      request.headers['X-API-Token'] = 'unknown, matey'
       Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       get :index
       response.status.should == 400
@@ -51,7 +51,7 @@ describe AuthenticationsController do
     it "should return a 400 if the authentication represented by the X-API-Token has expired" do
       @auth = create :authentication, created_at: 1.year.ago.utc, expires_at: 1.year.ago.utc
       @auth.expired?.should == true
-      request.env['X-API-Token'] = @auth.token
+      request.headers['X-API-Token'] = @auth.token
       Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       get :index
       response.status.should == 400
@@ -71,13 +71,13 @@ describe AuthenticationsController do
     end
     
     it "should accept a search parameter" do
-      Authentication.should_receive(:index).with(anything, nil, @auth.token).and_return(Authentication.scoped)
+      Authentication.should_receive(:index).with(anything, nil, @auth.token).and_return(Authentication.all)
       get :index, search: @auth.token
       response.status.should == 200
     end
     
     it "should accept a group parameter" do
-      Authentication.should_receive(:index).with(anything, 'token', nil).and_return(Authentication.scoped)
+      Authentication.should_receive(:index).with(anything, 'token', nil).and_return(Authentication.all)
       get :index, group: :token
       response.status.should == 200
     end

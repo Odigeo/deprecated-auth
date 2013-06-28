@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "rails", "3.2.13"
+gem "rails", "4.0.0"
 gem "ocean", git: "git://github.com/OceanDev/ocean.git"
 
 gem "mysql2"
@@ -20,4 +20,6 @@ group :test, :development do
   gem "immigrant"
   gem "annotate", ">=2.5.0"
 end
-
+# Rails 3 compatibility
+gem "protected_attributes"
+gem "rails-observers"
