@@ -1,0 +1,134 @@
+= Ocean
+
+Ocean is an architecture for creating server-oriented architectures (SOAs) featuring a full
+separation of back and front end functionality. It consists of two separate parts which can be
+used separately or in conjunction: "Ocean" is the back end part, and "OceanFront" is the
+front end.
+
+Ocean is a complete and very scalable solution for RESTful web services and web applications,
+featuring aggressive caching and full HTTP client abstraction. Ocean fully implements
+HATEOAS principles, allowing the programming object model to move fully out onto the 'net,
+while maintaining a very high degree of decoupling of server and client.
+
+OceanFront is a cross-platform Javascript front end browser client library supporting all
+major browsers and platforms.
+
+Together, Ocean and OceanFront allow you to write front end code completely independent of browser
+type and client OS, and back end code completely agnostic of whether it is called by a client 
+browser or another server system.
+
+Ocean is also a development, staging and deployment pipeline featuring continuous integration and
+testing in a TDD and/or BDD environment. Ocean can be used for continuous deployment or for 
+scheduled releases. Front end tests are run in parallel using a matrix of operating systems 
+and browser types. The pipeline can very easily be extended with new development branches and
+quality assurance environments, all automatically integration tested and deployed.
+
+Ocean is an open source project.
+
+Please refer to the Ocean wiki for a full list of features, documentation and examples.
+
+The code to automatically deploy Ocean using Chef is found in the oceans-chef-repo. It is
+geared toward deploying the entire architecture on Amazon Web Services.
+
+Common services, such as Auth, CMS, Media, and Log, also have their own repositories.
+
+
+
+== The Ocean gem
+
+This repository contains the Ocean ruby gem, containing common framework functionality
+for the Ruby on Rails part of the architecture. 
+
+Ocean requires Ruby 2.0 and Ruby on Rails 4.0.0 or later.
+
+
+=== Creating an Ocean Rails app
+
+The ocean gem provides an application template and generator to quickly and easily set up 
+a complete Rails application for Ocean. Simply execute the following in your terminal:
+
+ rails new the_app_name -m https://raw.github.com/OceanDev/ocean/master/template.rb
+
+Answer yes to all overwrite queries. 
+
+There is only one piece of manual setup to perform. You must supply the Ocean app with
+your site-specific data: the base domain name, the password for Auth, etc. To do this,
+simply edit <code>config/config.yml</code>. 
+
+There is also a file called <code>config.yml.example</code> in the
+same directory for reference. Don't change it: it is under version control. The file
+you should change, <code>config/config.yml</code>, isn't, as it will contain site-specific and/or
+confidential data.
+
+Create any required databases by executing:
+
+  rake db:migrate
+
+Verify that your setup is OK by executing
+
+ rspec
+
+All tests should pass.
+
+
+=== Creating an Ocean Resource
+
+To create an Ocean resource based on an SQL model, do the following:
+
+ rails g scaffold quux name:string description:string \ 
+                       lock_version:integer created_by:integer updated_by:integer
+
+This will create the basic model and associated model and controller scaffolding code, 
+which we will modify shortly. Now run
+
+ rake db:migrate
+
+This will create the SQL table for the resource. Next, we need to replace the HTML-centric
+scaffold code generated above with RESTful JSON scaffold code for Ocean:
+
+ rails g ocean_scaffold quux
+
+Answer yes to all overwrite queries. Now examine +config/routes.rb+. You will find a new resource
+declaration for quuxes. Move it inside the versioned scope:
+
+ scope "v1" do
+   resource :foos
+   resource :bars
+   resource :quuxes  # This is your new resource
+ end
+
+Next, look at +config/application.rb+. Locate the following two lines:
+
+ # Register observers for BANning, etc. Uncomment when you have a model to observe.
+ #config.active_record.observers = [:basic_ban_observer]
+
+If the second line is commented out, remove the comment so the line reads:
+
+ # Register observers for BANning, etc. Uncomment when you have a model to observe.
+ config.active_record.observers = [:basic_ban_observer]
+
+Now open +app/observers/basic_ban_observer.rb+. If the contents is commented out, uncomment it.
+
+Next, locate the following line:
+
+ observe :foo_model, :bar_model, :baz_model
+
+Modify it to include the name of your resource:
+
+ observe :quux
+
+This ensures that your resource can be aggressively cached, and that modifications to member resources will invalidate cached objects as necessary. 
+
+If you at a later point create another Ocean resource, simply tack it on to the end of the list. For instance,
+
+ observer :quux, :thingy
+
+To verify that everything works as it should, run the tests:
+
+ rspec
+
+All tests should pass. The test coverage should be very close to 100%. A FactoryGirl factory for the new model will be created, there will be model unit tests to check for the presence of all attributes and to verify collection searches, routing tests, controller tests for each action, and view tests to verify that the JSON representation is complete and correct.   
+
+You can now proceed to tailor the new resource to your needs. You will want to add other attributes to the model or remove some or all of the default ones; you can change the JSON representation by modifying the view; and you might want to add or remove controller actions, e.g. to support secondary collections and relations to other resources. And as you no doubt are a responsible, informed developer, you will of course do all this using TDD and/or BDD techniques.
+
+
