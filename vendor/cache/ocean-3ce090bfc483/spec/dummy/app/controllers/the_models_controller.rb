@@ -5,7 +5,7 @@ class TheModelsController < ApplicationController
 
   respond_to :json
   
-  before_filter :find_the_model, :only => [:show, :update, :destroy]
+  before_action :find_the_model, :only => [:show, :update, :destroy]
     
   
   # GET /v1/the_models

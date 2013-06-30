@@ -8,3 +8,6 @@ spec/dummy/.sass-cache
 
 # Ignore coverage artefacts
 /coverage
+
+# Ignore Tork config
+/.tork

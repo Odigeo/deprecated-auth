@@ -6,8 +6,8 @@ class GroupsController < ApplicationController
 
   respond_to :json
 
-  before_filter :find_group, :except => [:index, :create]
-  before_filter :find_connectee, :only => [:connect, :disconnect]
+  before_action :find_group, :except => [:index, :create]
+  before_action :find_connectee, :only => [:connect, :disconnect]
  
   
   

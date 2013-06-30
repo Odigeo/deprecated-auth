@@ -79,12 +79,6 @@ class OceanSetupGenerator < Rails::Generators::NamedBase
     "
   end
 
-  def install_environment_files
-    template "development.rb", "#{Rails.root}/config/environments/development.rb"
-    template "test.rb",        "#{Rails.root}/config/environments/test.rb"
-    template "production.rb",  "#{Rails.root}/config/environments/production.rb"
-  end
-
   def install_initializers
     copy_file "api_constants.rb",   "#{Rails.root}/config/initializers/api_constants.rb"
     template  "config.yml.example", "#{Rails.root}/config/config.yml.example"

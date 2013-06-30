@@ -5,9 +5,9 @@ class AuthenticationsController < ApplicationController
   
   respond_to :json
   
-  skip_before_filter :require_x_api_token, :except => [:index, :destroy]
-  skip_before_filter :authorize_action, :only => [:create, :show]
-  before_filter :find_authentication, :except => [:index, :create]
+  skip_before_action :require_x_api_token, :except => [:index, :destroy]
+  skip_before_action :authorize_action, :only => [:create, :show]
+  before_action :find_authentication, :except => [:index, :create]
 
   
   # GET /authentications

@@ -6,8 +6,8 @@ class RolesController < ApplicationController
  
   respond_to :json
  
-  before_filter :find_role, :except => [:index, :create]
-  before_filter :find_connectee, :only => [:connect, :disconnect]
+  before_action :find_role, :except => [:index, :create]
+  before_action :find_connectee, :only => [:connect, :disconnect]
   
     
   

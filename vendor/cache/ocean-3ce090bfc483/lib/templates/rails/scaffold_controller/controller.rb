@@ -10,7 +10,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 
   respond_to :json
   
-  before_filter :find_<%= singular_table_name %>, :only => [:show, :update, :destroy]
+  before_action :find_<%= singular_table_name %>, :only => [:show, :update, :destroy]
     
   
   # GET <%= route_url %>

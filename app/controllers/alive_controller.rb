@@ -6,8 +6,8 @@
 
 class AliveController < ApplicationController
   
-  skip_before_filter :require_x_api_token
-  skip_before_filter :authorize_action
+  skip_before_action :require_x_api_token
+  skip_before_action :authorize_action
 
 
   def index

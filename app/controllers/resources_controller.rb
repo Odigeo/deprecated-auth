@@ -6,7 +6,7 @@ class ResourcesController < ApplicationController
 
   respond_to :json
 
-  before_filter :find_resource, except: [:index, :create]
+  before_action :find_resource, except: [:index, :create]
   
   
   

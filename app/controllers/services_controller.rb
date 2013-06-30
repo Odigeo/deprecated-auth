@@ -5,7 +5,7 @@ class ServicesController < ApplicationController
   
   respond_to :json
 
-  before_filter :find_service, except: [:index, :create]
+  before_action :find_service, except: [:index, :create]
   
   
   
