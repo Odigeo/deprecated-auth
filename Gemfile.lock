@@ -1,16 +1,14 @@
 GIT
   remote: git://github.com/OceanDev/ocean.git
-  revision: 7bb60f850d66b317f9efd5c5420f9c99c3d1eb25
+  revision: 94403f262af9c91ccc335ab56d34bdc619663f30
   specs:
-    ocean (1.3.1)
+    ocean (1.3.2)
       faraday
       faraday_middleware
       ffi-rzmq
       jbuilder
       net-purge
-      protected_attributes
       rack-attack
-      rails-observers
       typhoeus
 
 GEM

@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = "ocean"
-  s.version = "1.3.1"
+  s.version = "1.3.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Peter Bengtson"]
@@ -27,8 +27,6 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<ffi-rzmq>, [">= 0"])
       s.add_runtime_dependency(%q<rack-attack>, [">= 0"])
       s.add_runtime_dependency(%q<jbuilder>, [">= 0"])
-      s.add_runtime_dependency(%q<protected_attributes>, [">= 0"])
-      s.add_runtime_dependency(%q<rails-observers>, [">= 0"])
       s.add_development_dependency(%q<rails>, [">= 4.0.0"])
       s.add_development_dependency(%q<sqlite3>, [">= 0"])
       s.add_development_dependency(%q<rspec-rails>, [">= 0"])
@@ -42,8 +40,6 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<ffi-rzmq>, [">= 0"])
       s.add_dependency(%q<rack-attack>, [">= 0"])
       s.add_dependency(%q<jbuilder>, [">= 0"])
-      s.add_dependency(%q<protected_attributes>, [">= 0"])
-      s.add_dependency(%q<rails-observers>, [">= 0"])
       s.add_dependency(%q<rails>, [">= 4.0.0"])
       s.add_dependency(%q<sqlite3>, [">= 0"])
       s.add_dependency(%q<rspec-rails>, [">= 0"])
@@ -58,8 +54,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<ffi-rzmq>, [">= 0"])
     s.add_dependency(%q<rack-attack>, [">= 0"])
     s.add_dependency(%q<jbuilder>, [">= 0"])
-    s.add_dependency(%q<protected_attributes>, [">= 0"])
-    s.add_dependency(%q<rails-observers>, [">= 0"])
     s.add_dependency(%q<rails>, [">= 4.0.0"])
     s.add_dependency(%q<sqlite3>, [">= 0"])
     s.add_dependency(%q<rspec-rails>, [">= 0"])
