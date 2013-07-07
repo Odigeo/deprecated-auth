@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/OceanDev/ocean.git
-  revision: 322a6c7e46d4ad9c37b658ff252cb19e35a2ec5f
+  revision: 9f6b60641e4ed8e7b518fec4588c9e47eaf989fa
   specs:
-    ocean (1.4.0)
+    ocean (1.5.0)
       faraday
       faraday_middleware
       ffi-rzmq
