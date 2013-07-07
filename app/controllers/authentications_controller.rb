@@ -33,25 +33,28 @@ class AuthenticationsController < ApplicationController
     # Has the authentication expired?
     if @authentication.expired?
       logger.info "[#{token}] Authentication EXPIRED for #{username}"
-      expires_in 1.day, 'max-stale' => 1.day
+      expires_in 0, 's-maxage' => 1.day
       render_api_error 400, "Re-authentication required"
       return
     end
     # Is the query string present?
     query = params[:query]
     if query.blank?
+      expires_in 0, 's-maxage' => 1.day
       render_api_error 422, "Query missing"
       return
     end
     # Is the query string well-formed?
     query = query.to_s.split(':')
     if query.length != 6
+      expires_in 0, 's-maxage' => 1.day
       render_api_error 422, "Malformed query string", 
                             "Must consist of exactly six colon-separated parts"
       return
     end
     # Is the verb a supported one?
     if !["*", "POST", "GET", "GET*", "PUT", "DELETE"].include?(query[3])
+      expires_in 0, 's-maxage' => 1.day
       render_api_error 422, "Malformed query string", 
                             "Unsupported verb"
       return
@@ -59,7 +62,7 @@ class AuthenticationsController < ApplicationController
     # Is the client authorised to perform the query?
     if !@authentication.authorized?(*query)
       logger.info "[#{token}] Authorization DENIED: #{username} may NOT <#{params[:query]}>"
-      expires_in 1.minute, 'max-stale' => 1.hour
+      expires_in 0, 's-maxage' => 1.day
       render_api_error 403, "Denied"
       return
     end
@@ -67,7 +70,7 @@ class AuthenticationsController < ApplicationController
     if stale?(last_modified: @authentication.created_at, etag: @authentication)
       smax_age = @authentication.seconds_remaining
       logger.info "[#{token}] Authorization GRANTED: #{username} may <#{params[:query]}> for #{smax_age}s"
-      expires_in 0, 's-maxage' => smax_age, 'max-stale' => 0
+      expires_in 0, 's-maxage' => smax_age
       render partial: "authentication", object: @authentication
     end
   end
@@ -93,7 +96,7 @@ class AuthenticationsController < ApplicationController
                                                  :created_at => Time.now.utc,
                                                  :expires_at => Time.now.utc + max_age)
         logger.info "[#{@authentication.token}] Authentication CREATED for #{user.username}"
-        #respond_with @authentication, status: 201
+        expires_now   # Tiny increase in security
         render partial: "authentication", object: @authentication, status: 201
       else
         logger.info "Authentication doesn't authenticate for #{username}"
@@ -127,7 +130,7 @@ class AuthenticationsController < ApplicationController
     @authentication = Authentication.find_by_token(params[:id])
     return true if @authentication
     logger.info "Authentication not found for [#{params[:id]}]"
-    expires_in 30.minutes, 'max-stale' => 0
+    expires_in 0, 's-maxage' => 1.day
     render_api_error 400, "Authentication not found"
     false
   end  

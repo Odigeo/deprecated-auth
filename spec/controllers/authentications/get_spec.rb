@@ -121,18 +121,18 @@ describe AuthenticationsController do
       cc.should match /private/
     end
     
-    it "should have a max-stale cache setting of 0" do
-      Authentication.should_receive(:find_by_token).and_return(create :authentication)
-      Authentication.any_instance.stub(:authorized?).and_return(true)
-      get :show, id: "87e87ff086543ee0a", query: "serv:res:self:GET:*:*"
-      response.content_type.should == "application/json"
-      response.status.should == 200
-      auth = JSON.parse(response.body)['authentication']
-      cc = response.headers['Cache-Control']
-      cc.should be_a String
-      cc_max_stale = (/max-stale=([0-9]+)/.match cc)[1].to_i
-      cc_max_stale.should == 0
-    end
+    # it "should have a max-stale cache setting of 0" do
+    #   Authentication.should_receive(:find_by_token).and_return(create :authentication)
+    #   Authentication.any_instance.stub(:authorized?).and_return(true)
+    #   get :show, id: "87e87ff086543ee0a", query: "serv:res:self:GET:*:*"
+    #   response.content_type.should == "application/json"
+    #   response.status.should == 200
+    #   auth = JSON.parse(response.body)['authentication']
+    #   cc = response.headers['Cache-Control']
+    #   cc.should be_a String
+    #   cc_max_stale = (/max-stale=([0-9]+)/.match cc)[1].to_i
+    #   cc_max_stale.should == 0
+    # end
       
   end
 

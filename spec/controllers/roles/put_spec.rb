@@ -7,7 +7,7 @@ describe RolesController do
   describe "PUT" do
     
     before :each do
-      Api.stub!(:permitted?).and_return(double(:status => 200, 
+      Api.stub(:permitted?).and_return(double(:status => 200, 
                                                :body => {'authentication' => {'user_id' => 123}}))
       request.headers['HTTP_ACCEPT'] = "application/json"
       request.headers['X-API-Token'] = "incredibly-fake!"
@@ -29,14 +29,14 @@ describe RolesController do
 
     it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
       request.headers['X-API-Token'] = 'unknown, matey'
-      Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
+      Api.stub(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       put :update, @args
       response.status.should == 400
       response.content_type.should == "application/json"
     end
 
     it "should return a 403 if the X-API-Token doesn't yield PUT authorisation for ApiUsers" do
-      Api.stub!(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
+      Api.stub(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
       put :update, @args
       response.status.should == 403
       response.content_type.should == "application/json"

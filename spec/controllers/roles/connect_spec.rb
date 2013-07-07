@@ -7,7 +7,7 @@ describe RolesController do
   describe "PUT /roles/1/connect" do
     
     before :each do
-      Api.stub!(:permitted?).and_return(double(:status => 200, 
+      Api.stub(:permitted?).and_return(double(:status => 200, 
                                                :body => {'authentication' => {'user_id' => 123}}))
       @auth = create :authentication
       @auth.expired?.should == false
@@ -33,7 +33,7 @@ describe RolesController do
 
     it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
       request.headers['X-API-Token'] = 'unknown, matey'
-      Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
+      Api.stub(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       put :connect, id: @x
       response.status.should == 400
       response.content_type.should == "application/json"
@@ -43,14 +43,14 @@ describe RolesController do
       @auth = create :authentication, created_at: 1.year.ago.utc, expires_at: 1.year.ago.utc
       @auth.expired?.should == true
       request.headers['X-API-Token'] = @auth.token
-      Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
+      Api.stub(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       put :connect, id: @x
       response.status.should == 400
       response.content_type.should == "application/json"
     end
     
     it "should return a 403 if the X-API-Token doesn't yield PUT authorisation for ApiUsers" do
-      Api.stub!(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
+      Api.stub(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
       put :connect, id: @x
       response.status.should == 403
       response.content_type.should == "application/json"

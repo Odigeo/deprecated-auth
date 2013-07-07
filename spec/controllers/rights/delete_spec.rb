@@ -7,7 +7,7 @@ describe RightsController do
   describe "DELETE" do
     
     before :each do
-      Api.stub!(:permitted?).and_return(double(:status => 200, 
+      Api.stub(:permitted?).and_return(double(:status => 200, 
                                                :body => {'authentication' => {'user_id' => 123}}))
       @right = create :right
       request.headers['HTTP_ACCEPT'] = "application/json"
@@ -26,14 +26,14 @@ describe RightsController do
     end
 
     it "should return a 400 if the X-API-Token header is missing" do
-      Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
+      Api.stub(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       request.headers['X-API-Token'] = nil
       delete :destroy, id: @right
       response.status.should == 400
     end
     
     it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
-      Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
+      Api.stub(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       request.headers['X-API-Token'] = 'unknown, matey'
       delete :destroy, id: @right
       response.status.should == 400
@@ -41,7 +41,7 @@ describe RightsController do
     end
 
     it "should return a 403 if the X-API-Token doesn't yield DELETE authorisation for Rights" do
-      Api.stub!(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
+      Api.stub(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
       delete :destroy, id: @right
       response.status.should == 403
       response.content_type.should == "application/json"

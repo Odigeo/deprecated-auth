@@ -7,7 +7,7 @@ describe ApiUsersController do
   describe "DELETE" do
     
     before :each do
-      Api.stub!(:permitted?).and_return(double(:status => 200, 
+      Api.stub(:permitted?).and_return(double(:status => 200, 
                                                :body => {'authentication' => {'user_id' => 123}}))
       @auth = create :authentication
       @auth.expired?.should == false
@@ -23,14 +23,14 @@ describe ApiUsersController do
     end
     
     it "should return a 400 if the X-API-Token header is missing" do
-      Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
+      Api.stub(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       request.headers['X-API-Token'] = nil
       delete :destroy, id: @api_user
       response.status.should == 400
     end
     
     it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
-      Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
+      Api.stub(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       request.headers['X-API-Token'] = 'unknown, matey'
       delete :destroy, id: @api_user
       response.status.should == 400
@@ -38,7 +38,7 @@ describe ApiUsersController do
     end
 
     it "should return a 400 if the authentication represented by the X-API-Token has expired" do
-      Api.stub!(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
+      Api.stub(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
       @auth = create :authentication, created_at: 1.year.ago.utc, expires_at: 1.year.ago.utc
       @auth.expired?.should == true
       request.headers['X-API-Token'] = @auth.token
@@ -48,7 +48,7 @@ describe ApiUsersController do
     end
 
     it "should return a 403 if the X-API-Token doesn't yield DELETE authorisation for ApiUsers" do
-      Api.stub!(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
+      Api.stub(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
       delete :destroy, id: @api_user
       response.status.should == 403
       response.content_type.should == "application/json"

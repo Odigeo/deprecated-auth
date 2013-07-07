@@ -7,7 +7,7 @@ describe AuthenticationsController do
   describe "DELETE" do
     
     before :each do
-      Api.stub!(:permitted?).and_return(double(:status => 200, 
+      Api.stub(:permitted?).and_return(double(:status => 200, 
                                                :body => {'authentication' => {'user_id' => 123}}))
       @auth = create :authentication
       @auth.expired?.should == false
@@ -18,7 +18,7 @@ describe AuthenticationsController do
 
     it "should return a 204 when successful" do
       create :authentication, token: "existent"
-      #Api.stub!(:permitted?).and_return(200)
+      #Api.stub(:permitted?).and_return(200)
       delete :destroy, id: "existent"
       response.content_type.should == "application/json"
       response.status.should == 204
@@ -26,7 +26,7 @@ describe AuthenticationsController do
     
     it "should return a 400 when the authentication was unknown" do
       create :authentication, token: "existent"
-      #Api.stub!(:permitted?).and_return(200)
+      #Api.stub(:permitted?).and_return(200)
       delete :destroy, id: "nonexistent"
       response.content_type.should == "application/json"
       response.status.should == 400
@@ -34,7 +34,7 @@ describe AuthenticationsController do
     
     it "should return a 403 when authorisation wasn't given" do
       create :authentication, token: "existent"
-      Api.stub!(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
+      Api.stub(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
       delete :destroy, id: "nonexistent"
       response.content_type.should == "application/json"
       response.status.should == 403
