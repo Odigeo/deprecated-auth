@@ -15,6 +15,8 @@ class AuthenticationsController < ApplicationController
   # This action returns all active authentications.
   #
   def index
+    # To simplify cache invalidation, Authentication collections are never cached.
+    expires_in 0    
     if stale?(collection_etag(Authentication))
       @authentications = Authentication.index(params, params[:group], params[:search]).active
       render partial: "authentication", collection: @authentications

@@ -7,7 +7,7 @@
 #   	resource_name = model.class.name.pluralize.underscore
 #     v = model.class.latest_api_version
 #   	#puts "Created #{resource_name}"
-#     Api.ban "/#{v}/#{resource_name}"
+#     Api.ban "/v#{v}/#{resource_name}"
 #   end
 # 
 # 
@@ -15,9 +15,9 @@
 #   	resource_name = model.class.name.pluralize.underscore
 #     v = model.class.latest_api_version
 #    	#puts "Updated #{resource_name}"
-#     Api.ban "/#{v}/#{resource_name}/#{model.id}"
-#     Api.ban "/#{v}/#{resource_name}/#{model.id}/", true
-#     Api.ban "/#{v}/#{resource_name}"
+#     Api.ban "/v#{v}/#{resource_name}/#{model.id}"
+#     Api.ban "/v#{v}/#{resource_name}/#{model.id}/", true
+#     Api.ban "/v#{v}/#{resource_name}"
 #   end
 # 
 # 
@@ -30,9 +30,9 @@
 #    	resource_name = model.class.name.pluralize.underscore
 #     v = model.class.latest_api_version
 #    	#puts "Destroyed #{resource_name}"
-#     Api.ban "/#{v}/#{resource_name}/#{model.id}"
-#     Api.ban "/#{v}/#{resource_name}/#{model.id}/", true
-#     Api.ban "/#{v}/#{resource_name}"
+#     Api.ban "/v#{v}/#{resource_name}/#{model.id}"
+#     Api.ban "/v#{v}/#{resource_name}/#{model.id}/", true
+#     Api.ban "/v#{v}/#{resource_name}"
 #   end
 # 
 # end
