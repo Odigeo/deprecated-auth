@@ -4,7 +4,7 @@ class AuthenticationObserver < ActiveRecord::Observer
    	resource_name = model.class.name.pluralize.underscore
     v = model.class.latest_api_version
    	#puts "Destroyed #{resource_name}"
-    Api.ban "/v#{v}/#{resource_name}/#{model.token}", true
+    Api.ban "/#{v}/#{resource_name}/#{model.token}", true
     # Authentication collections are never cached, thus no need to invalidate them.
   end
 
