@@ -35,4 +35,4 @@ OCEAN_API_URL = "https://#{OCEAN_API_HOST}"
 
 INTERNAL_OCEAN_API_URL = OCEAN_API_URL.sub("https", "http").sub("api.", "lb.")
 
-LOAD_BALANCERS = ENV['LOAD_BALANCERS'] || []
+LOAD_BALANCERS = ["127.0.0.1"]  # ENV['LOAD_BALANCERS'] || []

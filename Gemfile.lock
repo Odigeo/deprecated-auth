@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/OceanDev/ocean.git
-  revision: a13092f2b5a12300dbc53fcd21c53472028c5273
+  revision: 19cfb3ba691e3f9c2ddb73d7449a0b113b4874a4
   specs:
-    ocean (1.5.2)
+    ocean (1.5.3)
       faraday
       faraday_middleware
       ffi-rzmq
@@ -42,7 +42,7 @@ GEM
       rake
     arel (4.0.0)
     atomic (1.1.10)
-    bcrypt-ruby (3.1.0)
+    bcrypt-ruby (3.1.1)
     builder (3.1.4)
     diff-lcs (1.2.4)
     erubis (2.7.0)

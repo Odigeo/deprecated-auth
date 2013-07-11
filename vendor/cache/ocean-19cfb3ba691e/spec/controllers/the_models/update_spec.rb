@@ -11,6 +11,7 @@ describe TheModelsController do
                                                :body => {'authentication' => {'user_id' => 123}}))
       request.headers['HTTP_ACCEPT'] = "application/json"
       request.headers['X-API-Token'] = "incredibly-fake!"
+      Api.stub(:call_p)
       @u = create :the_model
       @args = @u.attributes
     end

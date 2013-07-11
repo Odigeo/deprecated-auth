@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "the_models/_the_model" do
   
   before :each do                     # Must be :each (:all causes all tests to fail)
+    Api.stub(:call_p)
     TheModel.destroy_all
     render partial: "the_models/the_model", locals: {the_model: create(:the_model)}
     @json = JSON.parse(rendered)

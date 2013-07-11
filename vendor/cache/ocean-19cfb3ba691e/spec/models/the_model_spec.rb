@@ -15,6 +15,11 @@
 require 'spec_helper'
 
 describe TheModel do
+
+  before :each do
+    Api.stub(:call_p)
+  end
+
   
   describe "attributes" do
     
