@@ -2,18 +2,19 @@
 #
 # Table name: api_users
 #
-#  id                      :integer          not null, primary key
-#  username                :string(255)      not null
-#  password_hash           :string(255)      not null
-#  password_salt           :string(255)      not null
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
-#  real_name               :string(255)      default("")
-#  lock_version            :integer          default(0), not null
-#  email                   :string(255)      default(""), not null
-#  created_by              :integer          default(0), not null
-#  updated_by              :integer          default(0), not null
-#  authentication_duration :integer          default(1800), not null
+#  id                        :integer          not null, primary key
+#  username                  :string(255)      not null
+#  password_hash             :string(255)      not null
+#  password_salt             :string(255)      not null
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  real_name                 :string(255)      default("")
+#  lock_version              :integer          default(0), not null
+#  email                     :string(255)      default(""), not null
+#  created_by                :integer          default(0), not null
+#  updated_by                :integer          default(0), not null
+#  authentication_duration   :integer          default(1800), not null
+#  shareable_authentications :boolean          default(FALSE), not null
 #
 
 require 'spec_helper'
@@ -109,6 +110,13 @@ describe ApiUser do
 
     it "should default the authentication_duration to 30 minutes" do
       create(:api_user).authentication_duration.should == 30.minutes
+    end
+
+
+    it "should have a shareable_authentications boolean" do
+      build(:api_user).shareable_authentications.should == false
+      build(:api_user, shareable_authentications: true).shareable_authentications.should == true
+      build(:api_user, shareable_authentications: "quoi?").shareable_authentications.should == false
     end
 
   end

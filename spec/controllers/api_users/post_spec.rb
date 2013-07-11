@@ -63,7 +63,9 @@ describe ApiUsersController do
     end
 
     it "should return a 422 when there are validation errors" do
-      post :create, username: " ", password: nil, email: "", authentication_duration: nil
+      post :create, username: " ", password: nil, email: "", 
+                    authentication_duration: nil, 
+                    shareable_authentications: "not a boolean"
       response.status.should == 422
       response.content_type.should == "application/json"
       JSON.parse(response.body).should == {"username" => ["can't be blank"],

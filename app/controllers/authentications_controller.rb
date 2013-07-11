@@ -130,12 +130,13 @@ class AuthenticationsController < ApplicationController
     username, password = Api.decode_credentials(request.headers['X-API-Authenticate'])
     if username == "" && password == ""
       logger.info "Authentication with malformed credentials for #{username}"
-      expires_in 1.hour
+      expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
       render_api_error 400, "Malformed credentials"
       return false
     end
     return true if (@api_user = ApiUser.find_by_credentials(username, password))
     logger.info "Authentication doesn't authenticate for #{username}"
+    expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
     render_api_error 403, "Does not authenticate"
     false
   end

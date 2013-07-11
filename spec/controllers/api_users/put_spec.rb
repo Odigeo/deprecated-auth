@@ -72,7 +72,8 @@ describe ApiUsersController do
 
     it "should return a 422 when there are validation errors" do
       put :update, id: @u, username: "brigitte_bardot", real_name: "Brigitte", email: "oui@example.com", lock_version: 10,
-                           authentication_duration: -3.14
+                           authentication_duration: -3.14,
+                           shareable_authentications: "not a boolean"
       response.status.should == 422
       response.content_type.should == "application/json"
       JSON.parse(response.body).should == 
@@ -101,11 +102,15 @@ describe ApiUsersController do
 
     it "should alter the user when successful" do
       @u.real_name.should == "Brigitte"
-      put :update, id: @u, username: "brigitte_bardot", real_name: "Bardot, Brigitte", email: "oui@example.com", lock_version: 0
+      put :update, id: @u, username: "brigitte_bardot", real_name: "Bardot, Brigitte", email: "oui@example.com", lock_version: 0,
+                           authentication_duration: 1.year.to_i,
+                           shareable_authentications: true
       response.status.should == 200
       @u.reload
       @u.real_name.should == "Bardot, Brigitte"
       @u.email.should == "oui@example.com"
+      @u.authentication_duration.should == 1.year.to_i
+      @u.shareable_authentications.should == true
     end
 
     it "should hash any new password given" do

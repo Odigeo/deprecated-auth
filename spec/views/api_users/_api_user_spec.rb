@@ -85,4 +85,8 @@ describe "api_users/_api_user" do
     @u['authentication_duration'].should be_an Integer
   end
 
+  it "should have a shareable_authentications boolean" do
+    @u['shareable_authentications'].should == false
+  end
+
 end
