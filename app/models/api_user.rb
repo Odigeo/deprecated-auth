@@ -86,7 +86,7 @@ class ApiUser < ActiveRecord::Base
   #
   def authentication_token
     return Authentication.new_token unless shared_tokens
-    auth = authentications.order(:created_at).last
+    auth = authentications.order(:created_at).merge(Authentication.active).last
     return Authentication.new_token unless auth
     auth.token
   end
