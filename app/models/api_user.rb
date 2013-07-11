@@ -2,17 +2,18 @@
 #
 # Table name: api_users
 #
-#  id            :integer          not null, primary key
-#  username      :string(255)      not null
-#  password_hash :string(255)      not null
-#  password_salt :string(255)      not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  real_name     :string(255)      default("")
-#  lock_version  :integer          default(0), not null
-#  email         :string(255)      default(""), not null
-#  created_by    :integer          default(0), not null
-#  updated_by    :integer          default(0), not null
+#  id                      :integer          not null, primary key
+#  username                :string(255)      not null
+#  password_hash           :string(255)      not null
+#  password_salt           :string(255)      not null
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  real_name               :string(255)      default("")
+#  lock_version            :integer          default(0), not null
+#  email                   :string(255)      default(""), not null
+#  created_by              :integer          default(0), not null
+#  updated_by              :integer          default(0), not null
+#  authentication_duration :integer          default(1800), not null
 #
 
 class ApiUser < ActiveRecord::Base
@@ -28,7 +29,8 @@ class ApiUser < ActiveRecord::Base
   has_and_belongs_to_many :roles,  after_add: :touch_both, after_remove: :touch_both   # via api_users_roles
 
   # Attributes
-  attr_accessible :username, :password, :real_name, :email, :lock_version
+  attr_accessible :username, :password, :real_name, :email, :lock_version,
+                  :authentication_duration
   attr_reader :password
 
   # Validations
@@ -41,6 +43,8 @@ class ApiUser < ActiveRecord::Base
   validates :password_salt, :presence => true
   validates :lock_version, :presence => true
   validates :email, :presence => true
+  validates :authentication_duration, :presence => true, 
+                                      numericality: { only_integer: true, greater_than: 0 }
   
 
   def self.find_by_credentials(un, pw)

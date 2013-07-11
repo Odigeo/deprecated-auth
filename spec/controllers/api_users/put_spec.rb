@@ -70,7 +70,14 @@ describe ApiUsersController do
       response.content_type.should == "application/json"
     end
 
-    # it "should return a 422 when there are validation errors"  # No validation errors possible yet!
+    it "should return a 422 when there are validation errors" do
+      put :update, id: @u, username: "brigitte_bardot", real_name: "Brigitte", email: "oui@example.com", lock_version: 10,
+                           authentication_duration: -3.14
+      response.status.should == 422
+      response.content_type.should == "application/json"
+      JSON.parse(response.body).should == 
+        {"authentication_duration" => ["must be an integer"]}
+    end
 
     it "should return a 409 when there is an update conflict" do
       @u.save

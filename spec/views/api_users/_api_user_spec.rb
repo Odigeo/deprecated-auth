@@ -81,4 +81,8 @@ describe "api_users/_api_user" do
     @u['email'].should be_a String
   end
 
+  it "should have an authentication_duration" do
+    @u['authentication_duration'].should be_an Integer
+  end
+
 end

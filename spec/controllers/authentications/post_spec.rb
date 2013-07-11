@@ -65,6 +65,18 @@ describe AuthenticationsController do
       response.content_type.should == "application/json"
       response.status.should == 201
     end
+
+    it "should return an Authentication with its max_age set to the authentication_duration of its ApiUser" do
+      @api_user = create :api_user, username: "myuser", password: "mypassword", authentication_duration: 1.year.to_i
+      request.headers['X-API-Authenticate'] = ::Base64.strict_encode64("myuser:mypassword")
+      request.headers['X-API-Token'] = nil
+      post :create
+      response.content_type.should == "application/json"
+      response.status.should == 201
+      max_age = JSON.parse(response.body)['authentication']['max_age']
+      max_age.should == @api_user.authentication_duration
+      max_age.should == 1.year.to_i
+    end
     
   end
   

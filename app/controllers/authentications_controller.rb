@@ -5,9 +5,27 @@ class AuthenticationsController < ApplicationController
   
   respond_to :json
   
-  skip_before_action :require_x_api_token, :except => [:index, :destroy]
-  skip_before_action :authorize_action, :only => [:create, :show]
-  before_action :find_authentication, :except => [:index, :create]
+  skip_before_action :require_x_api_token, except: [:index, :destroy]
+  skip_before_action :authorize_action, only: [:create, :show]
+  before_action :find_authentication, except: [:index, :create]
+  before_action :find_api_user, only: :create
+  
+  #
+  # POST /authentications
+  # 
+  # This action is used for authenticating an ApiUser.
+  #
+  def create
+    max_age = @api_user.authentication_duration
+    @authentication = Authentication.create!(:api_user => @api_user,
+                                             :token => Authentication.new_token,
+                                             :max_age => max_age,
+                                             :created_at => Time.now.utc,
+                                             :expires_at => Time.now.utc + max_age)
+    logger.info "[#{@authentication.token}] Authentication CREATED for #{@api_user.username}"
+    expires_now   # Tiny increase in security
+    render partial: "authentication", object: @authentication, status: 201
+  end
 
   
   # GET /authentications
@@ -27,7 +45,8 @@ class AuthenticationsController < ApplicationController
   #
   # GET /authentications/<token>?query=<query>
   # 
-  # This action performs authorisation.
+  # This action performs authorisation based on the token of a previous
+  # Authentication.
   #
   def show
     username = @authentication.api_user.username
@@ -79,36 +98,6 @@ class AuthenticationsController < ApplicationController
   
   
   #
-  # POST /authentications
-  # 
-  # This action performs authentication.
-  #
-  def create
-    username, password = Api.decode_credentials(request.headers['X-API-Authenticate'])
-    if username == "" && password == ""
-      logger.info "Authentication with malformed credentials for #{username}"
-      expires_in 1.hour
-      render_api_error 400, "Malformed credentials"
-    else
-      if (user = ApiUser.find_by_credentials(username, password))
-        max_age = 30.minutes
-        @authentication = Authentication.create!(:api_user => user,
-                                                 :token => Authentication.new_token,
-                                                 :max_age => max_age,
-                                                 :created_at => Time.now.utc,
-                                                 :expires_at => Time.now.utc + max_age)
-        logger.info "[#{@authentication.token}] Authentication CREATED for #{user.username}"
-        expires_now   # Tiny increase in security
-        render partial: "authentication", object: @authentication, status: 201
-      else
-        logger.info "Authentication doesn't authenticate for #{username}"
-        render_api_error 403, "Does not authenticate"
-      end
-    end
-  end
-
-  
-  #
   # DELETE /authentications/<token>
   # 
   # This action revokas an authentication and all its authorisations.
@@ -136,5 +125,19 @@ class AuthenticationsController < ApplicationController
     render_api_error 400, "Authentication not found"
     false
   end  
+
+  def find_api_user
+    username, password = Api.decode_credentials(request.headers['X-API-Authenticate'])
+    if username == "" && password == ""
+      logger.info "Authentication with malformed credentials for #{username}"
+      expires_in 1.hour
+      render_api_error 400, "Malformed credentials"
+      return false
+    end
+    return true if (@api_user = ApiUser.find_by_credentials(username, password))
+    logger.info "Authentication doesn't authenticate for #{username}"
+    render_api_error 403, "Does not authenticate"
+    false
+  end
         
 end

@@ -2,17 +2,18 @@
 #
 # Table name: api_users
 #
-#  id            :integer          not null, primary key
-#  username      :string(255)      not null
-#  password_hash :string(255)      not null
-#  password_salt :string(255)      not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  real_name     :string(255)      default("")
-#  lock_version  :integer          default(0), not null
-#  email         :string(255)      default(""), not null
-#  created_by    :integer          default(0), not null
-#  updated_by    :integer          default(0), not null
+#  id                      :integer          not null, primary key
+#  username                :string(255)      not null
+#  password_hash           :string(255)      not null
+#  password_salt           :string(255)      not null
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  real_name               :string(255)      default("")
+#  lock_version            :integer          default(0), not null
+#  email                   :string(255)      default(""), not null
+#  created_by              :integer          default(0), not null
+#  updated_by              :integer          default(0), not null
+#  authentication_duration :integer          default(1800), not null
 #
 
 require 'spec_helper'
@@ -75,6 +76,11 @@ describe ApiUser do
       u.authenticates?("wrong").should be_false
     end
 
+    it "should have a real_name defaulting to the empty string" do
+      create(:api_user, real_name: "Herr D").real_name.should == "Herr D"
+      create(:api_user).real_name.should == ""
+    end
+
 
     it "should have a creation time" do
       create(:api_user).created_at.should be_a Time
@@ -87,6 +93,22 @@ describe ApiUser do
 
     it "should have an email address" do
       create(:api_user).email.should be_a String
+    end
+
+
+    it "should have a Authentication duration" do
+      create(:api_user).authentication_duration.should be_an Integer
+    end
+
+    it "should require the authentication_duration to be an integer > 0" do
+      build(:api_user, authentication_duration: 1).should be_valid
+      build(:api_user, authentication_duration: 0).should_not be_valid
+      build(:api_user, authentication_duration: -1).should_not be_valid
+      build(:api_user, authentication_duration: 123.456).should_not be_valid
+    end
+
+    it "should default the authentication_duration to 30 minutes" do
+      create(:api_user).authentication_duration.should == 30.minutes
     end
 
   end
