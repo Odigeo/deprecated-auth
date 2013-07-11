@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130711133459) do
+ActiveRecord::Schema.define(version: 20130711141446) do
 
   create_table "api_users", force: true do |t|
     t.string   "username",                                null: false
