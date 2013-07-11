@@ -28,6 +28,14 @@ class Authentication < ActiveRecord::Base
   validates :api_user, :associated => true  
   validates :api_user_id, :presence => true
   
+  # Callbacks
+  after_destroy do |auth|
+    v = Authentication.latest_api_version
+    # The following line invalidates all authorisations done using this Authentication
+    Api.ban "/#{v}/authentications/#{auth.token}", true
+    # Authentication collections are never cached, thus no need to invalidate them.
+  end
+
 
   # Class methods 
 
