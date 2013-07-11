@@ -2,19 +2,19 @@
 #
 # Table name: api_users
 #
-#  id                        :integer          not null, primary key
-#  username                  :string(255)      not null
-#  password_hash             :string(255)      not null
-#  password_salt             :string(255)      not null
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  real_name                 :string(255)      default("")
-#  lock_version              :integer          default(0), not null
-#  email                     :string(255)      default(""), not null
-#  created_by                :integer          default(0), not null
-#  updated_by                :integer          default(0), not null
-#  authentication_duration   :integer          default(1800), not null
-#  shareable_authentications :boolean          default(FALSE), not null
+#  id                      :integer          not null, primary key
+#  username                :string(255)      not null
+#  password_hash           :string(255)      not null
+#  password_salt           :string(255)      not null
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  real_name               :string(255)      default("")
+#  lock_version            :integer          default(0), not null
+#  email                   :string(255)      default(""), not null
+#  created_by              :integer          default(0), not null
+#  updated_by              :integer          default(0), not null
+#  authentication_duration :integer          default(1800), not null
+#  shared_tokens           :boolean          default(FALSE), not null
 #
 
 class ApiUser < ActiveRecord::Base
@@ -31,7 +31,7 @@ class ApiUser < ActiveRecord::Base
 
   # Attributes
   attr_accessible :username, :password, :real_name, :email, :lock_version,
-                  :authentication_duration, :shareable_authentications
+                  :authentication_duration, :shared_tokens
   attr_reader :password
 
   # Validations
@@ -46,7 +46,7 @@ class ApiUser < ActiveRecord::Base
   validates :email, presence: true
   validates :authentication_duration, presence: true, 
                                       numericality: { only_integer: true, greater_than: 0 }
-  
+
 
   def self.find_by_credentials(un, pw)
     # Don't bother going to the DB if credentials are missing
@@ -68,12 +68,27 @@ class ApiUser < ActiveRecord::Base
   end
 
 
+  #
+  # The sum of all rights in each group, plus the rights of each role
+  #
   def all_rights
-    # This is the sum of all rights in each group, plus the rights of each role
     sum = []
     groups.each { |group| sum = (sum + group.all_rights) }
     roles.each { |role| sum = (sum + role.rights) }
     sum.uniq
+  end
+
+
+  #
+  # Returns the token to use when creating an Authentication for this ApiUser.
+  # If shared_tokens is true, an existing token will be used, if one exists.
+  # Otherwise a new token will be created and returned.
+  #
+  def authentication_token
+    return Authentication.new_token unless shared_tokens
+    auth = authentications.order(:created_at).last
+    return Authentication.new_token unless auth
+    auth.token
   end
 
 end

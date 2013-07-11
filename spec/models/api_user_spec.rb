@@ -2,19 +2,19 @@
 #
 # Table name: api_users
 #
-#  id                        :integer          not null, primary key
-#  username                  :string(255)      not null
-#  password_hash             :string(255)      not null
-#  password_salt             :string(255)      not null
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  real_name                 :string(255)      default("")
-#  lock_version              :integer          default(0), not null
-#  email                     :string(255)      default(""), not null
-#  created_by                :integer          default(0), not null
-#  updated_by                :integer          default(0), not null
-#  authentication_duration   :integer          default(1800), not null
-#  shareable_authentications :boolean          default(FALSE), not null
+#  id                      :integer          not null, primary key
+#  username                :string(255)      not null
+#  password_hash           :string(255)      not null
+#  password_salt           :string(255)      not null
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  real_name               :string(255)      default("")
+#  lock_version            :integer          default(0), not null
+#  email                   :string(255)      default(""), not null
+#  created_by              :integer          default(0), not null
+#  updated_by              :integer          default(0), not null
+#  authentication_duration :integer          default(1800), not null
+#  shared_tokens           :boolean          default(FALSE), not null
 #
 
 require 'spec_helper'
@@ -113,10 +113,10 @@ describe ApiUser do
     end
 
 
-    it "should have a shareable_authentications boolean" do
-      build(:api_user).shareable_authentications.should == false
-      build(:api_user, shareable_authentications: true).shareable_authentications.should == true
-      build(:api_user, shareable_authentications: "quoi?").shareable_authentications.should == false
+    it "should have a shared_tokens boolean" do
+      build(:api_user).shared_tokens.should == false
+      build(:api_user, shared_tokens: true).shared_tokens.should == true
+      build(:api_user, shared_tokens: "quoi?").shared_tokens.should == false
     end
 
   end
@@ -307,5 +307,37 @@ describe ApiUser do
     end
   end
 
+
+  describe "authentication_token" do
+
+    it "when shared_tokens=false should always return a new token" do
+      Authentication.should_receive(:new_token)
+      u = create :api_user, shared_tokens: false
+      u.authentication_token
+    end
+
+    describe "when shared_tokens=true" do
+
+      before :each do
+        @u = create :api_user, shared_tokens: true
+      end
+
+      it "should return a new token if the ApiUser has no Authentications" do
+        Authentication.destroy_all
+        Authentication.should_receive(:new_token)
+        @u.authentication_token
+      end
+
+      it "should re-use the most recently created token if the ApiUser has Authentications" do
+        a0 = create :authentication, api_user: @u, created_at: 5.minutes.ago.utc, expires_at: 25.minutes.from_now.utc
+        a1 = create :authentication, api_user: @u
+        a2 = create :authentication
+        Authentication.should_not_receive(:new_token)
+        @u.authentication_token.should == a1.token
+      end
+
+    end
+
+  end
   
 end

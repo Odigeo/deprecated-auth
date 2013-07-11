@@ -10,7 +10,7 @@ json.api_user do |json|
 	json.real_name                 api_user.real_name
 	json.email                     api_user.email
 	json.authentication_duration   api_user.authentication_duration
-	json.shareable_authentications api_user.shareable_authentications
+	json.shared_tokens             api_user.shared_tokens
 	json.created_at                api_user.created_at.utc.iso8601
 	json.updated_at                api_user.updated_at.utc.iso8601
 	json.lock_version              api_user.lock_version

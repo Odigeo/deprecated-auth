@@ -11,21 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130711113811) do
+ActiveRecord::Schema.define(version: 20130711133459) do
 
   create_table "api_users", force: true do |t|
-    t.string   "username",                                  null: false
-    t.string   "password_hash",                             null: false
-    t.string   "password_salt",                             null: false
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-    t.string   "real_name",                 default: ""
-    t.integer  "lock_version",              default: 0,     null: false
-    t.string   "email",                     default: "",    null: false
-    t.integer  "created_by",                default: 0,     null: false
-    t.integer  "updated_by",                default: 0,     null: false
-    t.integer  "authentication_duration",   default: 1800,  null: false
-    t.boolean  "shareable_authentications", default: false, null: false
+    t.string   "username",                                null: false
+    t.string   "password_hash",                           null: false
+    t.string   "password_salt",                           null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.string   "real_name",               default: ""
+    t.integer  "lock_version",            default: 0,     null: false
+    t.string   "email",                   default: "",    null: false
+    t.integer  "created_by",              default: 0,     null: false
+    t.integer  "updated_by",              default: 0,     null: false
+    t.integer  "authentication_duration", default: 1800,  null: false
+    t.boolean  "shared_tokens",           default: false, null: false
   end
 
   add_index "api_users", ["created_by"], name: "index_api_users_on_created_by"
