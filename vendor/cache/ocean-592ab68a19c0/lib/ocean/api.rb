@@ -77,14 +77,9 @@ class Api
     end
   end
 
-  def self.ban(path, unbounded=false)     
+  def self.ban(path)     
     LOAD_BALANCERS.each do |host| 
-      if unbounded
-        call_p("http://#{host}", :ban, path)
-      else
-        call_p("http://#{host}", :ban, path + "$")
-        call_p("http://#{host}", :ban, path + "?")
-      end
+      call_p("http://#{host}", :ban, path)
     end
   end
 

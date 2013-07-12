@@ -5,7 +5,7 @@ module Ocean
 
     included do
       # Inheritable invalidation callbacks
-      after_create  { |model| model.class.invalidate }
+      after_create  { |model| model.invalidate true }
       after_update  { |model| model.invalidate }
       after_touch   { |model| model.invalidate }
       after_destroy { |model| model.invalidate }

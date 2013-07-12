@@ -5,6 +5,13 @@ describe TheModel do
   before :each do
     @i = TheModel.new
     @c = @i.class
+    @saved_m = @c.varnish_invalidate_member
+    @saved_c = @c.varnish_invalidate_collection
+  end
+
+  after :each do
+    @c.ocean_resource_model invalidate_member: @saved_m,
+                            invalidate_collection: @saved_c
   end
 
 
@@ -26,7 +33,6 @@ describe TheModel do
   it ":index should be reachable through a class method" do
   	@c.ocean_resource_model index: [:foo, :bar]
   	@c.index_only.should == [:foo, :bar]
-    @c.ocean_resource_model    # Restore class
   end
 
   it "should have an index class method" do
@@ -47,7 +53,6 @@ describe TheModel do
   it ":search should be reachable through a class method" do
   	@c.ocean_resource_model search: :zalagadoola
   	@c.index_search_property.should == :zalagadoola
-    @c.ocean_resource_model   # Restore the class
   end
 
 
@@ -78,7 +83,6 @@ describe TheModel do
   it ":invalidate_collection should be reachable through a class method" do
     @c.ocean_resource_model invalidate_collection: ['a', 'b', 'c']
     @c.varnish_invalidate_collection.should == ['a', 'b', 'c']
-    @c.ocean_resource_model # Restore the class
   end
 
   it "should have a class method to invalidate all collections in Varnish" do
@@ -107,7 +111,6 @@ describe TheModel do
   it ":invalidate_member should be reachable through a class method" do
     @c.ocean_resource_model invalidate_member: ['x', 'y', 'z']
     @c.varnish_invalidate_member.should == ['x', 'y', 'z']
-    @c.ocean_resource_model  # Restore the class
   end
 
   it "should have an instance method to invalidate itself in Varnish" do
@@ -122,6 +125,7 @@ describe TheModel do
     # The member itself
     Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v1/the_models/#{@i.id}$")
     Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v1/the_models/#{@i.id}?")
+    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v1/foo/bar/baz($|?)")
     # The member's subordinate relations/collections
     Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v1/the_models/#{@i.id}/")
     # Do it!
