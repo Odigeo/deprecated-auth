@@ -36,10 +36,9 @@ module ApiResource
     # Invalidate all members of this class in Varnish
     #
     def invalidate
-      v = latest_api_version
       resource_name = name.pluralize.underscore
       varnish_invalidate_collection.each do |suffix|
-        Api.ban "/#{v}/#{resource_name}#{suffix}"
+        Api.ban "/v[0-9]+/#{resource_name}#{suffix}"
       end
     end
 
@@ -59,13 +58,12 @@ module ApiResource
   #
   def invalidate(avoid_self=false)
     self.class.invalidate
-    v = self.class.latest_api_version
     resource_name = self.class.name.pluralize.underscore
     varnish_invalidate_member.each do |thing|
       if thing.is_a?(String)
-        Api.ban "/#{v}/#{resource_name}/#{self.id}#{thing}" if !avoid_self
+        Api.ban "/v[0-9]+/#{resource_name}/#{self.id}#{thing}" if !avoid_self
       else
-        Api.ban "/#{v}/#{thing.call(self)}"
+        Api.ban "/v[0-9]+/#{thing.call(self)}"
       end
     end
   end

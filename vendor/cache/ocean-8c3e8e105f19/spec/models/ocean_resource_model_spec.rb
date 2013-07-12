@@ -92,8 +92,8 @@ describe TheModel do
 
   it "the invalidation class method should use the suffixes defined by :invalidate_collection" do
     # The basic collection
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v1/the_models$")
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v1/the_models?")
+    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models$")
+    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models?")
     # Do it!
     @c.invalidate
   end
@@ -120,14 +120,14 @@ describe TheModel do
 
   it "the invalidation instance method should use the suffixes defined by :invalidate_member AND :invalidate_collection" do
     # The basic collection
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v1/the_models$")
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v1/the_models?")
+    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models$")
+    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models?")
     # The member itself
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v1/the_models/#{@i.id}$")
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v1/the_models/#{@i.id}?")
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v1/foo/bar/baz($|?)")
+    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models/#{@i.id}$")
+    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models/#{@i.id}?")
+    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/foo/bar/baz($|?)")
     # The member's subordinate relations/collections
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v1/the_models/#{@i.id}/")
+    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models/#{@i.id}/")
     # Do it!
     @i.invalidate
   end
