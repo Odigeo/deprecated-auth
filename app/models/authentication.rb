@@ -12,7 +12,10 @@
 
 class Authentication < ActiveRecord::Base
 
-  ocean_resource_model index: [:token], search: :token
+  ocean_resource_model index: [:token], 
+                       search: :token,
+                       invalidate_member: [], 
+                       invalidate_collection: []
 
 
   scope :active,      lambda { where("expires_at > ?", Time.current.utc) }
