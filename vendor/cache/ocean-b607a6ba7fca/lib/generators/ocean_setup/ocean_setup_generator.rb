@@ -53,13 +53,6 @@ class OceanSetupGenerator < Rails::Generators::NamedBase
     copy_file "errors_controller.rb", "#{Rails.root}/app/controllers/errors_controller.rb"
   end
 
-  def install_observers
-    application '# Register observers for BANning, etc. Uncomment when you have a model to observe.
-    #config.active_record.observers = [:basic_ban_observer]
-    '
-    copy_file "basic_ban_observer.rb", "#{Rails.root}/app/observers/basic_ban_observer.rb"
-  end
-
   def turn_off_sessions_and_cookies
     application "# Turn off sessions
     config.session_store :disabled
@@ -104,7 +97,6 @@ class OceanSetupGenerator < Rails::Generators::NamedBase
       gem 'annotate', ">=2.5.0"
     end
     gem "protected_attributes"
-    gem "rails-observers"
 
   end
 

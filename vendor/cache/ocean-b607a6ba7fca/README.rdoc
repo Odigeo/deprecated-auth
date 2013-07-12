@@ -73,7 +73,7 @@ All tests should pass.
 
 === Creating an Ocean Resource
 
-To create an Ocean resource based on an SQL model, do the following:
+To create an aggressively cached Ocean resource based on an SQL model, do the following:
 
  rails g scaffold quux name:string description:string \ 
                        lock_version:integer created_by:integer updated_by:integer
@@ -96,32 +96,6 @@ declaration for quuxes. Move it inside the versioned scope:
    resource :bars
    resource :quuxes  # This is your new resource
  end
-
-Next, look at +config/application.rb+. Locate the following two lines:
-
- # Register observers for BANning, etc. Uncomment when you have a model to observe.
- #config.active_record.observers = [:basic_ban_observer]
-
-If the second line is commented out, remove the comment so the line reads:
-
- # Register observers for BANning, etc. Uncomment when you have a model to observe.
- config.active_record.observers = [:basic_ban_observer]
-
-Now open +app/observers/basic_ban_observer.rb+. If the contents is commented out, uncomment it.
-
-Next, locate the following line:
-
- observe :foo_model, :bar_model, :baz_model
-
-Modify it to include the name of your resource:
-
- observe :quux
-
-This ensures that your resource can be aggressively cached, and that modifications to member resources will invalidate cached objects as necessary. 
-
-If you at a later point create another Ocean resource, simply tack it on to the end of the list. For instance,
-
- observer :quux, :thingy
 
 To verify that everything works as it should, run the tests:
 

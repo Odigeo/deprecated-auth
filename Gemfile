@@ -22,4 +22,3 @@ group :test, :development do
 end
 # Rails 3 compatibility
 gem "protected_attributes"
-gem "rails-observers"

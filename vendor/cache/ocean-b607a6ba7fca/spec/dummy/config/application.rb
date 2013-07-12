@@ -35,9 +35,6 @@ module Dummy
     # Handle our own exceptions internally, so we can return JSON error bodies
     config.exceptions_app = ->(env) { ErrorsController.action(:show).call(env) }
     
-    # Register observers for BANning, etc. Uncomment when you have a model to observe.
-    config.active_record.observers = [:basic_ban_observer]
-
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

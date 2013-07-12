@@ -32,6 +32,17 @@ module ApiResource
       Api.version_for(self.class.name.pluralize.underscore)
     end
 
+    #
+    # Invalidate all members of this class in Varnish
+    #
+    def invalidate
+      v = latest_api_version
+      resource_name = name.pluralize.underscore
+      varnish_invalidate_collection.each do |suffix|
+        Api.ban "/#{v}/#{resource_name}#{suffix}", true
+      end
+    end
+
   end
 
 
@@ -40,6 +51,19 @@ module ApiResource
   def touch_both(other)
     touch
     other.touch
+  end
+
+
+  #
+  # Invalidate the member and all its collections in Varnish
+  #
+  def invalidate
+    self.class.invalidate
+    v = self.class.latest_api_version
+    resource_name = self.class.name.pluralize.underscore
+    varnish_invalidate_member.each do |suffix|
+      Api.ban "/#{v}/#{resource_name}/#{self.id}#{suffix}", true
+    end
   end
 
 end
