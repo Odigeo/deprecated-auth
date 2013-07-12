@@ -75,9 +75,9 @@ describe TheModel do
     @c.ocean_resource_model invalidate_collection: ['$', '?']
   end
 
-  it ":invalidate_collection should default to ['$', '?']" do
+  it ":invalidate_collection should default to INVALIDATE_COLLECTION_DEFAULT" do
     @c.ocean_resource_model
-    @c.varnish_invalidate_collection.should == ['$', '?']
+    @c.varnish_invalidate_collection.should == INVALIDATE_COLLECTION_DEFAULT
   end
 
   it ":invalidate_collection should be reachable through a class method" do
@@ -92,8 +92,7 @@ describe TheModel do
 
   it "the invalidation class method should use the suffixes defined by :invalidate_collection" do
     # The basic collection
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models$")
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models?")
+    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models#{INVALIDATE_COLLECTION_DEFAULT.first}")
     # Do it!
     @c.invalidate
   end
@@ -103,9 +102,9 @@ describe TheModel do
     @c.ocean_resource_model invalidate_member: ['/', '$', '?']
   end
 
-  it ":invalidate_member should default to ['/', '$', '?']" do
+  it ":invalidate_member should default to INVALIDATE_MEMBER_DEFAULT" do
     @c.ocean_resource_model
-    @c.varnish_invalidate_member.should == ['/', '$', '?']
+    @c.varnish_invalidate_member.should == INVALIDATE_MEMBER_DEFAULT
   end
 
   it ":invalidate_member should be reachable through a class method" do
@@ -120,14 +119,11 @@ describe TheModel do
 
   it "the invalidation instance method should use the suffixes defined by :invalidate_member AND :invalidate_collection" do
     # The basic collection
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models$")
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models?")
-    # The member itself
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models/#{@i.id}$")
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models/#{@i.id}?")
+    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models#{INVALIDATE_COLLECTION_DEFAULT.first}")
+    # The member itself and its subordinate relations/collections
+    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models/#{@i.id}#{INVALIDATE_MEMBER_DEFAULT.first}")
+    # The lambda
     Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/foo/bar/baz($|?)")
-    # The member's subordinate relations/collections
-    Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models/#{@i.id}/")
     # Do it!
     @i.invalidate
   end

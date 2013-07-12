@@ -8,6 +8,8 @@ require "ocean/zeromq_logger"
 require "ocean/selective_rack_logger"
 require "ocean/flooding"
 
+INVALIDATE_MEMBER_DEFAULT =     ["($|/|\\?)"]
+INVALIDATE_COLLECTION_DEFAULT = ["($|\\?)"]
 
 module Ocean
   class Railtie < Rails::Railtie

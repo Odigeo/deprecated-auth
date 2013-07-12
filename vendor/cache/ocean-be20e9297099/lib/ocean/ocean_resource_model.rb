@@ -20,8 +20,8 @@ module Ocean
       #
       def ocean_resource_model(index:  [:name], 
       	                       search: :description,
-                               invalidate_member:     ['/', '$', '?'],
-                               invalidate_collection: ['$', '?']
+                               invalidate_member:     INVALIDATE_MEMBER_DEFAULT,
+                               invalidate_collection: INVALIDATE_COLLECTION_DEFAULT
       	                      )
       	include ApiResource
       	cattr_accessor :index_only
