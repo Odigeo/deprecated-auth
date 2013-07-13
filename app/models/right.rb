@@ -26,8 +26,13 @@ class Right < ActiveRecord::Base
   belongs_to :resource
   delegate :service, :to => :resource
   
-  has_and_belongs_to_many :roles, after_add: :touch_both, after_remove: :touch_both     # via rights_roles
-  has_and_belongs_to_many :groups, after_add: :touch_both, after_remove: :touch_both    # via groups_rights
+  has_and_belongs_to_many :roles,      # via rights_roles
+    after_add:    :touch_both, 
+    after_remove: :touch_both
+  
+  has_and_belongs_to_many :groups,     # via groups_rights
+    after_add:    :touch_both, 
+    after_remove: :touch_both
 
   # Attributes
   attr_accessible :description, :lock_version,

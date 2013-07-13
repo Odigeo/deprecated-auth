@@ -30,31 +30,6 @@ describe ApiUsersController do
       response.status.should == 400
     end
 
-    it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
-      request.headers['X-API-Token'] = 'unknown, matey'
-      Api.stub(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
-      delete :disconnect, id: @u
-      response.status.should == 400
-      response.content_type.should == "application/json"
-    end
-
-    it "should return a 400 if the authentication represented by the X-API-Token has expired" do
-      @auth = create :authentication, created_at: 1.year.ago.utc, expires_at: 1.year.ago.utc
-      @auth.expired?.should == true
-      request.headers['X-API-Token'] = @auth.token
-      Api.stub(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
-      delete :disconnect, id: @u
-      response.status.should == 400
-      response.content_type.should == "application/json"
-    end
-    
-    it "should return a 403 if the X-API-Token doesn't yield PUT authorisation for ApiUsers" do
-      Api.stub(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
-      delete :disconnect, id: @u
-      response.status.should == 403
-      response.content_type.should == "application/json"
-    end
-
     it "should return a 404 if the resource can't be found" do
       delete :disconnect, id: -1
       response.status.should == 404

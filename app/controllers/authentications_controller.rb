@@ -55,9 +55,9 @@ class AuthenticationsController < ApplicationController
     if @authentication.expired?
       logger.info "[#{token}] Authentication EXPIRED for #{username}"
       expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
-      render_api_error 400, "Re-authentication required"
+      render_api_error 419, "Authentication Timeout"
       return
-    end
+    end  
     # Is the query string present?
     query = params[:query]
     if query.blank?
@@ -110,11 +110,6 @@ class AuthenticationsController < ApplicationController
   end
 
 
-  def creator
-    render partial: "api_users/api_user", object: @authentication.api_user
-  end
-  
-  
   private
   
   def find_authentication

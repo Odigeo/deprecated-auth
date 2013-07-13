@@ -16,6 +16,15 @@ describe AuthenticationsController do
       response.content_type.should == "application/json"
     end
     
+    it "should not require an X-API-Token header" do
+      create :api_user, username: "myuser", password: "mypassword"
+      request.headers['X-API-Authenticate'] = ::Base64.strict_encode64("myuser:mypassword")
+      request.headers['X-API-Token'] = nil
+      post :create
+      response.content_type.should == "application/json"
+      response.status.should == 201
+    end
+
     it "must return 400 if no X-API-Authenticate header was provided" do
       post :create
       response.content_type.should == "application/json"
@@ -57,15 +66,6 @@ describe AuthenticationsController do
       r.should be_a Hash   # The structural tests are done in the view specs
     end
     
-    it "should not require an X-API-Token header" do
-      create :api_user, username: "myuser", password: "mypassword"
-      request.headers['X-API-Authenticate'] = ::Base64.strict_encode64("myuser:mypassword")
-      request.headers['X-API-Token'] = nil
-      post :create
-      response.content_type.should == "application/json"
-      response.status.should == 201
-    end
-
     it "should return an Authentication with its max_age set to the authentication_duration of its ApiUser" do
       @api_user = create :api_user, username: "myuser", password: "mypassword", authentication_duration: 1.year.to_i
       request.headers['X-API-Authenticate'] = ::Base64.strict_encode64("myuser:mypassword")

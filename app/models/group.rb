@@ -18,9 +18,17 @@ class Group < ActiveRecord::Base
   
 
   # Relations
-  has_and_belongs_to_many :api_users, after_add: :touch_both, after_remove: :touch_both    # via api_users_groups
-  has_and_belongs_to_many :roles, after_add: :touch_both, after_remove: :touch_both        # via groups_roles
-  has_and_belongs_to_many :rights, after_add: :touch_both, after_remove: :touch_both       # via groups_rights
+  has_and_belongs_to_many :api_users,         # via api_users_groups
+    after_add:    :touch_both, 
+    after_remove: :touch_both
+
+  has_and_belongs_to_many :roles,             # via groups_roles
+    after_add:    :touch_both, 
+    after_remove: :touch_both
+
+  has_and_belongs_to_many :rights,            # via groups_rights
+    after_add:    :touch_both, 
+    after_remove: :touch_both
     
   # Attributes
   attr_accessible :description, :lock_version, :name

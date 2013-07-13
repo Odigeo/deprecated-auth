@@ -18,28 +18,25 @@ describe AuthenticationsController do
 
     it "should return a 204 when successful" do
       create :authentication, token: "existent"
-      #Api.stub(:permitted?).and_return(200)
       delete :destroy, id: "existent"
       response.content_type.should == "application/json"
       response.status.should == 204
     end  
     
+    it "should return a 400 if the X-API-Token header is missing" do
+      request.headers['X-API-Token'] = nil
+      delete :destroy, id: "existent"
+      response.status.should == 400
+      response.content_type.should == "application/json"
+    end
+            
     it "should return a 400 when the authentication was unknown" do
       create :authentication, token: "existent"
-      #Api.stub(:permitted?).and_return(200)
       delete :destroy, id: "nonexistent"
       response.content_type.should == "application/json"
       response.status.should == 400
     end  
-    
-    it "should return a 403 when authorisation wasn't given" do
-      create :authentication, token: "existent"
-      Api.stub(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
-      delete :destroy, id: "nonexistent"
-      response.content_type.should == "application/json"
-      response.status.should == 403
-    end  
-    
+        
   end
 
 end

@@ -18,9 +18,17 @@ class Role < ActiveRecord::Base
 
 
   # Relations
-  has_and_belongs_to_many :api_users, after_add: :touch_both, after_remove: :touch_both    # via api_users_roles
-  has_and_belongs_to_many :groups, after_add: :touch_both, after_remove: :touch_both       # via groups_roles
-  has_and_belongs_to_many :rights, after_add: :touch_both, after_remove: :touch_both       # via rights_roles
+  has_and_belongs_to_many :api_users,    # via api_users_roles
+    after_add:    :touch_both, 
+    after_remove: :touch_both
+  
+  has_and_belongs_to_many :groups,       # via groups_roles
+    after_add:    :touch_both,
+    after_remove: :touch_both
+  
+  has_and_belongs_to_many :rights,       # via rights_roles
+    after_add:    :touch_both, 
+    after_remove: :touch_both
 
   # Attributes
   attr_accessible :description, :lock_version, :name

@@ -34,21 +34,6 @@ describe ResourcesController do
       response.status.should == 400
     end
     
-    it "should return a 400 if the authentication represented by the X-API-Token can't be found" do
-      request.headers['X-API-Token'] = 'unknown, matey'
-      Api.stub(:permitted?).and_return(double(:status => 400, :body => {:_api_error => []}))
-      post :right_create, @args
-      response.status.should == 400
-      response.content_type.should == "application/json"
-    end
-
-    it "should return a 403 if the X-API-Token doesn't yield POST authorisation for Rights" do
-      Api.stub(:permitted?).and_return(double(:status => 403, :body => {:_api_error => []}))
-      post :right_create, @args
-      response.status.should == 403
-      response.content_type.should == "application/json"
-    end
-
     it "should return a 422 if the right already exists" do
       post :right_create, @args
       response.status.should == 201

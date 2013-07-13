@@ -19,9 +19,5 @@ describe AuthenticationsController do
       delete("/v1/authentications/ea890a7f").should route_to("authentications#destroy", id: "ea890a7f")
     end
 
-    it "routes to #creator" do
-      get("/v1/authentications/ea890a7f/creator").should route_to("authentications#creator", id: "ea890a7f")
-    end
-
   end
 end

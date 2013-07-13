@@ -26,8 +26,13 @@ class ApiUser < ActiveRecord::Base
   # Relations
   has_many :authentications, dependent: :destroy
 
-  has_and_belongs_to_many :groups, after_add: :touch_both, after_remove: :touch_both   # via api_users_groups
-  has_and_belongs_to_many :roles,  after_add: :touch_both, after_remove: :touch_both   # via api_users_roles
+  has_and_belongs_to_many :groups,    # via api_users_groups
+    after_add:    [:touch_both],  
+    after_remove: [:touch_both]
+
+  has_and_belongs_to_many :roles,     # via api_users_roles
+    after_add:    [:touch_both],
+    after_remove: [:touch_both]
 
   # Attributes
   attr_accessible :username, :password, :real_name, :email, :lock_version,

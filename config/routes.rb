@@ -62,9 +62,9 @@ Auth::Application.routes.draw do
     end
 
     resources :authentications, except: [:new, :edit], constraints: {id: /.+/} do
-      member do
-        get 'creator'
-      end
+      # member do
+      #   get 'creator'
+      # end
     end
     
   end
