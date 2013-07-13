@@ -12,8 +12,8 @@ describe Authentication do
     Authentication.varnish_invalidate_member.length.should == 0
   end
 
-  it "should have an empty varnish_invalidate_member list" do
-    Authentication.varnish_invalidate_member.length.should == 0
+  it "should have an empty varnish_invalidate_collection list" do
+    Authentication.varnish_invalidate_collection.length.should == 0
   end
 
 
@@ -40,10 +40,10 @@ describe Authentication do
   end
 
 
-  it "should trigger one BANs when destroyed" do
+  it "should trigger one BAN when destroyed" do
     Api.stub(:call_p)
     m = create :authentication
-    Api.should_not_receive(:call_p).with("http://127.0.0.1", :ban, "/v[0-9]+/authentications/#{m.token}")
+    Api.should_receive(:call_p).with("http://127.0.0.1", :ban, "/v[0-9]+/authentications/#{m.token}")
   	m.destroy
   end
 
