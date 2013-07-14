@@ -94,7 +94,7 @@ class Api
       # Malformed credentials. Don't repeat the request.
       nil
     when 403
-      # Found but the password is wrong ("Does not authenticate"). Don't repeat the request.
+      # Does not authenticate. Don't repeat the request.
       nil 
     when 500
       # Error. Don't repeat. 

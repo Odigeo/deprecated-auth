@@ -26,14 +26,14 @@ describe TheModel do
   end
 
 
-  it "should trigger three BANs when created" do
+  it "should trigger two BANs when created" do
     Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models#{INVALIDATE_COLLECTION_DEFAULT.first}")
     Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/foo/bar/baz($|?)")
   	create :the_model
   end
 
 
-  it "should trigger six BANs when updated" do
+  it "should trigger three BANs when updated" do
     Api.stub(:call_p)
   	m = create :the_model
     Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models#{INVALIDATE_COLLECTION_DEFAULT.first}")
@@ -44,7 +44,7 @@ describe TheModel do
   end
 
 
-  it "should trigger six BANs when touched" do
+  it "should trigger three BANs when touched" do
     Api.stub(:call_p)
   	m = create :the_model
     Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models#{INVALIDATE_COLLECTION_DEFAULT.first}")
@@ -54,7 +54,7 @@ describe TheModel do
   end
 
 
-  it "should trigger six BANs when destroyed" do
+  it "should trigger three BANs when destroyed" do
     Api.stub(:call_p)
   	m = create :the_model
     Api.should_receive(:call_p).once.with("http://127.0.0.1", :ban, "/v[0-9]+/the_models#{INVALIDATE_COLLECTION_DEFAULT.first}")
