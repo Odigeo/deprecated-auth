@@ -38,10 +38,8 @@ namespace :ocean do
         user.send(:update_attributes, data)
       else
         puts "Creating #{username}."
-        puts data.inspect
-        user = ApiUser.new data.merge({:username => username})
+        ApiUser.create! data.merge({:username => username})
       end
-      user.save!
     end
     god_id = ApiUser.find_by_username('god').id
     ApiUser.all.each do |u|
