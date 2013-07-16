@@ -1,4 +1,4 @@
-source "http://rubygems.org"
+source "https://rubygems.org"
 
 gem "rails", "4.0.0"
 gem "ocean", git: "git://github.com/OceanDev/ocean.git"
@@ -20,5 +20,6 @@ group :test, :development do
   gem "immigrant"
   gem "annotate", ">=2.5.0"
 end
+
 # Rails 3 compatibility
 gem "protected_attributes"
