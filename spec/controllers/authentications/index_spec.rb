@@ -45,6 +45,12 @@ describe AuthenticationsController do
       response.status.should == 200
     end
     
+    it "should return a collection" do
+      get :index
+      response.status.should == 200
+      JSON.parse(response.body).should be_an Array
+    end
+
     it "should accept a search parameter" do
       Authentication.should_receive(:index).with(anything, nil, @auth.token).and_return(Authentication.all)
       get :index, search: @auth.token

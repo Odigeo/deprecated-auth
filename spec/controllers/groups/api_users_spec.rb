@@ -43,6 +43,12 @@ describe GroupsController do
       response.status.should == 200
     end
 
+    it "should return a collection" do
+      get :api_users, id: @it
+      response.status.should == 200
+      JSON.parse(response.body).should be_an Array
+    end
+
   end
   
 end

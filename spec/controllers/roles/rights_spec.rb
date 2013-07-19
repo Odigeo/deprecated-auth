@@ -39,6 +39,12 @@ describe RolesController do
       response.status.should == 200
     end
     
+    it "should return a collection" do
+      get :rights, id: @it
+      response.status.should == 200
+      JSON.parse(response.body).should be_an Array
+    end
+
   end
   
 end

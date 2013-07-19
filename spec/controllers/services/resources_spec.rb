@@ -37,6 +37,12 @@ describe ServicesController do
       response.status.should == 200
     end
     
+    it "should return a collection" do
+      get :resources, id: @s1
+      response.status.should == 200
+      JSON.parse(response.body).should be_an Array
+    end
+
   end
   
 end
