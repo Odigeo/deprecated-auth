@@ -40,7 +40,13 @@ describe ApiUsersController do
       get :index
       response.status.should == 200
     end
-    
+ 
+    it "should return a collection" do
+      get :index
+      response.status.should == 200
+      JSON.parse(response.body).should be_an Array
+    end
+   
     it "should accept a search parameter" do
       ApiUser.should_receive(:index).with(a_kind_of(Hash), nil, 'reagan').and_return([])
       get :index, search: 'reagan'
