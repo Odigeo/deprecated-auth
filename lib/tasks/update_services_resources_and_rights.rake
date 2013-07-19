@@ -170,7 +170,22 @@ namespace :ocean do
                   { description: "Get a collection of MediumBuckets", hyperlink: "self", verb: "GET*"},
                   { description: "Delete all MediumBuckets",          hyperlink: "destroy_all", verb: "DELETE"}
                 ]}
-          ]} 
+          ]},
+      { name:        "jobs",
+        description: "Asynchronous job service",
+        resources: [
+            { name: "async_jobs",
+              description: "An AsyncJob resource represents a pollable asynchronous job.",
+              rights: [
+                  { description: "AsyncJob resource God" },
+                  { description: "Get an AsyncJob",                hyperlink: "self", verb: "GET" },
+                  { description: "Modify an AsyncJob",             hyperlink: "self", verb: "PUT"},
+                  { description: "Delete an AsyncJob",             hyperlink: "self", verb: "DELETE"},
+                  { description: "Create an AsyncJob",             hyperlink: "self", verb: "POST"},
+                  { description: "Get a collection of AsyncJobs",  hyperlink: "self", verb: "GET*"}
+                ]
+            }
+          ]},
       ]
 
     basic_set.each { |s| update_service(s) }
