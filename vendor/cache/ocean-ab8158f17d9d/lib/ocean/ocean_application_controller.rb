@@ -80,6 +80,24 @@ module OceanApplicationController
       render r, :status => 201, :location => r
     end
   end
+
+  def api_render(x, partial: nil)
+    if !x.is_a?(Array) && !x.is_a?(ActiveRecord::Relation)
+      partial ||= x.class.name.pluralize.underscore + '/' + x.class.name.underscore
+      render partial: partial, object: x
+      return
+    elsif x == []
+      render text: '[]'
+      return
+    else
+      partial ||= x.first.class.name.pluralize.underscore + '/' + x.first.class.name.underscore
+      partials = []
+      x.each do |m|
+        partials << render_to_string(partial: partial, locals: {m.class.name.underscore.to_sym => m})
+      end
+      render text: '[' + partials.join(',') + ']'
+    end
+  end
   
   
   #
@@ -95,7 +113,7 @@ module OceanApplicationController
 
 
   #
-  # Cache values for collectives. Accepts a class or a scope.
+  # Cache values for collections. Accepts a class or a scope.
   #
   def collection_etag(coll)
     coll.name.constantize # Force a load of the class (for secondary collections)

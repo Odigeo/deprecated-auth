@@ -14,7 +14,7 @@ class ServicesController < ApplicationController
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(Service))
       @services = Service.index(params, params[:group], params[:search])
-      render partial: "service", collection: @services
+      api_render @services
     end
   end
 
@@ -23,7 +23,7 @@ class ServicesController < ApplicationController
   def show
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(@service)
-      render partial: "service", object: @service
+      api_render @service
     end
   end
 
@@ -62,7 +62,7 @@ class ServicesController < ApplicationController
       return
     end
     if @service.valid?
-      render partial: "service", object: @service
+      api_render @service
     else
       render_validation_errors(@service)
     end
@@ -80,7 +80,7 @@ class ServicesController < ApplicationController
   def resources
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(@service.resources))
-      render partial: "resources/resource", collection: @service.resources
+      api_render @service.resources
     end
   end
 

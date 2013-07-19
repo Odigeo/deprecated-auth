@@ -19,7 +19,7 @@ class RightsController < ApplicationController
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(Right))
       @rights = Right.index(params, params[:group], params[:search])
-      render partial: "right", collection: @rights
+      api_render @rights
     end
   end
 
@@ -28,7 +28,7 @@ class RightsController < ApplicationController
   def show
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(@right)
-      render partial: "right", object: @right
+      api_render @right
     end
   end
 
@@ -56,7 +56,7 @@ class RightsController < ApplicationController
       return
     end
     if @right.valid?
-      render partial: "right", object: @right
+      api_render @right
     else
       render_validation_errors(@right)
     end
@@ -72,13 +72,13 @@ class RightsController < ApplicationController
 
   # GET /rights/1/service
   def service
-    render partial: "services/service", object: @right.service
+    api_render @right.service
   end
 
 
   # GET /rights/1/resource
   def resource
-    render partial: "resources/resource", object: @right.resource
+    api_render @right.resource
   end
 
 
@@ -86,7 +86,7 @@ class RightsController < ApplicationController
   def groups
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(Group))
-      render partial: "groups/group", collection: @right.groups
+      api_render @right.groups
     end
   end
 
@@ -95,7 +95,7 @@ class RightsController < ApplicationController
   def roles
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(@right.roles))
-      render partial: "roles/role", collection: @right.roles
+      api_render @right.roles
     end
   end
 

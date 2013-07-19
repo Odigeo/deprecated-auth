@@ -17,7 +17,7 @@ class ApiUsersController < ApplicationController
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(ApiUser))
       @api_users = ApiUser.index(params, params[:group], params[:search])
-      render partial: "api_user", collection: @api_users
+      api_render @api_users
     end
   end
 
@@ -26,7 +26,7 @@ class ApiUsersController < ApplicationController
   def show
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(@api_user)
-      render partial: "api_user", object: @api_user
+      api_render @api_user
     end
   end
 
@@ -69,7 +69,7 @@ class ApiUsersController < ApplicationController
     end
     logger.info "ApiUser #{@api_user.username} (#{@api_user.real_name}) updated"
     if @api_user.valid?
-      render partial: "api_user", object: @api_user
+      api_render @api_user
     else
       render_validation_errors(@api_user)
     end
@@ -86,7 +86,7 @@ class ApiUsersController < ApplicationController
 
   # GET /api_users/1/authentications
   def authentications
-    render partial: "authentications/authentication", collection: @api_user.authentications.active
+    api_render @api_user.authentications.active
   end
   
   
@@ -94,7 +94,7 @@ class ApiUsersController < ApplicationController
   def roles
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(@api_user.roles))
-      render partial: "roles/role", collection: @api_user.roles
+      api_render @api_user.roles
     end
   end
   
@@ -103,7 +103,7 @@ class ApiUsersController < ApplicationController
   def groups
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(@api_user.groups))
-      render partial: "groups/group", collection: @api_user.groups
+      api_render @api_user.groups
     end
   end
 

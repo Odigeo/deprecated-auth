@@ -37,7 +37,7 @@ class AuthenticationsController < ApplicationController
     expires_in 0    
     if stale?(collection_etag(Authentication))
       @authentications = Authentication.index(params, params[:group], params[:search]).active
-      render partial: "authentication", collection: @authentications
+      api_render @authentications
     end
   end
   
@@ -92,7 +92,7 @@ class AuthenticationsController < ApplicationController
       smax_age = @authentication.seconds_remaining
       logger.info "[#{token}] Authorization GRANTED: #{username} may <#{params[:query]}> for #{smax_age}s"
       expires_in 0, 's-maxage' => smax_age, 'max-stale' => 0
-      render partial: "authentication", object: @authentication
+      api_render @authentication
     end
   end
   

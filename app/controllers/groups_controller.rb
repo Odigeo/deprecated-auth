@@ -16,7 +16,7 @@ class GroupsController < ApplicationController
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(Group))
       @groups = Group.index(params, params[:group], params[:search])
-      render partial: "group", collection: @groups
+      api_render @groups
     end
   end
 
@@ -25,7 +25,7 @@ class GroupsController < ApplicationController
   def show
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(@group)
-      render partial: "group", object: @group
+      api_render @group
     end
   end
 
@@ -64,7 +64,7 @@ class GroupsController < ApplicationController
       return
     end
     if @group.valid?
-      render partial: "group", object: @group
+      api_render @group
     else
       render_validation_errors(@group)
     end
@@ -82,7 +82,7 @@ class GroupsController < ApplicationController
   def api_users
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(@group.api_users))
-      render partial: "api_users/api_user", collection: @group.api_users
+      api_render @group.api_users
     end
   end
 
@@ -91,7 +91,7 @@ class GroupsController < ApplicationController
   def roles
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(@group.roles))
-      render partial: "roles/role", collection: @group.roles
+      api_render @group.roles
     end
   end
 
@@ -100,7 +100,7 @@ class GroupsController < ApplicationController
   def rights
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(@group.rights))
-      render partial: "rights/right", collection: @group.rights
+      api_render @group.rights
     end
   end
 

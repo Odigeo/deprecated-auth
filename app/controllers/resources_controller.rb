@@ -15,7 +15,7 @@ class ResourcesController < ApplicationController
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(Resource))
       @resources = Resource.index(params, params[:group], params[:search])
-      render partial: "resource", collection: @resources
+      api_render @resources
     end
   end
 
@@ -24,7 +24,7 @@ class ResourcesController < ApplicationController
   def show
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(@resource)
-      render partial: "resource", object: @resource
+      api_render @resource
     end
   end
 
@@ -52,7 +52,7 @@ class ResourcesController < ApplicationController
       return
     end
     if @resource.valid?
-      render partial: "resource", object: @resource
+      api_render @resource
     else
       render_validation_errors(@resource)
     end
@@ -68,7 +68,7 @@ class ResourcesController < ApplicationController
 
   # GET /resources/1/service
   def service
-    render partial: "services/service", object: @resource.service
+    api_render @resource.service
   end
 
 
@@ -76,7 +76,7 @@ class ResourcesController < ApplicationController
   def rights
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(@resource.rights))
-      render partial: "rights/right", collection: @resource.rights
+      api_render @resource.rights
     end
   end
   
