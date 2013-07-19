@@ -11,10 +11,6 @@ run "bundle install"
 # Set up the application as a SOA service Rails application
 generate "ocean_setup", app_name
 
-# Clean up the Gemfile
-gsub_file "Gemfile", /gem 'rails'.+# gem 'debugger'\s+/m, ''
-gsub_file "Gemfile", /group/, "\ngroup"
-
 # Install the required gems and package them with the app
 run "bundle install"
 run "bundle package --all"

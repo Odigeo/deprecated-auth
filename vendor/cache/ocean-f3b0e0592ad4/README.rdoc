@@ -24,10 +24,6 @@ same directory for reference. Don't change it: it is under version control. The 
 you should change, <code>config/config.yml</code>, isn't, as it will contain site-specific and/or
 confidential data.
 
-Create any required databases by executing:
-
-  rake db:migrate
-
 Verify that your setup is OK by executing
 
  rspec
