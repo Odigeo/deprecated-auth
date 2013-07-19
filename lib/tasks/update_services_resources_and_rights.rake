@@ -179,7 +179,6 @@ namespace :ocean do
               rights: [
                   { description: "AsyncJob resource God" },
                   { description: "Get an AsyncJob",                hyperlink: "self", verb: "GET" },
-                  { description: "Modify an AsyncJob",             hyperlink: "self", verb: "PUT"},
                   { description: "Delete an AsyncJob",             hyperlink: "self", verb: "DELETE"},
                   { description: "Create an AsyncJob",             hyperlink: "self", verb: "POST"},
                   { description: "Get a collection of AsyncJobs",  hyperlink: "self", verb: "GET*"}
