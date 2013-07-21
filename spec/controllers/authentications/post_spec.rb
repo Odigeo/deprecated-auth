@@ -29,6 +29,7 @@ describe AuthenticationsController do
       post :create
       response.content_type.should == "application/json"
       response.status.should == 400
+      JSON.parse(response.body).should == {"_api_error"=>["Malformed credentials"]}
     end
     
     it "must return 403 if the X-API-Authenticate user is unknown" do
@@ -36,6 +37,7 @@ describe AuthenticationsController do
       post :create
       response.content_type.should == "application/json"
       response.status.should == 403
+      JSON.parse(response.body).should == {"_api_error"=>["Does not authenticate"]}
     end
     
     it "must return 403 if the X-API-Authenticate credentials don't match" do
@@ -44,6 +46,17 @@ describe AuthenticationsController do
       post :create
       response.content_type.should == "application/json"
       response.status.should == 403
+      JSON.parse(response.body).should == {"_api_error"=>["Does not authenticate"]}
+    end
+
+    it "must return 403 with a reason if the ApiUser is blocked" do
+      create :api_user, username: "myuser", password: "mypassword",
+                        login_blocked: true, login_blocked_reason: "So there!"
+      request.headers['X-API-Authenticate'] = ::Base64.strict_encode64("myuser:mypassword")
+      post :create
+      response.content_type.should == "application/json"
+      response.status.should == 403
+      JSON.parse(response.body).should == {"_api_error"=>["Login blocked", "So there!"]}
     end
     
     it "must return a 201 if the X-API-Authenticate credentials match" do

@@ -89,4 +89,12 @@ describe "api_users/_api_user" do
     @u['shared_tokens'].should == false
   end
 
+  it "should have a login_blocked boolean" do
+    @u['login_blocked'].should == false
+  end
+
+  it "should have a login_blocked_reason" do
+    @u['login_blocked_reason'].should == nil
+  end
+
 end

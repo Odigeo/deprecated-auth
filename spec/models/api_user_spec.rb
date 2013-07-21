@@ -15,6 +15,8 @@
 #  updated_by              :integer          default(0), not null
 #  authentication_duration :integer          default(1800), not null
 #  shared_tokens           :boolean          default(FALSE), not null
+#  login_blocked           :boolean          default(FALSE), not null
+#  login_blocked_reason    :string(255)
 #
 
 require 'spec_helper'
@@ -117,6 +119,18 @@ describe ApiUser do
       build(:api_user).shared_tokens.should == false
       build(:api_user, shared_tokens: true).shared_tokens.should == true
       build(:api_user, shared_tokens: "quoi?").shared_tokens.should == false
+    end
+
+
+    it "should have a login_blocked boolean" do
+      build(:api_user).login_blocked.should == false
+      build(:api_user, login_blocked: true).login_blocked.should == true
+      build(:api_user, login_blocked: "quoi?").login_blocked.should == false
+    end
+
+    it "should have a login_blocked_reason string" do
+      create(:api_user).login_blocked_reason.should == nil
+      create(:api_user, login_blocked_reason: "Woo hoo").login_blocked_reason.should == "Woo hoo"
     end
 
   end

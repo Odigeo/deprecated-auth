@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130715195130) do
+ActiveRecord::Schema.define(version: 20130721101033) do
 
   create_table "api_users", force: true do |t|
     t.string   "username",                                null: false
@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20130715195130) do
     t.integer  "updated_by",              default: 0,     null: false
     t.integer  "authentication_duration", default: 1800,  null: false
     t.boolean  "shared_tokens",           default: false, null: false
+    t.boolean  "login_blocked",           default: false, null: false
+    t.string   "login_blocked_reason"
   end
 
   add_index "api_users", ["created_by"], name: "index_api_users_on_created_by"

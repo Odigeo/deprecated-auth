@@ -129,11 +129,22 @@ class AuthenticationsController < ApplicationController
       render_api_error 400, "Malformed credentials"
       return false
     end
-    return true if (@api_user = ApiUser.find_by_credentials(username, password))
-    logger.info "Authentication doesn't authenticate for #{username}"
-    expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
-    render_api_error 403, "Does not authenticate"
-    false
+    @api_user = ApiUser.find_by_credentials(username, password)
+    unless @api_user
+      logger.info "Authentication doesn't authenticate for #{username}"
+      expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
+      render_api_error 403, "Does not authenticate"
+      return false
+    end
+    if @api_user.login_blocked
+      logger.info "Login blocked for #{username}: \"#{@api_user.login_blocked_reason}\""
+      expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
+      res = ["Login blocked"]
+      res << @api_user.login_blocked_reason if @api_user.login_blocked_reason.present?
+      render_api_error 403, *res
+      return false
+    end
+    true
   end
         
 end
