@@ -9,6 +9,7 @@ class AuthenticationsController < ApplicationController
   skip_before_action :authorize_action, only: [:create, :show]
   before_action :find_authentication, except: [:index, :create]
   before_action :find_api_user, only: :create
+  before_action :ensure_not_blocked, only: :create
   
   #
   # POST /authentications
@@ -136,15 +137,17 @@ class AuthenticationsController < ApplicationController
       render_api_error 403, "Does not authenticate"
       return false
     end
-    if @api_user.login_blocked
-      logger.info "Login blocked for #{username}: \"#{@api_user.login_blocked_reason}\""
-      expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
-      res = ["Login blocked"]
-      res << @api_user.login_blocked_reason if @api_user.login_blocked_reason.present?
-      render_api_error 403, *res
-      return false
-    end
     true
+  end
+
+  def ensure_not_blocked
+    return true unless @api_user.login_blocked
+    logger.info "Login blocked for #{@api_user.username}: \"#{@api_user.login_blocked_reason}\""
+    expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
+    res = ["Login blocked"]
+    res << @api_user.login_blocked_reason if @api_user.login_blocked_reason.present?
+    render_api_error 403, *res
+    false
   end
         
 end
