@@ -5,11 +5,13 @@ class AuthenticationsController < ApplicationController
   
   respond_to :json
   
-  skip_before_action :require_x_api_token, except: [:index, :destroy]
-  skip_before_action :authorize_action, only: [:create, :show]
-  before_action :find_authentication, except: [:index, :create]
-  before_action :find_api_user, only: :create
-  before_action :ensure_not_blocked, only: :create
+  skip_before_action :require_x_api_token, only: [:create, :show]
+  skip_before_action :authorize_action,    only: [:create, :show]
+
+  before_action :find_authentication,      only: [:show, :destroy]
+  before_action :find_api_user,            only: :create
+  before_action :ensure_not_blocked,       only: :create
+  
   
   #
   # POST /authentications
