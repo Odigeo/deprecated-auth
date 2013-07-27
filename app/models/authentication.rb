@@ -13,7 +13,7 @@
 class Authentication < ActiveRecord::Base
 
   ocean_resource_model index: [:token], 
-                       search: :token,
+                       search: false,
                        invalidate_member: [], 
                        invalidate_collection: []
 

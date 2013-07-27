@@ -104,9 +104,9 @@ describe Authentication do
         Authentication.index(token: @r2.token).length.should == 1
       end
       
-      it "should allow searches on token" do
-        Authentication.index({}, nil, 'foo').length.should == 2
-        Authentication.index({}, nil, 'zuul').length.should == 1
+      it "should not allow searches" do
+        Authentication.index({}, nil, 'foo').length.should == 0
+        Authentication.index({}, nil, 'zuul').length.should == 0
       end
       
       it "key/value pairs not in the index_only array should quietly be ignored" do
