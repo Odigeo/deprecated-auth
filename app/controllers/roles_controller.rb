@@ -42,7 +42,7 @@ class RolesController < ApplicationController
         render_api_error 422, "Role already exists"
         return
       end
-      render_new_resource @role, partial: "roles/role"
+      api_render @role, new: true
     else
       render_validation_errors @role
     end

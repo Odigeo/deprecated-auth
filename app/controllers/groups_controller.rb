@@ -42,7 +42,7 @@ class GroupsController < ApplicationController
         render_api_error 422, "Group already exists"
         return
       end
-      render_new_resource @group, partial: "groups/group"
+      api_render @group, new: true
     else
       render_validation_errors @group
     end

@@ -93,7 +93,7 @@ class ResourcesController < ApplicationController
         render_api_error 422, "Right already exists"
         return
       end
-      render_new_resource @right, partial: "rights/right"
+      api_render @right, new: true
     else
       render_validation_errors @right
     end

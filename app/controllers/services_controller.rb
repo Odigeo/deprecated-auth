@@ -40,7 +40,7 @@ class ServicesController < ApplicationController
         render json: {_api_error: ["Service already exists"]}, :status => 422 
         return
       end
-      render_new_resource @service, partial: "services/service"
+      api_render @service, new: true
     else
       render_validation_errors @service
     end
@@ -97,7 +97,7 @@ class ServicesController < ApplicationController
         render json: {_api_error: ["Resource already exists"]}, :status => 422 
         return
       end
-      render_new_resource @resource, partial: "resources/resource"
+      api_render @resource, new: true
     else
       render_validation_errors @resource
     end

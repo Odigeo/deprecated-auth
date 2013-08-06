@@ -44,7 +44,7 @@ class ApiUsersController < ApplicationController
         render_api_error 422, "ApiUser already exists"
         return
       end
-      render_new_resource @api_user, partial: "api_users/api_user"
+      api_render @api_user, new: true
     else
       @api_user.errors.delete(:password_hash)
       @api_user.errors.delete(:password_salt)
