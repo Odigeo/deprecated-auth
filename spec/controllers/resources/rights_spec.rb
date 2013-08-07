@@ -7,8 +7,7 @@ describe ResourcesController do
   describe "GET resources/1/rights" do
     
     before :each do
-      Api.stub(:permitted?).and_return(double(:status => 200, 
-                                               :body => {'authentication' => {'user_id' => 123}}))
+      permit_with 200
       @it = create :resource
       create :right, resource: @it
       create :right, resource: @it

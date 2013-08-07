@@ -7,8 +7,7 @@ describe RightsController do
   describe "DELETE /rights/1/connect" do
     
     before :each do
-      Api.stub(:permitted?).and_return(double(:status => 200, 
-                                               :body => {'authentication' => {'user_id' => 123}}))
+      permit_with 200
       @auth = create :authentication
       @auth.expired?.should == false
       @x = create :right

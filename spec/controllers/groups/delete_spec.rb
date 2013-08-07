@@ -7,8 +7,7 @@ describe GroupsController do
   describe "DELETE" do
     
     before :each do
-      Api.stub(:permitted?).and_return(double(:status => 200, 
-                                               :body => {'authentication' => {'user_id' => 123}}))
+      permit_with 200
       @group = create :group
       request.headers['HTTP_ACCEPT'] = "application/json"
       request.headers['X-API-Token'] = "so-totally-fake"

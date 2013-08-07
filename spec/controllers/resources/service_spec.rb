@@ -7,8 +7,7 @@ describe ResourcesController do
   describe "GET resources/1/service" do
     
     before :each do
-      Api.stub(:permitted?).and_return(double(:status => 200, 
-                                               :body => {'authentication' => {'user_id' => 123}}))
+      permit_with 200
       @resource = create :resource
       request.headers['HTTP_ACCEPT'] = "application/json"
       request.headers['X-API-Token'] = "totally-fake"

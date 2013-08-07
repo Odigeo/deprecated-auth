@@ -7,8 +7,7 @@ describe RightsController do
   describe "GET rights/1/groups" do
     
     before :each do
-      Api.stub(:permitted?).and_return(double(:status => 200, 
-                                               :body => {'authentication' => {'user_id' => 123}}))
+      permit_with 200
       @it = create :right
       g1 = create :group
       g2 = create :group

@@ -7,8 +7,7 @@ describe ServicesController do
   describe "GET resources" do
     
     before :each do
-      Api.stub(:permitted?).and_return(double(:status => 200, 
-                                               :body => {'authentication' => {'user_id' => 123}}))
+      permit_with 200
       @s1 = create :service
       @r1 = create :resource, service: @s1
       @r2 = create :resource, service: @s1

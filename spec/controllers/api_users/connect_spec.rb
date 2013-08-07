@@ -11,8 +11,7 @@ describe ApiUsersController do
       # Authentication.destroy_all
       # Role.destroy_all
       # Group.destroy_all
-      Api.stub(:permitted?).and_return(double(:status => 200, 
-                                               :body => {'authentication' => {'user_id' => 123}}))
+      permit_with 200
       @auth = create :authentication
       @auth.expired?.should == false
       @u = create :api_user

@@ -7,8 +7,7 @@ describe ApiUsersController do
   describe "PUT" do
     
     before :each do
-      Api.stub(:permitted?).and_return(double(:status => 200, 
-                                               :body => {'authentication' => {'user_id' => 123}}))
+      permit_with 200
       @auth = create :authentication
       @auth.expired?.should == false
       @u = create :api_user, username: "brigitte_bardot", real_name: "Brigitte", email: "non@example.com"

@@ -7,8 +7,7 @@ describe RolesController do
   describe "GET roles/1/rights" do
     
     before :each do
-      Api.stub(:permitted?).and_return(double(:status => 200, 
-                                               :body => {'authentication' => {'user_id' => 123}}))
+      permit_with 200
       @it = create :role
       r1 = create :right
       r2 = create :right

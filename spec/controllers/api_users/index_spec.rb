@@ -7,8 +7,7 @@ describe ApiUsersController do
   describe "INDEX" do
     
     before :each do
-      Api.stub(:permitted?).and_return(double(:status => 200, 
-                                               :body => {'authentication' => {'user_id' => 123}}))
+      permit_with 200
       u1 = create :api_user, username: "maggie_thatcher"
       u2 = create :api_user, username: "ronald_reagan"
       u3 = create :api_user, username: "carl_bildt"
