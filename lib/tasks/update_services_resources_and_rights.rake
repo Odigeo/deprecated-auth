@@ -206,8 +206,7 @@ namespace :ocean do
                   { description: "Comment resource God" },
                   { description: "Get a Comment",                hyperlink: "self", verb: "GET" },
                   { description: "Delete a Comment",             hyperlink: "self", verb: "DELETE"},
-                  { description: "Get a collection of Comments", hyperlink: "self", verb: "GET*"},
-                  { description: "Get the Note to which this Comment belongs", hyperlink: "note", verb: "GET"}
+                  { description: "Get a collection of Comments", hyperlink: "self", verb: "GET*"}
                 ]
             }
           ]}
