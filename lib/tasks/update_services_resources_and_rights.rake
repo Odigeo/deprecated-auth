@@ -281,17 +281,17 @@ namespace :ocean do
     Service.all.each do |u|
       (u.created_by = god_id) rescue nil
       (u.updated_by = god_id) rescue nil
-      u.save!
+      u.save! if u.changed?
     end
     Resource.all.each do |u|
       (u.created_by = god_id) rescue nil
       (u.updated_by = god_id) rescue nil
-      u.save!
+      u.save! if u.changed?
     end
     Right.all.each do |u|
       (u.created_by = god_id) rescue nil
       (u.updated_by = god_id) rescue nil
-      u.save!
+      u.save! if u.changed?
     end
   end
 
