@@ -38,6 +38,16 @@ required_api_users:
       :email:     someone@example.com     # Change this
       :password:  changeme                # Change this
 
+  - - jobs
+    - :real_name: Asynchronous job service
+      :email:     someone@example.com     # Change this
+      :password:  changeme                # Change this
+  
+  - - xact
+    - :real_name: Transaction handling service
+      :email:     someone@example.com     # Change this
+      :password:  changeme                # Change this
+
   - - admin_client
     - :real_name: Admin client
       :email:     someone@example.com     # Change this
@@ -65,4 +75,3 @@ required_api_users:
       :password:  changeme                # Change this
       :shared_tokens:           true
       :authentication_duration: 3600
-

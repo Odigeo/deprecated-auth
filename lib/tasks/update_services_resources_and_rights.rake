@@ -185,6 +185,32 @@ namespace :ocean do
                 ]
             }
           ]},
+      { name:        "sandbox",
+        description: "Paedagogical service",
+        resources: [
+            { name: "notes",
+              description: "A Note resource has a title and a body and is designed for teaching purposes.",
+              rights: [
+                  { description: "Note resource God" },
+                  { description: "Get a Note",                hyperlink: "self", verb: "GET" },
+                  { description: "Delete a Note",             hyperlink: "self", verb: "DELETE"},
+                  { description: "Create a Note",             hyperlink: "self", verb: "POST"},
+                  { description: "Get a collection of Notes", hyperlink: "self", verb: "GET*"},
+                  { description: "Get the Comments for this Note",     hyperlink: "comments", verb: "GET"},
+                  { description: "Create a new Comment for this Note", hyperlink: "comments", verb: "POST"}
+                ]
+            },
+            { name: "comments",
+              description: "Comment resources can be attached to Notes.",
+              rights: [
+                  { description: "Comment resource God" },
+                  { description: "Get a Comment",                hyperlink: "self", verb: "GET" },
+                  { description: "Delete a Comment",             hyperlink: "self", verb: "DELETE"},
+                  { description: "Get a collection of Comments", hyperlink: "self", verb: "GET*"},
+                  { description: "Get the Note to which this Comment belongs", hyperlink: "note", verb: "GET"}
+                ]
+            }
+          ]}
       ]
 
     basic_set.each { |s| update_service(s) }
