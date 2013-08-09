@@ -41,7 +41,6 @@ namespace :ocean do
                   { description: "Modify a Resource",             hyperlink: "self", verb: "PUT"},
                   { description: "Delete a Resource",             hyperlink: "self", verb: "DELETE"},
                   { description: "Get a collection of Resources", hyperlink: "self", verb: "GET*"},
-                  { description: "Get the Service to which this Right belongs",    hyperlink: "service", verb: "GET"},
                   { description: "Get a collection of the Resource's Rights",      hyperlink: "rights", verb: "GET"},
                   { description: "Create a new Right for the Resource",            hyperlink: "rights", verb: "POST"}
                 ]},
@@ -53,8 +52,6 @@ namespace :ocean do
                   { description: "Modify a Right",             hyperlink: "self", verb: "PUT"},
                   { description: "Delete a Right",             hyperlink: "self", verb: "DELETE"},
                   { description: "Get a collection of Rights", hyperlink: "self", verb: "GET*"},
-                  { description: "Get the Service to which this Right belongs",  hyperlink: "service", verb: "GET"},
-                  { description: "Get the Resource to which this Right belongs", hyperlink: "resource", verb: "GET"},
                   { description: "Get a collection of the Right's Groups",       hyperlink: "groups", verb: "GET"},
                   { description: "Get a collection of the Right's Roles",        hyperlink: "roles", verb: "GET"},
                   { description: "Connect the Right to another entity",          hyperlink: "connect", verb: "PUT"},
@@ -112,8 +109,7 @@ namespace :ocean do
                   { description: "Get an Authentication",               hyperlink: "self", verb: "GET" },
                   { description: "Delete an Authentication",            hyperlink: "self", verb: "DELETE"},
                   { description: "Create an Authentication",            hyperlink: "self", verb: "POST"},
-                  { description: "Get a collection of Authentications", hyperlink: "self", verb: "GET*"},
-                  { description: "Get the creator of this Authentication", hyperlink: "creator", verb: "GET" }
+                  { description: "Get a collection of Authentications", hyperlink: "self", verb: "GET*"}
                 ]}
           ]},
       { name:        "cms",
