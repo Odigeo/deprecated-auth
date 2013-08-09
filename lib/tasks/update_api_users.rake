@@ -33,13 +33,13 @@ namespace :ocean do
 
     api_users.each do |username, data|
       user = ApiUser.find_by_username username
-      if user
-        puts "Updating #{username}."
-        user.send(:update_attributes, data)
-      else
+      unless user
         puts "Creating #{username}."
         ApiUser.create! data.merge({:username => username})
+        next
       end
+      puts "Updating #{username}."
+      user.send(:update_attributes, data)
     end
     god_id = ApiUser.find_by_username('god').id
     ApiUser.all.each do |u|
