@@ -1,8 +1,6 @@
 class RightsController < ApplicationController
 
-  ocean_resource_controller extra_actions: { 'service'  => ["service",  "GET"],
-                                             'resource' => ["resource", "GET"],
-                                             'groups'   => ["groups",   "GET"],
+  ocean_resource_controller extra_actions: { 'groups'   => ["groups",   "GET"],
                                              'roles'    => ["roles",    "GET"]},
                             required_attributes: [:lock_version, :description, 
                                                   :hyperlink, :verb, :app, :context]
@@ -67,18 +65,6 @@ class RightsController < ApplicationController
   def destroy
     @right.destroy
     render_head_204
-  end
-
-
-  # GET /rights/1/service
-  def service
-    api_render @right.service
-  end
-
-
-  # GET /rights/1/resource
-  def resource
-    api_render @right.resource
   end
 
 

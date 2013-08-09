@@ -23,10 +23,6 @@ describe ResourcesController do
       delete("/v1/resources/1").should route_to("resources#destroy", :id => "1")
     end
 
-    it "routes to #service" do
-      get("/v1/resources/1/service").should route_to("resources#service", id: "1")
-    end
-
     it "routes to #rights to retrieve the collection" do
       get("/v1/resources/1/rights").should route_to("resources#rights", id: "1")
     end

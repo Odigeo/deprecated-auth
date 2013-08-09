@@ -1,6 +1,6 @@
 json.resource do |json|
 	json._links       hyperlinks(self:    resource_url(resource),
-	                             service: service_resource_url(resource),
+	                             service: service_url(resource.service),
 	                             rights:  rights_resource_url(resource),
 	                             creator: api_user_url(id: resource.created_by || 0),
 	                             updater: api_user_url(id: resource.updated_by || 0))

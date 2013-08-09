@@ -1,7 +1,6 @@
 class ResourcesController < ApplicationController
 
-  ocean_resource_controller extra_actions: { 'service'      => ['service', "GET"],
-                                             'rights'       => ['rights', "GET"],
+  ocean_resource_controller extra_actions: { 'rights'       => ['rights', "GET"],
                                              'right_create' => ["rights", "POST"]}
 
   respond_to :json
@@ -63,12 +62,6 @@ class ResourcesController < ApplicationController
   def destroy
     @resource.destroy
     render_head_204
-  end
-
-
-  # GET /resources/1/service
-  def service
-    api_render @resource.service
   end
 
 

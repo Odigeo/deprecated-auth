@@ -25,7 +25,7 @@ describe "resources/_resource" do
   end
 
   it "should have a service hyperlink" do
-     @links.should be_hyperlinked('service', /resources/)
+     @links.should be_hyperlinked('service', /services/)
   end
 
   it "should have a rights hyperlink" do

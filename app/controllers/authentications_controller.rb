@@ -1,6 +1,6 @@
 class AuthenticationsController < ApplicationController
 
-  ocean_resource_controller extra_actions: { 'creator' => ["creator", "GET"]},
+  ocean_resource_controller extra_actions: {},
                             required_attributes: []
   
   respond_to :json

@@ -14,7 +14,6 @@ Auth::Application.routes.draw do
  
     resources :resources, except: [:create, :new, :edit] do
       member do
-        get 'service'
         get  'rights'
         post 'rights' => 'resources#right_create'
       end
@@ -22,8 +21,6 @@ Auth::Application.routes.draw do
     
     resources :rights, except: [:create, :new, :edit] do
       member do
-        get 'service'
-        get 'resource'
         get 'groups'
         get 'roles'
         put    'connect'
@@ -61,11 +58,7 @@ Auth::Application.routes.draw do
       end
     end
 
-    resources :authentications, except: [:new, :edit], constraints: {id: /.+/} do
-      # member do
-      #   get 'creator'
-      # end
-    end
+    resources :authentications, except: [:new, :edit], constraints: {id: /.+/}
     
   end
 end

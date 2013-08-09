@@ -23,14 +23,6 @@ describe RightsController do
       delete("/v1/rights/1").should route_to("rights#destroy", :id => "1")
     end
 
-    it "routes to #resource" do
-      get("/v1/rights/1/resource").should route_to("rights#resource", :id => "1")
-    end
-
-    it "routes to #service" do
-      get("/v1/rights/1/service").should route_to("rights#service", :id => "1")
-    end
-
     it "routes to #groups" do
       get("/v1/rights/1/groups").should route_to("rights#groups", :id => "1")
     end
