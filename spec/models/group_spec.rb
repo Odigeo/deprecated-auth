@@ -119,18 +119,18 @@ describe Group do
       end
     
       it "should allow matches on name" do
-        Group.index(name: 'NOWAI').length.should == 0
-        Group.index(name: 'Webshop').length.should == 1
-        Group.index(name: 'Management').length.should == 1
+        Group.collection(name: 'NOWAI').length.should == 0
+        Group.collection(name: 'Webshop').length.should == 1
+        Group.collection(name: 'Management').length.should == 1
       end
       
       it "should allow searches on description" do
-        Group.index({}, nil, 'For').length.should == 2
-        Group.index({}, nil, 'i').length.should == 3
+        Group.collection(search: 'For').length.should == 2
+        Group.collection(search: 'i').length.should == 3
       end
       
       it "key/value pairs not in the index_only array should quietly be ignored" do
-        Group.index(name: 'Admins', aardvark: 12).length.should == 1
+        Group.collection(name: 'Admins', aardvark: 12).length.should == 1
       end
         
     end

@@ -119,18 +119,18 @@ describe Role do
       end
     
       it "should allow matches on name" do
-        Role.index(name: 'NOWAI').length.should == 0
-        Role.index(name: 'Webshop Designer').length.should == 1
-        Role.index(name: 'Accountant').length.should == 1
+        Role.collection(name: 'NOWAI').length.should == 0
+        Role.collection(name: 'Webshop Designer').length.should == 1
+        Role.collection(name: 'Accountant').length.should == 1
       end
       
       it "should allow searches on description" do
-        Role.index({}, nil, 'wa').length.should == 2
-        Role.index({}, nil, 'e').length.should == 3
+        Role.collection(search: 'wa').length.should == 2
+        Role.collection(search: 'e').length.should == 3
       end
       
       it "key/value pairs not in the index_only array should quietly be ignored" do
-        Role.index(name: 'System Administrator', aardvark: 12).length.should == 1
+        Role.collection(name: 'System Administrator', aardvark: 12).length.should == 1
       end
         
     end

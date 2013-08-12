@@ -15,7 +15,7 @@ class GroupsController < ApplicationController
   def index
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(Group))
-      @groups = Group.index(params, params[:group], params[:search])
+      @groups = Group.collection(params)
       api_render @groups
     end
   end

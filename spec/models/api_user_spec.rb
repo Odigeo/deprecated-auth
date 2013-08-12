@@ -292,30 +292,30 @@ describe ApiUser do
       end
     
       it "should allow matches on name" do
-        ApiUser.index(username: 'NOWAI').length.should == 0
-        ApiUser.index(username: 'bar').length.should == 1
-        ApiUser.index(username: 'baz').length.should == 1
+        ApiUser.collection(username: 'NOWAI').length.should == 0
+        ApiUser.collection(username: 'bar').length.should == 1
+        ApiUser.collection(username: 'baz').length.should == 1
       end
       
       it "should allow matches on real_name" do
-        ApiUser.index(real_name: 'NOWAI').length.should == 0
-        ApiUser.index(real_name: 'The Bar service').length.should == 1
-        ApiUser.index(real_name: 'baz').length.should == 0
+        ApiUser.collection(real_name: 'NOWAI').length.should == 0
+        ApiUser.collection(real_name: 'The Bar service').length.should == 1
+        ApiUser.collection(real_name: 'baz').length.should == 0
       end
       
       it "should allow matches on email" do
-        ApiUser.index(email: 'NOWAI').length.should == 0
-        ApiUser.index(email: 'barmail@example.com').length.should == 1
-        ApiUser.index(email: 'example.com').length.should == 0
+        ApiUser.collection(email: 'NOWAI').length.should == 0
+        ApiUser.collection(email: 'barmail@example.com').length.should == 1
+        ApiUser.collection(email: 'example.com').length.should == 0
       end
       
       it "should allow searches on email" do
-        ApiUser.index({}, nil, 'example.com').length.should == 2
-        ApiUser.index({}, nil, '@').length.should == 3
+        ApiUser.collection(search: 'example.com').length.should == 2
+        ApiUser.collection(search: '@').length.should == 3
       end
       
       it "key/value pairs not in the index_only array should quietly be ignored" do
-        ApiUser.index(username: 'bar', aardvark: 12).length.should == 1
+        ApiUser.collection(username: 'bar', aardvark: 12).length.should == 1
       end
         
     end

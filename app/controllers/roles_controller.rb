@@ -15,7 +15,7 @@ class RolesController < ApplicationController
   def index
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(Role))
-      @roles = Role.index(params, params[:group], params[:search])
+      @roles = Role.collection(params)
       api_render @roles
     end
   end

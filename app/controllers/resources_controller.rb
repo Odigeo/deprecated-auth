@@ -13,7 +13,7 @@ class ResourcesController < ApplicationController
   def index
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(Resource))
-      @resources = Resource.index(params, params[:group], params[:search])
+      @resources = Resource.collection(params)
       api_render @resources
     end
   end

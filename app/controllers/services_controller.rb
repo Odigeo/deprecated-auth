@@ -13,7 +13,7 @@ class ServicesController < ApplicationController
   def index
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(Service))
-      @services = Service.index(params, params[:group], params[:search])
+      @services = Service.collection(params)
       api_render @services
     end
   end

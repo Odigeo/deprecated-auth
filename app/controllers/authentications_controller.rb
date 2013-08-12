@@ -1,7 +1,6 @@
 class AuthenticationsController < ApplicationController
 
-  ocean_resource_controller extra_actions: {},
-                            required_attributes: []
+  ocean_resource_controller required_attributes: []
   
   respond_to :json
   
@@ -39,7 +38,7 @@ class AuthenticationsController < ApplicationController
     # To simplify cache invalidation, Authentication collections are never cached.
     expires_in 0    
     if stale?(collection_etag(Authentication))
-      @authentications = Authentication.index(params, params[:group], params[:search]).active
+      @authentications = Authentication.collection(params).active
       api_render @authentications
     end
   end

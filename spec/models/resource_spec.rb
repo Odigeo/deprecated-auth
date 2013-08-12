@@ -98,18 +98,18 @@ describe Resource do
       end
     
       it "should allow matches on name" do
-        Resource.index(name: 'NOWAI').length.should == 0
-        Resource.index(name: 'bar').length.should == 1
-        Resource.index(name: 'baz').length.should == 1
+        Resource.collection(name: 'NOWAI').length.should == 0
+        Resource.collection(name: 'bar').length.should == 1
+        Resource.collection(name: 'baz').length.should == 1
       end
       
       it "should allow searches on description" do
-        Resource.index({}, nil, 'B').length.should == 2
-        Resource.index({}, nil, 'resource').length.should == 3
+        Resource.collection(search: 'B').length.should == 2
+        Resource.collection(search: 'resource').length.should == 3
       end
       
       it "key/value pairs not in the index_only array should quietly be ignored" do
-        Resource.index(name: 'bar', aardvark: 12).length.should == 1
+        Resource.collection(name: 'bar', aardvark: 12).length.should == 1
       end
         
     end

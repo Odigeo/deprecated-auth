@@ -209,18 +209,18 @@ describe Right do
       end
     
       it "should allow matches on name" do
-        Right.index(name: 'NOWAI').length.should == 0
-        Right.index(name: @r1.name).length.should == 1
-        Right.index(name: @r2.name).length.should == 1
+        Right.collection(name: 'NOWAI').length.should == 0
+        Right.collection(name: @r1.name).length.should == 1
+        Right.collection(name: @r2.name).length.should == 1
       end
       
       it "should allow searches on description" do
-        Right.index({}, nil, 'res').length.should == 2
-        Right.index({}, nil, 'e').length.should == 3
+        Right.collection(search: 'res').length.should == 2
+        Right.collection(search: 'e').length.should == 3
       end
       
       it "key/value pairs not in the index_only array should quietly be ignored" do
-        Right.index(name: @r3.name, aardvark: 12).length.should == 1
+        Right.collection(name: @r3.name, aardvark: 12).length.should == 1
       end
         
     end

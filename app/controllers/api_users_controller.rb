@@ -16,7 +16,7 @@ class ApiUsersController < ApplicationController
   def index
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(ApiUser))
-      @api_users = ApiUser.index(params, params[:group], params[:search])
+      @api_users = ApiUser.collection(params)
       api_render @api_users
     end
   end

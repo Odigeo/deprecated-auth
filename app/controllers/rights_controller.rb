@@ -16,7 +16,7 @@ class RightsController < ApplicationController
   def index
     expires_in 0, 's-maxage' => 30.minutes
     if stale?(collection_etag(Right))
-      @rights = Right.index(params, params[:group], params[:search])
+      @rights = Right.collection(params)
       api_render @rights
     end
   end

@@ -99,18 +99,18 @@ describe Authentication do
       end
     
       it "should allow matches on token" do
-        Authentication.index(token: 'NOWAI').length.should == 0
-        Authentication.index(token: @r1.token).length.should == 1
-        Authentication.index(token: @r2.token).length.should == 1
+        Authentication.collection(token: 'NOWAI').length.should == 0
+        Authentication.collection(token: @r1.token).length.should == 1
+        Authentication.collection(token: @r2.token).length.should == 1
       end
       
       it "should not allow searches" do
-        Authentication.index({}, nil, 'foo').length.should == 0
-        Authentication.index({}, nil, 'zuul').length.should == 0
+        Authentication.collection(search: 'foo').length.should == 0
+        Authentication.collection(search: 'zuul').length.should == 0
       end
       
       it "key/value pairs not in the index_only array should quietly be ignored" do
-        Authentication.index(token: @r3.token, aardvark: 12).length.should == 1
+        Authentication.collection(token: @r3.token, aardvark: 12).length.should == 1
       end
         
     end

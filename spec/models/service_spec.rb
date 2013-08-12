@@ -96,18 +96,18 @@ describe Service do
       end
     
       it "should allow matches on name" do
-        Service.index(name: 'NOWAI').length.should == 0
-        Service.index(name: 'bar').length.should == 1
-        Service.index(name: 'baz').length.should == 1
+        Service.collection(name: 'NOWAI').length.should == 0
+        Service.collection(name: 'bar').length.should == 1
+        Service.collection(name: 'baz').length.should == 1
       end
       
       it "should allow searches on description" do
-        Service.index({}, nil, 'B').length.should == 2
-        Service.index({}, nil, 'service').length.should == 3
+        Service.collection(search: 'B').length.should == 2
+        Service.collection(search: 'service').length.should == 3
       end
       
       it "key/value pairs not in the index_only array should quietly be ignored" do
-        Service.index(name: 'bar', aardvark: 12).length.should == 1
+        Service.collection(name: 'bar', aardvark: 12).length.should == 1
       end
         
     end
