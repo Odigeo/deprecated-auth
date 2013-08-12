@@ -43,18 +43,6 @@ describe RightsController do
       response.status.should == 200
       JSON.parse(response.body).should be_an Array
     end
-
-    it "should accept match and search parameters" do
-      Right.should_receive(:index).with(anything, nil, 'ue').and_return([])
-      get :index, app: 'foo', search: 'ue'
-      response.status.should == 200
-    end
-    
-    it "should accept a group parameter" do
-      Right.should_receive(:index).with(anything, 'context', nil).and_return([])
-      get :index, app: 'foo', group: :context
-      response.status.should == 200
-    end
     
   end
   

@@ -270,13 +270,8 @@ describe ApiUser do
   end
 
   describe "search" do
-    describe ".index_only" do
-      it "should return an array of permitted search query args" do
-        ApiUser.index_only.should be_an Array
-      end
-    end
   
-    describe ".index" do
+    describe ".collection" do
     
       before :each do
         create :api_user, username: 'foo', real_name: "The Foo service", email: "foomail@example.com"
@@ -286,7 +281,7 @@ describe ApiUser do
       
     
       it "should return an array of ApiUser instances" do
-        ix = ApiUser.index
+        ix = ApiUser.collection
         ix.length.should == 3
         ix[0].should be_an ApiUser
       end

@@ -98,13 +98,8 @@ describe Role do
   
 
   describe "search" do
-    describe ".index_only" do
-      it "should return an array of permitted search query args" do
-        Role.index_only.should be_an Array
-      end
-    end
   
-    describe ".index" do
+    describe ".collection" do
     
       before :each do
         create :role, name: 'System Administrator', description: "A system administrator"
@@ -113,7 +108,7 @@ describe Role do
       end
     
       it "should return an array of Role instances" do
-        ix = Role.index
+        ix = Role.collection
         ix.length.should == 3
         ix[0].should be_a Role
       end

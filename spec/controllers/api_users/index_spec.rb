@@ -46,17 +46,6 @@ describe ApiUsersController do
       JSON.parse(response.body).should be_an Array
     end
    
-    it "should accept a search parameter" do
-      ApiUser.should_receive(:index).with(a_kind_of(Hash), nil, 'reagan').and_return([])
-      get :index, search: 'reagan'
-      response.status.should == 200
-    end
-    
-    it "should accept a group parameter" do
-      ApiUser.should_receive(:index).with(anything, 'context', nil).and_return([])
-      get :index, app: 'foo', group: :context
-      response.status.should == 200
-    end
   end
   
 end

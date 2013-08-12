@@ -77,13 +77,8 @@ describe Resource do
   
 
   describe "search" do
-    describe ".index_only" do
-      it "should return an array of permitted search query args" do
-        Resource.index_only.should be_an Array
-      end
-    end
   
-    describe ".index" do
+    describe ".collection" do
     
       before :each do
         create :resource, name: 'foo', description: "The Foo resource"
@@ -92,7 +87,7 @@ describe Resource do
       end
     
       it "should return an array of Resource instances" do
-        ix = Resource.index
+        ix = Resource.collection
         ix.length.should == 3
         ix[0].should be_a Resource
       end

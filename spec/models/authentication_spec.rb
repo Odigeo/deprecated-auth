@@ -77,13 +77,8 @@ describe Authentication do
   
 
   describe "search" do
-    describe ".index_only" do
-      it "should return an array of permitted search query args" do
-        Authentication.index_only.should be_an Array
-      end
-    end
   
-    describe ".index" do
+    describe ".collection" do
     
       before :each do
         @r1 = create :authentication, token: "foofoofoo"
@@ -93,7 +88,7 @@ describe Authentication do
       
     
       it "should return an array of Authentication instances" do
-        ix = Authentication.index
+        ix = Authentication.collection
         ix.length.should == 3
         ix[0].should be_an Authentication
       end

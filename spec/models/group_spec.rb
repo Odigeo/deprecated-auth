@@ -97,13 +97,8 @@ describe Group do
   
 
   describe "search" do
-    describe ".index_only" do
-      it "should return an array of permitted search query args" do
-        Group.index_only.should be_an Array
-      end
-    end
   
-    describe ".index" do
+    describe ".collection" do
     
       before :each do
         create :group, name: 'Admins', description: "For system administrators"
@@ -113,7 +108,7 @@ describe Group do
 
     
       it "should return an array of Group instances" do
-        ix = Group.index
+        ix = Group.collection
         ix.length.should == 3
         ix[0].should be_a Group
       end

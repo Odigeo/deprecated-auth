@@ -75,13 +75,8 @@ describe Service do
   
 
   describe "search" do
-    describe ".index_only" do
-      it "should return an array of permitted search query args" do
-        Service.index_only.should be_an Array
-      end
-    end
   
-    describe ".index" do
+    describe ".collection" do
     
       before :each do
         create :service, name: 'foo', description: "The Foo service"
@@ -90,7 +85,7 @@ describe Service do
       end
     
       it "should return an array of Service instances" do
-        ix = Service.index
+        ix = Service.collection
         ix.length.should == 3
         ix[0].should be_a Service
       end

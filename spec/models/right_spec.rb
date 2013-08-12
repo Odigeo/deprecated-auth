@@ -188,13 +188,8 @@ describe Right do
   
 
   describe "search" do
-    describe ".index_only" do
-      it "should return an array of permitted search query args" do
-        Right.index_only.should be_an Array
-      end
-    end
-  
-    describe ".index" do
+
+    describe ".collection" do
     
       before :each do
         @r1 = create :right, description: "Confers every right in the system. Handle with extreme care."
@@ -203,7 +198,7 @@ describe Right do
       end
     
       it "should return an array of Group instances" do
-        ix = Right.index
+        ix = Right.collection
         ix.length.should == 3
         ix[0].should be_a Right
       end
