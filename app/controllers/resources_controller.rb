@@ -42,19 +42,10 @@ class ResourcesController < ApplicationController
       render_api_error 422, "Missing resource attributes"
       return
     end
-    begin
-      @resource.assign_attributes(filtered_params Resource)
-      set_updater(@resource)
-      @resource.save
-    rescue ActiveRecord::StaleObjectError
-      render_api_error 409, "Stale Resource"
-      return
-    end
-    if @resource.valid?
-      api_render @resource
-    else
-      render_validation_errors(@resource)
-    end
+    @resource.assign_attributes(filtered_params Resource)
+    set_updater(@resource)
+    @resource.save!
+    api_render @resource
   end
 
 
@@ -78,18 +69,8 @@ class ResourcesController < ApplicationController
   def right_create
     @right = @resource.rights.new(filtered_params Right)
     set_updater(@right)
-    if @right.valid?
-      begin
-        @right.save!
-      rescue ActiveRecord::RecordNotUnique, ActiveRecord::StatementInvalid, 
-             SQLite3::ConstraintException 
-        render_api_error 422, "Right already exists"
-        return
-      end
-      api_render @right, new: true
-    else
-      render_validation_errors @right
-    end
+    @right.save!
+    api_render @right, new: true
   end
 
   

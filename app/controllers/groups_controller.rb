@@ -34,18 +34,8 @@ class GroupsController < ApplicationController
   def create
     @group = Group.new(filtered_params Group)
     set_updater(@group)
-    if @group.valid?
-      begin
-        @group.save!
-      rescue ActiveRecord::RecordNotUnique, ActiveRecord::StatementInvalid, 
-             SQLite3::ConstraintException 
-        render_api_error 422, "Group already exists"
-        return
-      end
-      api_render @group, new: true
-    else
-      render_validation_errors @group
-    end
+    @group.save!
+    api_render @group, new: true
   end
 
 
@@ -55,19 +45,10 @@ class GroupsController < ApplicationController
       render_api_error 422, "Missing resource attributes"
       return
     end
-    begin
-      @group.assign_attributes(filtered_params Group)
-      set_updater(@group)
-      @group.save
-   rescue ActiveRecord::StaleObjectError
-      render_api_error 409, "Stale Group"
-      return
-    end
-    if @group.valid?
-      api_render @group
-    else
-      render_validation_errors(@group)
-    end
+    @group.assign_attributes(filtered_params Group)
+    set_updater(@group)
+    @group.save!
+    api_render @group
   end
 
 

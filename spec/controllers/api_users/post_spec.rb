@@ -33,7 +33,7 @@ describe ApiUsersController do
       post :create, username: "berit", password: "some_other_password", email: "bar@example.com"
       response.status.should == 422
       response.content_type.should == "application/json"
-      JSON.parse(response.body).should == {"_api_error" => ["ApiUser already exists"]}
+      JSON.parse(response.body).should == {"_api_error" => ["Resource not unique"]}
     end
 
     it "should return a 422 when there are validation errors" do

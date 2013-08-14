@@ -37,7 +37,7 @@ describe GroupsController do
       post :create, @args
       response.status.should == 422
       response.content_type.should == "application/json"
-      JSON.parse(response.body).should == {"_api_error" => ["Group already exists"]}
+      JSON.parse(response.body).should == {"_api_error" => ["Resource not unique"]}
     end
 
     #

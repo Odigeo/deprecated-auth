@@ -34,18 +34,8 @@ class RolesController < ApplicationController
   def create
     @role = Role.new(filtered_params Role)
     set_updater(@role)
-    if @role.valid?
-      begin
-        @role.save!
-      rescue ActiveRecord::RecordNotUnique, ActiveRecord::StatementInvalid, 
-             SQLite3::ConstraintException 
-        render_api_error 422, "Role already exists"
-        return
-      end
-      api_render @role, new: true
-    else
-      render_validation_errors @role
-    end
+    @role.save!
+    api_render @role, new: true
   end
 
 
@@ -55,19 +45,10 @@ class RolesController < ApplicationController
       render_api_error 422, "Missing resource attributes"
       return
     end
-    begin
-      @role.assign_attributes(filtered_params Role)
-      set_updater(@role)
-      @role.save
-    rescue ActiveRecord::StaleObjectError
-      render_api_error 409, "Stale Role"
-      return
-    end
-    if @role.valid?
-      api_render @role
-    else
-      render_validation_errors(@role)
-    end
+    @role.assign_attributes(filtered_params Role)
+    set_updater(@role)
+    @role.save!
+    api_render @role
   end
 
 

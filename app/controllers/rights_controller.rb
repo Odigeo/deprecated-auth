@@ -45,19 +45,10 @@ class RightsController < ApplicationController
       render_api_error 422, "Missing resource attributes"
       return
     end
-    begin
-      @right.assign_attributes(filtered_params Right)
-      set_updater(@right)
-      @right.save
-    rescue ActiveRecord::StaleObjectError
-      render_api_error 409, "Stale Right"
-      return
-    end
-    if @right.valid?
-      api_render @right
-    else
-      render_validation_errors(@right)
-    end
+    @right.assign_attributes(filtered_params Right)
+    set_updater(@right)
+    @right.save!
+    api_render @right
   end
 
 

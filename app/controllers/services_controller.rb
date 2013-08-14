@@ -30,20 +30,10 @@ class ServicesController < ApplicationController
 
   # POST /services
   def create
-    @service = Service.new(filtered_params Service)  # Init here
+    @service = Service.new(filtered_params Service)
     set_updater(@service)
-    if @service.valid?
-      begin
-        @service.save!
-      rescue ActiveRecord::RecordNotUnique, ActiveRecord::StatementInvalid, 
-             SQLite3::ConstraintException 
-        render json: {_api_error: ["Service already exists"]}, :status => 422 
-        return
-      end
-      api_render @service, new: true
-    else
-      render_validation_errors @service
-    end
+    @service.save!
+    api_render @service, new: true
   end
 
 
@@ -53,19 +43,10 @@ class ServicesController < ApplicationController
       render_api_error 422, "Missing resource attributes"
       return
     end
-    begin
-      @service.assign_attributes(filtered_params Service)
-      set_updater(@service)
-      @service.save
-    rescue ActiveRecord::StaleObjectError
-      render_api_error 409, "Stale Service"
-      return
-    end
-    if @service.valid?
-      api_render @service
-    else
-      render_validation_errors(@service)
-    end
+    @service.assign_attributes(filtered_params Service)
+    set_updater(@service)
+    @service.save!
+    api_render @service
   end
 
 
@@ -89,18 +70,8 @@ class ServicesController < ApplicationController
   def resource_create
     @resource = @service.resources.build(filtered_params Resource)
     set_updater(@resource)
-    if @resource.valid?
-      begin
-        @resource.save!
-      rescue ActiveRecord::RecordNotUnique, ActiveRecord::StatementInvalid, 
-             SQLite3::ConstraintException 
-        render json: {_api_error: ["Resource already exists"]}, :status => 422 
-        return
-      end
-      api_render @resource, new: true
-    else
-      render_validation_errors @resource
-    end
+    @resource.save!
+    api_render @resource, new: true
   end
 
   

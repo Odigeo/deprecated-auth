@@ -1,15 +1,15 @@
 class ApiUsersController < ApplicationController
 
-  ocean_resource_controller extra_actions: { 'authentications' => ['authentications', "GET"],
+  ocean_resource_controller required_attributes: [:username, :real_name, :email, :lock_version],
+                            no_validation_errors_on: [:password_hash, :password_salt],
+                            extra_actions: { 'authentications' => ['authentications', "GET"],
                                              'roles'           => ['roles', "GET"],
-                                             'groups'          => ['groups', "GET"]},
-                            required_attributes: [:username, :real_name, :email, :lock_version]
-
+                                             'groups'          => ['groups', "GET"]}
+                            
   respond_to :json
 
   before_action :find_api_user, :except => [:index, :create]
   before_action :find_connectee, :only => [:connect, :disconnect]
-  
   
   
   # GET /api_users
@@ -35,21 +35,9 @@ class ApiUsersController < ApplicationController
   def create
     @api_user = ApiUser.new(filtered_params ApiUser)
     set_updater(@api_user)
-    if @api_user.valid?
-      begin
-        @api_user.save!
-        logger.info "New ApiUser #{@api_user.id} (#{params[:username]}, #{params[:real_name]}) created"
-      rescue ActiveRecord::RecordNotUnique, ActiveRecord::StatementInvalid, 
-             SQLite3::ConstraintException 
-        render_api_error 422, "ApiUser already exists"
-        return
-      end
-      api_render @api_user, new: true
-    else
-      @api_user.errors.delete(:password_hash)
-      @api_user.errors.delete(:password_salt)
-      render_validation_errors @api_user
-    end
+    @api_user.save!
+    logger.info "New ApiUser #{@api_user.id} (#{params[:username]}, #{params[:real_name]}) created"
+    api_render @api_user, new: true
   end
 
 
@@ -59,20 +47,10 @@ class ApiUsersController < ApplicationController
       render_api_error 422, "Missing resource attributes"
       return
     end
-    begin
-      @api_user.assign_attributes(filtered_params ApiUser)
-      set_updater(@api_user)
-      @api_user.save
-    rescue ActiveRecord::StaleObjectError
-      render_api_error 409, "Stale ApiUser"
-      return
-    end
-    logger.info "ApiUser #{@api_user.username} (#{@api_user.real_name}) updated"
-    if @api_user.valid?
-      api_render @api_user
-    else
-      render_validation_errors(@api_user)
-    end
+    @api_user.assign_attributes(filtered_params ApiUser)
+    set_updater(@api_user)
+    @api_user.save!
+    api_render @api_user
   end
 
 
