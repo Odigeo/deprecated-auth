@@ -1,6 +1,5 @@
 Auth::Application.routes.draw do
 
-  get "/alive" => "alive#index"
   put "/cleanup" => "cleanup#update"
 
   scope "/v1" do
