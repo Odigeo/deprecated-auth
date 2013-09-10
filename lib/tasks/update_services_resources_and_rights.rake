@@ -176,8 +176,7 @@ namespace :ocean do
                   { description: "AsyncJob resource God" },
                   { description: "Get an AsyncJob",                hyperlink: "self", verb: "GET" },
                   { description: "Delete an AsyncJob",             hyperlink: "self", verb: "DELETE"},
-                  { description: "Create an AsyncJob",             hyperlink: "self", verb: "POST"},
-                  { description: "Get a collection of AsyncJobs",  hyperlink: "self", verb: "GET*"}
+                  { description: "Create an AsyncJob",             hyperlink: "self", verb: "POST"}
                 ]
             }
           ]},
