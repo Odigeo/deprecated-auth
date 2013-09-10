@@ -30,20 +30,6 @@ class AuthenticationsController < ApplicationController
   end
 
   
-  # GET /authentications
-  #
-  # This action returns all active authentications.
-  #
-  def index
-    # To simplify cache invalidation, Authentication collections are never cached.
-    expires_in 0    
-    if stale?(collection_etag(Authentication))
-      @authentications = Authentication.collection(params).active
-      api_render @authentications
-    end
-  end
-  
-  
   #
   # GET /authentications/<token>?query=<query>
   # 

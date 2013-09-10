@@ -108,8 +108,7 @@ namespace :ocean do
                   { description: "Authentication resource God" },
                   { description: "Get an Authentication",               hyperlink: "self", verb: "GET" },
                   { description: "Delete an Authentication",            hyperlink: "self", verb: "DELETE"},
-                  { description: "Create an Authentication",            hyperlink: "self", verb: "POST"},
-                  { description: "Get a collection of Authentications", hyperlink: "self", verb: "GET*"}
+                  { description: "Create an Authentication",            hyperlink: "self", verb: "POST"}
                 ]}
           ]},
       { name:        "cms",

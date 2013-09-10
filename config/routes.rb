@@ -57,7 +57,7 @@ Auth::Application.routes.draw do
       end
     end
 
-    resources :authentications, except: [:new, :edit], constraints: {id: /.+/}
+    resources :authentications, except: [:index, :new, :edit, :update], constraints: {id: /.+/}
     
   end
 end
