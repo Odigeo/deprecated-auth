@@ -64,6 +64,9 @@ module Auth
 
     # Enable the asset pipeline
     config.assets.enabled = false
+
+    # Skip validation of locale
+    I18n.enforce_available_locales = false
   end  
   
 end
