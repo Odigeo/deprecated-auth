@@ -75,3 +75,326 @@ required_api_users:
       :password:  changeme                # Change this
       :shared_tokens:           true
       :authentication_duration: 3600
+
+
+
+# These are the services, their resources, and their rights. These do not vary
+# from system to system, so they should be left alone.
+structure:
+
+- name: media
+  description: Dynamic management of static assets
+
+  resources:
+
+  - name: media
+    description: A Medium resource is a static asset such as an image, a sound file,
+      a video, plain text, HTML or any type of binary data.
+    version: v1
+    rights:
+    - description: Medium resource God
+    - description: Get a Medium
+      hyperlink: self
+      verb: GET
+    - description: Modify a Medium
+      hyperlink: self
+      verb: PUT
+    - description: Delete a Medium
+      hyperlink: self
+      verb: DELETE
+    - description: Create a Medium
+      hyperlink: self
+      verb: POST
+    - description: Get a collection of Media
+      hyperlink: self
+      verb: GET*
+
+  - name: medium_buckets
+    description: A MediumBucket is an administrative resource closely tied to the
+      Riak storage backend.
+    version: v1
+    rights:
+    - description: MediumBucket resource God
+    - description: Get a MediumBucket
+      hyperlink: self
+      verb: GET
+    - description: Delete a MediumBucket
+      hyperlink: self
+      verb: DELETE
+    - description: Get a collection of MediumBuckets
+      hyperlink: self
+      verb: GET*
+    - description: Delete all MediumBuckets
+      hyperlink: destroy_all
+      verb: DELETE
+
+
+- name: cms
+  description: Content management system
+
+  resources:
+
+  - name: texts
+    description: A Text resource is a named and scoped UI string and its translations
+      into various languages.
+    version: v1
+    rights:
+    - description: Text resource God
+    - description: Get a Text
+      hyperlink: self
+      verb: GET
+    - description: Modify a Text
+      hyperlink: self
+      verb: PUT
+    - description: Delete a Text
+      hyperlink: self
+      verb: DELETE
+    - description: Create a Text
+      hyperlink: self
+      verb: POST
+    - description: Get a collection of Texts
+      hyperlink: self
+      verb: GET*
+
+  - name: dictionaries
+    description: A Dictionary is a pseudo-resource used to fetch many Texts at one
+      and the same time, for a specific language.
+    version: v1
+    rights:
+    - description: Dictionary God
+    - description: Get a Dictionary
+      hyperlink: self
+      verb: GET
+
+
+- name: auth
+  description: Authentication and authorisation
+
+  resources:
+
+  - name: services
+    description: The Service resource describes a service available in the SOA and
+      the Resources it handles.
+    version: v1
+    rights:
+    - description: Service resource God
+    - description: Get a Service
+      hyperlink: self
+      verb: GET
+    - description: Modify a Service
+      hyperlink: self
+      verb: PUT
+    - description: Delete a Service
+      hyperlink: self
+      verb: DELETE
+    - description: Create a Service
+      hyperlink: self
+      verb: POST
+    - description: Get a collection of Services
+      hyperlink: self
+      verb: GET*
+    - description: Get a collection of the Service's Resources
+      hyperlink: resources
+      verb: GET
+    - description: Create a new Resource for the Service
+      hyperlink: resources
+      verb: POST
+
+  - name: resources
+    description: The Resource resource describes a Resource belonging to a Service,
+      as well as the Rights it implements.
+    version: v1
+    rights:
+    - description: Resource resource God
+    - description: Get a Resource
+      hyperlink: self
+      verb: GET
+    - description: Modify a Resource
+      hyperlink: self
+      verb: PUT
+    - description: Delete a Resource
+      hyperlink: self
+      verb: DELETE
+    - description: Get a collection of Resources
+      hyperlink: self
+      verb: GET*
+    - description: Get a collection of the Resource's Rights
+      hyperlink: rights
+      verb: GET
+    - description: Create a new Right for the Resource
+      hyperlink: rights
+      verb: POST
+
+  - name: rights
+    description: The Right resource describes an access right used for authorisation
+      of a REST operation. Each Right belongs to a Resource.
+    version: v1
+    rights:
+    - description: Right resource God
+    - description: Get a Right
+      hyperlink: self
+      verb: GET
+    - description: Modify a Right
+      hyperlink: self
+      verb: PUT
+    - description: Delete a Right
+      hyperlink: self
+      verb: DELETE
+    - description: Get a collection of Rights
+      hyperlink: self
+      verb: GET*
+    - description: Get a collection of the Right's Groups
+      hyperlink: groups
+      verb: GET
+    - description: Get a collection of the Right's Roles
+      hyperlink: roles
+      verb: GET
+    - description: Connect the Right to another entity
+      hyperlink: connect
+      verb: PUT
+    - description: Disconnect the Right from another entity
+      hyperlink: connect
+      verb: DELETE
+
+  - name: roles
+    description: A Role resource is an arbitrary, named combination of Rights.
+    version: v1
+    rights:
+    - description: Role resource God
+    - description: Get a Role
+      hyperlink: self
+      verb: GET
+    - description: Modify a Role
+      hyperlink: self
+      verb: PUT
+    - description: Delete a Role
+      hyperlink: self
+      verb: DELETE
+    - description: Create a Role
+      hyperlink: self
+      verb: POST
+    - description: Get a collection of Roles
+      hyperlink: self
+      verb: GET*
+    - description: Get a collection of the Roles's ApiUsers
+      hyperlink: api_users
+      verb: GET
+    - description: Get a collection of the Roles's Groups
+      hyperlink: groups
+      verb: GET
+    - description: Get a collection of the Roles's Rights
+      hyperlink: rights
+      verb: GET
+    - description: Connect the Role to another entity
+      hyperlink: connect
+      verb: PUT
+    - description: Disconnect the Role from another entity
+      hyperlink: connect
+      verb: DELETE
+
+  - name: groups
+    description: A Group resource is an arbitrary, named combination of ApiUsers,
+      Roles, and Rights
+    version: v1
+    rights:
+    - description: Group resource God
+    - description: Get a Group
+      hyperlink: self
+      verb: GET
+    - description: Modify a Group
+      hyperlink: self
+      verb: PUT
+    - description: Delete a Group
+      hyperlink: self
+      verb: DELETE
+    - description: Create a Group
+      hyperlink: self
+      verb: POST
+    - description: Get a collection of Groups
+      hyperlink: self
+      verb: GET*
+    - description: Get a collection of the Group's ApiUsers
+      hyperlink: api_users
+      verb: GET
+    - description: Get a collection of the Group's Roles
+      hyperlink: roles
+      verb: GET
+    - description: Get a collection of the Group's Rights
+      hyperlink: rights
+      verb: GET
+    - description: Connect the Group to another entity
+      hyperlink: connect
+      verb: PUT
+    - description: Disconnect the Group from another entity
+      hyperlink: connect
+      verb: DELETE
+
+  - name: api_users
+    description: An ApiUser is the entity for which an Authentication is made. ApiUsers
+      can be real people, but also abstract entities such as Services or clients.
+    version: v1
+    rights:
+    - description: ApiUser resource God
+    - description: Get an ApiUser
+      hyperlink: self
+      verb: GET
+    - description: Modify an ApiUser
+      hyperlink: self
+      verb: PUT
+    - description: Delete an ApiUser
+      hyperlink: self
+      verb: DELETE
+    - description: Create an ApiUser
+      hyperlink: self
+      verb: POST
+    - description: Get a collection of ApiUsers
+      hyperlink: self
+      verb: GET*
+    - description: Get a collection of the ApiUser's Authentications
+      hyperlink: authentications
+      verb: GET
+    - description: Get a collection of the ApiUser's Roles
+      hyperlink: roles
+      verb: GET
+    - description: Get a collection of the ApiUser's Groups
+      hyperlink: groups
+      verb: GET
+    - description: Connect the ApiUser to another entity
+      hyperlink: connect
+      verb: PUT
+    - description: Disconnect the ApiUser from another entity
+      hyperlink: connect
+      verb: DELETE
+
+  - name: authentications
+    description: An Authentication resource represents an ApiUser whose identity has
+      been verified through its username and its hashed password.
+    version: v1
+    rights:
+    - description: Authentication resource God
+    - description: Get an Authentication
+      hyperlink: self
+      verb: GET
+    - description: Delete an Authentication
+      hyperlink: self
+      verb: DELETE
+    - description: Create an Authentication
+      hyperlink: self
+      verb: POST
+
+
+- name: log
+  description: Centralised logging
+
+  resources:
+
+  - name: log_excerpts
+    description: A LogExcerpt is a collection of log entries.
+    version: v1
+    rights:
+    - description: Log God
+    - description: Get log entries
+      hyperlink: self
+      verb: GET
+    - description: Delete log entries
+      verb: DELETE

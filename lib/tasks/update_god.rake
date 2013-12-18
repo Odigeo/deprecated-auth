@@ -1,11 +1,5 @@
 #
-# This task makes sure the DB has the api_users needed for authentication.
-# This script will never modify any existing data except password, email and
-# real_name. This means that this script can be run at any time exactly in
-# order to update those values.
-#
-# For this reason, this task should be run as part of deployment, whether
-# by TeamCity agents or of environments such as master, staging, and prod.
+# This task sets up the God Role to include all God Rights.
 #
 
 namespace :ocean do
