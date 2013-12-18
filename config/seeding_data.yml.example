@@ -5,8 +5,7 @@
 # 
 # NB: the Chef recipes used to deploy this Ocean app to the production environment will
 #     replace config/seeding_data.yml with an auto-generated file. The data in the 
-#     auto-generated file is taken from the Chef encrypted data bags set up in the 
-#     chef-repo git repository.
+#     auto-generated file is taken from the Chef data bags set up in the chef-repo.
 ##########################################################################################
 
 
