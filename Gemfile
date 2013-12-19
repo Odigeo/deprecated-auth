@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem "rails", "~> 4.0"
 gem "ocean-rails", ">= 1.26.2"
 
-gem "mysql2"
+gem "pg"                 # PostgreSQL
 gem "foreigner"          # Foreign key constraints in MySQL, PostgreSQL, and SQLite3.
 
 gem "jbuilder"           # We use Jbuilder to render our JSON responses
