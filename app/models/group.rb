@@ -11,6 +11,13 @@
 #  created_by   :integer          default(0), not null
 #  updated_by   :integer          default(0), not null
 #
+# Indexes
+#
+#  index_groups_on_created_by  (created_by)
+#  index_groups_on_name        (name) UNIQUE
+#  index_groups_on_updated_at  (updated_at)
+#  index_groups_on_updated_by  (updated_by)
+#
 
 class Group < ActiveRecord::Base
 

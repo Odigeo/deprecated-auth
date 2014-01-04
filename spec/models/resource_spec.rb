@@ -12,6 +12,12 @@
 #  created_by   :integer
 #  updated_by   :integer
 #
+# Indexes
+#
+#  index_resources_on_name        (name) UNIQUE
+#  index_resources_on_service_id  (service_id)
+#  index_resources_on_updated_at  (updated_at)
+#
 
 require 'spec_helper'
 

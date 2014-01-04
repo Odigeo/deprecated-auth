@@ -48,22 +48,28 @@ namespace :ocean do
       # Process the file
       api_users = YAML.load(File.read(f))['required_api_users']
 
+      # Attend to each ApiUser
       api_users.each do |username, data|
         user = ApiUser.find_by_username username
         unless user
+          # New user
           puts "Creating #{username}."
           ApiUser.create! data.merge({:username => username})
-          next
+          next # Proceed to next user
         end
+        # The user already existed. Update (if different)
         puts "Updating #{username}."
         user.send(:update_attributes, data)
       end
+
+      # Set any created_by and updated_by fields which still have the default
       god_id = ApiUser.find_by_username('god').id
-      ApiUser.all.each do |u|
-        (u.created_by = god_id) rescue nil
-        (u.updated_by = god_id) rescue nil
+      ApiUser.where("created_by = 0 OR updated_by == 0").each do |u|
+        ((u.created_by = god_id) rescue nil) if u.created_by == 0
+        ((u.updated_by = god_id) rescue nil) if u.created_by == 0
         u.save!
       end
+
       puts "Done."
     end
 

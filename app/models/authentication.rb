@@ -9,6 +9,12 @@
 #  expires_at  :datetime         not null
 #  api_user_id :integer
 #
+# Indexes
+#
+#  index_authentications_on_api_user_id  (api_user_id)
+#  index_authentications_on_created_at   (created_at)
+#  index_authentications_on_token        (token) UNIQUE
+#
 
 class Authentication < ActiveRecord::Base
 

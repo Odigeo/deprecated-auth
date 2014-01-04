@@ -18,6 +18,13 @@
 #  login_blocked           :boolean          default(FALSE), not null
 #  login_blocked_reason    :string(255)
 #
+# Indexes
+#
+#  index_api_users_on_created_by  (created_by)
+#  index_api_users_on_updated_at  (updated_at)
+#  index_api_users_on_updated_by  (updated_by)
+#  index_api_users_on_username    (username) UNIQUE
+#
 
 FactoryGirl.define do
   

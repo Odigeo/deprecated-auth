@@ -16,6 +16,15 @@
 #  context      :string(128)      default("*"), not null
 #  resource_id  :integer
 #
+# Indexes
+#
+#  app_rights_index            (app,context)
+#  index_rights_on_created_by  (created_by)
+#  index_rights_on_name        (name) UNIQUE
+#  index_rights_on_updated_at  (updated_at)
+#  index_rights_on_updated_by  (updated_by)
+#  main_rights_index           (resource_id,hyperlink,verb,app,context) UNIQUE
+#
 
 class Right < ActiveRecord::Base
 
