@@ -45,6 +45,9 @@ namespace :ocean do
         abort
       end
 
+      puts "============================================================"
+      puts "Updating ApiUsers..."
+
       # Process the file
       api_users = YAML.load(File.read(f))['required_api_users']
 
