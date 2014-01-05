@@ -20,6 +20,16 @@ namespace :ocean do
     # Attend to each Role
     groups.each do |data|
       group = Group.find_by_name data['name']
+      # If the 'delete' flag is set, delete rather than create.
+      if data['delete']
+        if group
+          group.destroy
+          puts "Deleted #{data['name']}."
+        else
+          puts "No need to delete #{data['name']} as it doesn't exist."
+        end
+        next # Proceed to the next Group
+      end
       unless group
         # New Group
         puts "Creating #{data['name']}."

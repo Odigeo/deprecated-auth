@@ -20,6 +20,16 @@ namespace :ocean do
     # Attend to each Role
     roles.each do |data|
       role = Role.find_by_name data['name']
+      # If the 'delete' flag is set, delete rather than create.
+      if data['delete']
+        if role
+          role.destroy
+          puts "Deleted #{data['name']}."
+        else
+          puts "No need to delete #{data['name']} as it doesn't exist."
+        end
+        next # Proceed to the next Role
+      end
       unless role
         # New Role
         puts "Creating #{data['name']}."

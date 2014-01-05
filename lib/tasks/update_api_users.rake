@@ -56,6 +56,16 @@ namespace :ocean do
       # Attend to each ApiUser
       api_users.each do |username, data|
         user = ApiUser.find_by_username username
+        # If the 'delete' flag is set, delete rather than create.
+        if data['delete']
+          if user
+            user.destroy
+            puts "Deleted #{data['name']}."
+          else
+            puts "No need to delete #{data['name']} as it doesn't exist."
+          end
+          next # Proceed to the next User
+        end
         unless user
           # New user
           puts "Creating #{username}."
