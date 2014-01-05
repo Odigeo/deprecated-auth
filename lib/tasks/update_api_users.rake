@@ -46,10 +46,11 @@ namespace :ocean do
       end
 
       puts "============================================================"
-      puts "Processing ApiUsers..." ,''
+      puts "Processing ApiUsers..."
 
       # Process the file
       api_users = YAML.load(File.read(f))['required_api_users']
+      puts "The number of ApiUsers to process is #{api_users.length}", ''
 
       # Attend to each ApiUser
       api_users.each do |username, data|

@@ -10,10 +10,11 @@ namespace :ocean do
     require 'role'
 
     puts "============================================================"
-    puts "Processing Roles...", ''
+    puts "Processing Roles..."
 
     f = File.join(Rails.root, "config/seeding_data.yml")
     roles = YAML.load(File.read(f))['roles'] || []
+    puts "The number of Roles to process is #{roles.length}", ''
 
     # Attend to each Role
     roles.each do |data|
@@ -29,8 +30,15 @@ namespace :ocean do
       role.send(:update_attributes, data)
     end
 
+    # Set any created_by and updated_by fields which still have the default
+    god_id = ApiUser.find_by_username('god').id
+    Role.where("created_by = 0 OR updated_by == 0").each do |r|
+      ((r.created_by = god_id) rescue nil) if r.created_by == 0
+      ((r.updated_by = god_id) rescue nil) if r.created_by == 0
+      r.save!
+    end
+
     puts "Done."
   end
-
 
 end
