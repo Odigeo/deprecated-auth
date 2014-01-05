@@ -10,7 +10,7 @@ namespace :ocean do
     require 'role'
 
     puts "============================================================"
-    puts "Updating Roles..."
+    puts "Processing Roles...", ''
 
     f = File.join(Rails.root, "config/seeding_data.yml")
     roles = YAML.load(File.read(f))['roles'] || []

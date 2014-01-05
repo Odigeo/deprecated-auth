@@ -10,7 +10,7 @@ namespace :ocean do
     require 'api_user'
 
     puts "============================================================"
-    puts "Updating the God Role..."
+    puts "Processing the God Role...", ''
 
     god = ApiUser.find_by_username('god')
 

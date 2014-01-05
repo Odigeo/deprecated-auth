@@ -10,10 +10,11 @@ namespace :ocean do
     require 'group'
 
     puts "============================================================"
-    puts "Updating Groups..."
+    puts "Processing Groups...", ''
 
     f = File.join(Rails.root, "config/seeding_data.yml")
     groups = YAML.load(File.read(f))['groups'] || []
+    puts "The number of Groups to process is #{groups.length}"
 
     # Attend to each Role
     groups.each do |data|
