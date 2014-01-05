@@ -9,6 +9,7 @@ namespace :ocean do
 
     require 'group'
 
+    puts
     puts "============================================================"
     puts "Processing Groups..."
 
@@ -32,7 +33,7 @@ namespace :ocean do
 
     # Set any created_by and updated_by fields which still have the default
     god_id = ApiUser.find_by_username('god').id
-    Group.where("created_by = 0 OR updated_by == 0").each do |g|
+    Group.where("created_by = 0 OR updated_by = 0").each do |g|
       ((g.created_by = god_id) rescue nil) if g.created_by == 0
       ((g.updated_by = god_id) rescue nil) if g.created_by == 0
       g.save!

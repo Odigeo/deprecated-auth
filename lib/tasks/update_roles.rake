@@ -9,6 +9,7 @@ namespace :ocean do
 
     require 'role'
 
+    puts
     puts "============================================================"
     puts "Processing Roles..."
 
@@ -32,7 +33,7 @@ namespace :ocean do
 
     # Set any created_by and updated_by fields which still have the default
     god_id = ApiUser.find_by_username('god').id
-    Role.where("created_by = 0 OR updated_by == 0").each do |r|
+    Role.where("created_by = 0 OR updated_by = 0").each do |r|
       ((r.created_by = god_id) rescue nil) if r.created_by == 0
       ((r.updated_by = god_id) rescue nil) if r.created_by == 0
       r.save!

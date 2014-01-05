@@ -17,12 +17,13 @@ namespace :ocean do
     require 'resource'
     require 'right'
  
+    puts
     puts "============================================================"
     puts "Processing Services, Resources, and Rights..."
    
     f = File.join(Rails.root, "config/seeding_data.yml")
     basic_set = YAML.load(File.read(f))['structure']
-    puts "The number of Services to process is #{basic_set.length}", ''
+    puts "The number of Services to process is #{basic_set.length}"
 
     basic_set.each { |s| update_service(s.deep_dup) }
     puts

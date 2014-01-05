@@ -45,6 +45,7 @@ namespace :ocean do
         abort
       end
 
+      puts
       puts "============================================================"
       puts "Processing ApiUsers..."
 
@@ -68,7 +69,7 @@ namespace :ocean do
 
       # Set any created_by and updated_by fields which still have the default
       god_id = ApiUser.find_by_username('god').id
-      ApiUser.where("created_by = 0 OR updated_by == 0").each do |u|
+      ApiUser.where("created_by = 0 OR updated_by = 0").each do |u|
         ((u.created_by = god_id) rescue nil) if u.created_by == 0
         ((u.updated_by = god_id) rescue nil) if u.created_by == 0
         u.save!

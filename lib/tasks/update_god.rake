@@ -9,6 +9,7 @@ namespace :ocean do
 
     require 'api_user'
 
+    puts
     puts "============================================================"
     puts "Processing the God Role...", ''
 
