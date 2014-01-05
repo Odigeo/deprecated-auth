@@ -18,7 +18,7 @@ namespace :ocean do
 
     # Attend to each Role
     groups.each do |data|
-      groups = Group.find_by_name data['name']
+      group = Group.find_by_name data['name']
       unless group
         # New Group
         puts "Creating #{data['name']}."
