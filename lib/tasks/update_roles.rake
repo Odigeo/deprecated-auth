@@ -40,6 +40,22 @@ namespace :ocean do
         puts "Updating #{data['name']}."
         role.update_attributes name: data['name'], description: data['description']
       end
+      # Process any rights
+      role.rights = [] if data['exclusive']
+      (data['rights'] || []).each do |x|
+        if x.is_a?(Hash) && x['regexp']
+          Right.all.each do |r|
+            if r.name =~ x['regexp'] && !role.rights.include?(r)
+              puts "  Added the regexp matched #{r.name} right to #{data['name']}"
+              role.rights << r 
+            end
+          end
+        else
+          r = Right.find_by_name x
+          role.rights << r if r && !role.rights.include?(r)
+          puts "  Added #{r.name} right to #{data['name']}"
+        end
+      end
     end
 
     # Set any created_by and updated_by fields which still have the default
