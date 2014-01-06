@@ -30,15 +30,16 @@ namespace :ocean do
         end
         next # Proceed to the next Role
       end
-      unless role
+      # Create or update
+      if !role
         # New Role
         puts "Creating #{data['name']}."
-        Role.create! data
-        next # Proceed to next Role
+        Role.create! name: data['name'], description: data['description']
+      else
+        # The Role already existed. Update (if different)
+        puts "Updating #{data['name']}."
+        role.update_attributes name: data['name'], description: data['description']
       end
-      # The Role already existed. Update (if different)
-      puts "Updating #{data['name']}."
-      role.send(:update_attributes, data)
     end
 
     # Set any created_by and updated_by fields which still have the default

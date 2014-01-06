@@ -30,15 +30,16 @@ namespace :ocean do
         end
         next # Proceed to the next Group
       end
-      unless group
+      # Create or update
+      if !group
         # New Group
         puts "Creating #{data['name']}."
-        Group.create! data
-        next # Proceed to next Group
+        Group.create! name: data['name'], description: data['description']
+      else
+        # The Group already existed. Update (if different)
+        puts "Updating #{data['name']}."
+        group.update_attributes name: data['name'], description: data['description']
       end
-      # The Group already existed. Update (if different)
-      puts "Updating #{data['name']}."
-      group.send(:update_attributes, data)
     end
 
     # Set any created_by and updated_by fields which still have the default
