@@ -15,10 +15,11 @@ namespace :ocean do
 
     f = File.join(Rails.root, "config/seeding_data.yml")
     roles = YAML.load(File.read(f))['roles'] || []
-    puts "The number of Roles to process is #{roles.length}", ''
+    puts "The number of Roles to process is #{roles.length}"
 
     # Attend to each Role
     roles.each do |data|
+      puts ''
       role = Role.find_by_name data['name']
 
       # If the 'delete' flag is set, delete rather than create.

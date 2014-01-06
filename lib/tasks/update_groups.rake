@@ -15,10 +15,11 @@ namespace :ocean do
 
     f = File.join(Rails.root, "config/seeding_data.yml")
     groups = YAML.load(File.read(f))['groups'] || []
-    puts "The number of Groups to process is #{groups.length}", ''
+    puts "The number of Groups to process is #{groups.length}"
 
     # Attend to each Role
     groups.each do |data|
+      puts ''
       group = Group.find_by_name data['name']
 
       # If the 'delete' flag is set, delete rather than create.
@@ -63,6 +64,18 @@ namespace :ocean do
         end
       end
 
+      # Process any roles
+      (data['roles'] || []).each do |rolename|
+        r = Role.find_by_name rolename
+        puts "| Couldn't add non-existent Role #{rolename}" and next unless u
+        if group.roles.include?(r)
+          puts "| The #{rolename} Role already is part of the #{data['name']} group"
+        else
+          group.roles << r
+          puts "| The #{rolename} Role is now part of the #{data['name']} group"
+        end
+      end
+
       # Process any api_users
       (data['api_users'] || []).each do |username|
         u = ApiUser.find_by_username username
@@ -74,7 +87,6 @@ namespace :ocean do
           puts "| The #{username} ApiUser now belongs to the #{data['name']} group"
         end
       end
-
     end
 
     # Set any created_by and updated_by fields which still have the default
