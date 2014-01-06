@@ -24,6 +24,7 @@ def process_rights(target, list, exclusive)
   end
   if exclusive
     (before - expanded).each do |r|
+      target.rights.delete(r)
       puts "| Deleted #{r.name}"
     end
   end
