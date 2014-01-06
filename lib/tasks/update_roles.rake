@@ -48,36 +48,8 @@ namespace :ocean do
       # Process any rights
       process_rights(role, data['rights'], data['exclusive'])
 
-      # if data['exclusive']
-      #   puts "| Cleared all rights of #{data['name']}"
-      #   role.rights = [] 
-      # end
-      # (data['rights'] || []).each do |x|
-      #   if x.is_a?(Hash) && x['regexp']
-      #     Right.all.each do |r|
-      #       if r.name =~ Regexp.new(x['regexp']) && !role.rights.include?(r)
-      #         puts "| Added the regexp matched #{r.name} right to #{data['name']}"
-      #         role.rights << r 
-      #       end
-      #     end
-      #   else
-      #     r = Right.find_by_name x
-      #     role.rights << r if r && !role.rights.include?(r)
-      #     puts "| Added #{r.name} right to #{data['name']}"
-      #   end
-      # end
-
       # Process any api_users
-      (data['api_users'] || []).each do |username|
-        u = ApiUser.find_by_username username
-        puts "| Couldn't add non-existent ApiUser #{username}" and next unless u
-        if role.api_users.include?(u)
-          puts "| The #{username} ApiUser already has the #{data['name']} role"
-        else
-          role.api_users << u
-          puts "| Added the #{data['name']} role to the #{username} ApiUser"
-        end
-      end
+      process_api_users(role, data['api_users'])
     end
 
     # Set any created_by and updated_by fields which still have the default
