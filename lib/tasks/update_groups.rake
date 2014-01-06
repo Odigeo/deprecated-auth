@@ -67,7 +67,7 @@ namespace :ocean do
       # Process any roles
       (data['roles'] || []).each do |rolename|
         r = Role.find_by_name rolename
-        puts "| Couldn't add non-existent Role #{rolename}" and next unless u
+        puts "| Couldn't add non-existent Role #{rolename}" and next unless r
         if group.roles.include?(r)
           puts "| The #{rolename} Role already is part of the #{data['name']} group"
         else
