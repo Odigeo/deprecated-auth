@@ -7,6 +7,7 @@ namespace :ocean do
   desc "Updates Groups"
   task :update_groups => :environment do
 
+    require 'ocean_structure.rb'
     require 'group'
 
     puts
@@ -45,24 +46,26 @@ namespace :ocean do
       end
 
       # Process any rights
-      if data['exclusive']
-        puts "| Cleared all rights of #{data['name']}"
-        group.rights = [] 
-      end
-      (data['rights'] || []).each do |x|
-        if x.is_a?(Hash) && x['regexp']
-          Right.all.each do |r|
-            if r.name =~ Regexp.new(x['regexp']) && !group.rights.include?(r)
-              puts "| Added the regexp matched #{r.name} right to #{data['name']}"
-              group.rights << r 
-            end
-          end
-        else
-          r = Right.find_by_name x
-          group.rights << r if r && !group.rights.include?(r)
-          puts "| Added #{r.name} right to #{data['name']}"
-        end
-      end
+      process_rights(group, data['rights'], data['exclusive'])
+
+      # if data['exclusive']
+      #   puts "| Cleared all rights of #{data['name']}"
+      #   group.rights = [] 
+      # end
+      # (data['rights'] || []).each do |x|
+      #   if x.is_a?(Hash) && x['regexp']
+      #     Right.all.each do |r|
+      #       if r.name =~ Regexp.new(x['regexp']) && !group.rights.include?(r)
+      #         puts "| Added the regexp matched #{r.name} right to #{data['name']}"
+      #         group.rights << r 
+      #       end
+      #     end
+      #   else
+      #     r = Right.find_by_name x
+      #     group.rights << r if r && !group.rights.include?(r)
+      #     puts "| Added #{r.name} right to #{data['name']}"
+      #   end
+      # end
 
       # Process any roles
       (data['roles'] || []).each do |rolename|
