@@ -51,7 +51,7 @@ namespace :ocean do
       (data['rights'] || []).each do |x|
         if x.is_a?(Hash) && x['regexp']
           Right.all.each do |r|
-            if r.name =~ x['regexp'] && !role.rights.include?(r)
+            if r.name =~ Regexp.new(x['regexp']) && !role.rights.include?(r)
               puts "  Added the regexp matched #{r.name} right to #{data['name']}"
               role.rights << r 
             end

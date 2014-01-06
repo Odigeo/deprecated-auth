@@ -20,6 +20,7 @@ namespace :ocean do
     # Attend to each Role
     groups.each do |data|
       group = Group.find_by_name data['name']
+
       # If the 'delete' flag is set, delete rather than create.
       if data['delete']
         if group
@@ -30,6 +31,7 @@ namespace :ocean do
         end
         next # Proceed to the next Group
       end
+
       # Create or update
       if !group
         # New Group
@@ -39,6 +41,26 @@ namespace :ocean do
         # The Group already existed. Update (if different)
         puts "Updating #{data['name']}."
         group.update_attributes name: data['name'], description: data['description']
+      end
+
+      # Process any rights
+      if data['exclusive']
+        puts "  Cleared all rights of #{data['name']}"
+        group.rights = [] 
+      end
+      (data['rights'] || []).each do |x|
+        if x.is_a?(Hash) && x['regexp']
+          Right.all.each do |r|
+            if r.name =~ Regexp.new(x['regexp']) && !group.rights.include?(r)
+              puts "  Added the regexp matched #{r.name} right to #{data['name']}"
+              group.rights << r 
+            end
+          end
+        else
+          r = Right.find_by_name x
+          group.rights << r if r && !group.rights.include?(r)
+          puts "  Added #{r.name} right to #{data['name']}"
+        end
       end
     end
 
