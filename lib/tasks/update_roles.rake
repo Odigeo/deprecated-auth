@@ -62,6 +62,13 @@ namespace :ocean do
           puts "  Added #{r.name} right to #{data['name']}"
         end
       end
+
+      # Process any api_users
+      (data['api_users'] || []).each do |username|
+        u = ApiUser.find_by_username username
+        puts "  Couldn't add non-existent ApiUser #{username}" and next unless u
+        role.api_users << u unless role.api_users.include?(u)
+      end
     end
 
     # Set any created_by and updated_by fields which still have the default
