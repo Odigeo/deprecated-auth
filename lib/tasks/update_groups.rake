@@ -62,6 +62,19 @@ namespace :ocean do
           puts "  Added #{r.name} right to #{data['name']}"
         end
       end
+
+      # Process any api_users
+      (data['api_users'] || []).each do |username|
+        u = ApiUser.find_by_username username
+        puts "| Couldn't add non-existent ApiUser #{username}" and next unless u
+        if group.api_users.include?(u)
+          puts "| The #{username} ApiUser already belongs to the #{data['name']} group"
+        else
+          group.api_users << u
+          puts "| The #{username} ApiUser now belongs to the #{data['name']} group"
+        end
+      end
+
     end
 
     # Set any created_by and updated_by fields which still have the default
