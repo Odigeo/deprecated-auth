@@ -34,7 +34,7 @@ namespace :ocean do
       if !group
         # New Group
         puts "Creating #{data['name']}."
-        Group.create! name: data['name'], description: data['description']
+        group = Group.create! name: data['name'], description: data['description']
       else
         # The Group already existed. Update (if different)
         puts "Updating #{data['name']}."

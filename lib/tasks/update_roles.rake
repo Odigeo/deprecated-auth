@@ -20,6 +20,7 @@ namespace :ocean do
     # Attend to each Role
     roles.each do |data|
       role = Role.find_by_name data['name']
+
       # If the 'delete' flag is set, delete rather than create.
       if data['delete']
         if role
@@ -30,18 +31,23 @@ namespace :ocean do
         end
         next # Proceed to the next Role
       end
+
       # Create or update
       if !role
         # New Role
         puts "Creating #{data['name']}."
-        Role.create! name: data['name'], description: data['description']
+        role = Role.create! name: data['name'], description: data['description']
       else
         # The Role already existed. Update (if different)
         puts "Updating #{data['name']}."
         role.update_attributes name: data['name'], description: data['description']
       end
+
       # Process any rights
-      role.rights = [] if data['exclusive']
+      if data['exclusive']
+        puts "  Cleared all rights of #{data['name']}"
+        role.rights = [] 
+      end
       (data['rights'] || []).each do |x|
         if x.is_a?(Hash) && x['regexp']
           Right.all.each do |r|
