@@ -2,22 +2,29 @@
 # Process any rights
 #
 def process_rights(target, list, exclusive)
-  if exclusive
-    puts "| Cleared all rights"
-    target.rights = [] 
-  end
+  before = target.rights.clone
+  expanded = []
   (list || []).each do |x|
     if x.is_a?(Hash) && x['regexp']
       Right.all.each do |r|
-        if r.name =~ Regexp.new(x['regexp']) && !target.rights.include?(r)
-          puts "| Added the regexp matched #{r.name} right"
-          target.rights << r 
-        end
+        expanded << r if r.name =~ Regexp.new(x['regexp'])
       end
     else
       r = Right.find_by_name x
-      target.rights << r if r && !target.rights.include?(r)
-      puts "| Added #{r.name} right"
+      expanded << r if r
+    end
+  end
+  expanded.each do |r|
+    if target.rights.include?(r)
+      puts "| #{r.name} is already part of the role"
+    else
+      target.rights << r
+      puts "| Added #{r.name}"
+    end
+  end
+  if exclusive
+    (before - expanded).each do |r|
+      puts "| Deleted #{r.name}"
     end
   end
 end
