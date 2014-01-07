@@ -54,6 +54,7 @@ class RolesController < ApplicationController
 
   # DELETE /roles/1
   def destroy
+    render_api_error 403, "Indestructible" and return if @role.indestructible
     @role.destroy
     render_head_204
   end

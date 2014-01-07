@@ -38,12 +38,14 @@ namespace :ocean do
       if !group
         # New Group
         puts "Creating #{data['name']}."
-        group = Group.create! name: data['name'], description: data['description']
+        group = Group.new name: data['name'], description: data['description']
       else
         # The Group already existed. Update (if different)
         puts "Updating #{data['name']}."
-        group.update_attributes name: data['name'], description: data['description']
+        group.assign_attributes name: data['name'], description: data['description']
       end
+      group.indestructible = !!data['indestructible']
+      group.save!
 
       # Process any rights
       process_rights(group, data['rights'], data['exclusive'])

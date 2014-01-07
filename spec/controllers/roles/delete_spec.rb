@@ -25,6 +25,13 @@ describe RolesController do
       response.status.should == 400
     end
     
+    it "should return a 403 if indestructible" do
+      @role.indestructible = true
+      @role.save
+      delete :destroy, id: @role
+      response.status.should == 403
+    end
+            
     it "should return a 204 when successful" do
       delete :destroy, id: @role
       response.status.should == 204

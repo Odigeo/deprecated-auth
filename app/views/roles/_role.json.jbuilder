@@ -1,7 +1,8 @@
 json.role do |json|
 	json.(role, :name, :description, :lock_version) 
-	json.created_at role.created_at.utc.iso8601
-	json.updated_at role.updated_at.utc.iso8601
+	json.created_at     role.created_at.utc.iso8601
+	json.updated_at     role.updated_at.utc.iso8601
+	json.indestructible role.indestructible if role.indestructible
 	json._links hyperlinks(
 	  self:      role_url(role),
 	  api_users: api_users_role_url(role),

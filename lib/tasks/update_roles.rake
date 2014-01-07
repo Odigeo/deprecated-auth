@@ -38,12 +38,14 @@ namespace :ocean do
       if !role
         # New Role
         puts "Creating #{data['name']}."
-        role = Role.create! name: data['name'], description: data['description']
+        role = Role.new name: data['name'], description: data['description']
       else
         # The Role already existed. Update (if different)
         puts "Updating #{data['name']}."
-        role.update_attributes name: data['name'], description: data['description']
+        role.assign_attributes name: data['name'], description: data['description']
       end
+      role.indestructible = !!data['indestructible']
+      role.save!
 
       # Process any rights
       process_rights(role, data['rights'], data['exclusive'])

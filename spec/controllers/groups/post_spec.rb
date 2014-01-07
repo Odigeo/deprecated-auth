@@ -66,6 +66,12 @@ describe GroupsController do
       response.body.should be_a String
     end
     
+    it "should not allow the indestructible flag to be set" do
+      post :create, name: "Ze Foo Group", description: "A comment", indestructible: true
+      u = JSON.parse(response.body)['group']
+      u['name'].should == "Ze Foo Group"
+      u['indestructible'].should == nil
+    end
   end
   
 end

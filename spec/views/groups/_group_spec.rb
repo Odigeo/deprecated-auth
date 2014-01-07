@@ -4,7 +4,7 @@ describe "groups/_group" do
   
   before :each do
     Group.destroy_all
-    render partial: "groups/group", locals: {group: create(:group)}
+    render partial: "groups/group", locals: {group: create(:group, indestructible: true)}
     @json = JSON.parse(rendered)
     @u = @json['group']
     @links = @u['_links'] rescue {}
@@ -69,4 +69,7 @@ describe "groups/_group" do
     @u['description'].should be_a String
   end
   
+  it "should have a indestructible boolean" do
+    @u['indestructible'].should == true
+  end
 end

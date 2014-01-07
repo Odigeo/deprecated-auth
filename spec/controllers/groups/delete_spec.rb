@@ -25,6 +25,13 @@ describe GroupsController do
       response.status.should == 400
     end
             
+    it "should return a 403 if indestructible" do
+      @group.indestructible = true
+      @group.save
+      delete :destroy, id: @group
+      response.status.should == 403
+    end
+            
     it "should return a 204 when successful" do
       delete :destroy, id: @group
       response.status.should == 204

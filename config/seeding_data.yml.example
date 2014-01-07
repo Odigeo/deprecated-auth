@@ -16,36 +16,43 @@ required_api_users:
     - :real_name: The Ocean Superuser
       :email:     someone@example.com     # Change this
       :password:  changeme                # Change this
+      indestructible: true
 
   - - auth
     - :real_name: Auth service
       :email:     someone@example.com     # Change this
       :password:  changeme                # Change this
+      indestructible: true
 
   - - cms
     - :real_name: CMS service
       :email:     someone@example.com     # Change this
       :password:  changeme                # Change this
+      indestructible: true
 
   - - log
     - :real_name: Log service
       :email:     someone@example.com     # Change this
       :password:  changeme                # Change this
+      indestructible: true
 
   - - media
     - :real_name: Media service
       :email:     someone@example.com     # Change this
       :password:  changeme                # Change this
+      indestructible: true
 
   - - jobs
     - :real_name: Asynchronous job service
       :email:     someone@example.com     # Change this
       :password:  changeme                # Change this
+      indestructible: true
   
   - - xact
     - :real_name: Transaction handling service
       :email:     someone@example.com     # Change this
       :password:  changeme                # Change this
+      indestructible: true
 
   - - admin_client
     - :real_name: Admin client
@@ -53,6 +60,7 @@ required_api_users:
       :password:  changeme                # Change this
       :shared_tokens:           false
       :authentication_duration: 900
+      indestructible: true
 
   - - admin_client_testuser
     - :real_name: Admin client test user
@@ -60,6 +68,7 @@ required_api_users:
       :password:  changeme                # Change this
       :shared_tokens:           false
       :authentication_duration: 900
+      indestructible: true
 
   - - webshop_client
     - :real_name: Webshop client
@@ -67,6 +76,7 @@ required_api_users:
       :password:  changeme                # Change this
       :shared_tokens:           true
       :authentication_duration: 3600
+      indestructible: true
 
   - - webshop_client_testuser
     - :real_name: Webshop client test user
@@ -74,6 +84,7 @@ required_api_users:
       :password:  changeme                # Change this
       :shared_tokens:           true
       :authentication_duration: 3600
+      indestructible: true
 
 
 

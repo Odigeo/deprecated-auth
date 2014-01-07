@@ -4,7 +4,7 @@ describe "roles/_role" do
   
   before :each do
     Role.destroy_all
-    render partial: "roles/role", locals: {role: create(:role)}
+    render partial: "roles/role", locals: {role: create(:role, indestructible: true)}
     @json = JSON.parse(rendered)
     @u = @json['role']
     @links = @u['_links'] rescue {}
@@ -69,4 +69,7 @@ describe "roles/_role" do
     @u['description'].should be_a String
   end
   
+  it "should have a indestructible boolean" do
+    @u['indestructible'].should == true
+  end
 end

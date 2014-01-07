@@ -76,15 +76,15 @@ describe GroupsController do
 
     end
 
-    # it "should alter the user when successful" do
-    #   @u.real_name.should == "Brigitte"
-    #   put :update, id: @u, lock_version: 0
-    #   response.status.should == 200
-    #   @u.reload
-    #   @u.real_name.should == "Bardot, Brigitte"
-    #   @u.email.should == "oui@example.com"
-    # end
-
+    it "should alter the group when successful, except for the indestructible flag" do
+      put :update, id: @u, name: "secret group", description: "very descriptive", 
+                           lock_version: 0, indestructible: true
+      response.status.should == 200
+      @u.reload
+      @u.name.should == "secret group"
+      @u.description.should == "very descriptive"
+      @u.indestructible.should == false
+    end
   end
   
 end

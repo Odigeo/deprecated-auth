@@ -66,6 +66,12 @@ describe RolesController do
       response.body.should be_a String
     end
     
+    it "should not allow the indestructible flag to be set" do
+      post :create, name: "Ze Foo Role", description: "A comment", indestructible: true
+      u = JSON.parse(response.body)['role']
+      u['name'].should == "Ze Foo Role"
+      u['indestructible'].should == nil
+    end
   end
   
 end

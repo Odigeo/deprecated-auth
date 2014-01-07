@@ -66,17 +66,13 @@ namespace :ocean do
           end
           next # Proceed to the next User
         end
-        unless user
-          # New user
+        if user
+          puts "Updating #{username}."
+          user.send(:assign_attributes, data.except('indestructible'))
+        else
           puts "Creating #{username}."
           user = ApiUser.new data.merge({:username => username}).except('indestructible')
-          user.indestructible = !!data['indestructible']
-          user.save!
-          next # Proceed to next user
         end
-        # The user already existed. Update (if different)
-        puts "Updating #{username}."
-        user.send(:assign_attributes, data.except('indestructible'))
         user.indestructible = !!data['indestructible']
         user.save!
       end

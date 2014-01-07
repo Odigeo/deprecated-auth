@@ -54,6 +54,7 @@ class GroupsController < ApplicationController
 
   # DELETE /groups/1
   def destroy
+    render_api_error 403, "Indestructible" and return if @group.indestructible
     @group.destroy
     render_head_204
   end
