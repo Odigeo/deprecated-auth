@@ -17,6 +17,7 @@
 #  shared_tokens           :boolean          default(FALSE), not null
 #  login_blocked           :boolean          default(FALSE), not null
 #  login_blocked_reason    :string(255)
+#  indestructible          :boolean          default(FALSE), not null
 #
 # Indexes
 #

@@ -17,6 +17,7 @@
 #  shared_tokens           :boolean          default(FALSE), not null
 #  login_blocked           :boolean          default(FALSE), not null
 #  login_blocked_reason    :string(255)
+#  indestructible          :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -138,6 +139,32 @@ describe ApiUser do
     it "should have a login_blocked_reason string" do
       create(:api_user).login_blocked_reason.should == nil
       create(:api_user, login_blocked_reason: "Woo hoo").login_blocked_reason.should == "Woo hoo"
+    end
+
+
+    it "should have an indestructible flag" do
+      create(:api_user).indestructible.should == false
+      create(:api_user, indestructible: true).indestructible.should == true
+      create(:api_user, indestructible: "quoi?").indestructible.should == false
+    end
+
+    it "should not allow saved indestructible instances to be destroyed" do
+      expect { create(:api_user, indestructible: true).destroy }.to raise_error
+    end
+
+    it "should allow unsaved indestructible instances to be destroyed" do
+      u = build(:api_user, indestructible: true)
+      expect { u.destroy }.not_to raise_error
+    end
+
+    it "should allow indestructible instances to be reset and then destroyed" do
+      u = create(:api_user, indestructible: true)
+      u.indestructible = false
+      expect { u.destroy }.not_to raise_error
+    end
+
+    it "should  allow indestructible instances to be deleted" do
+      expect { create(:api_user, indestructible: true).delete }.not_to raise_error
     end
 
   end

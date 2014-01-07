@@ -4,7 +4,7 @@ describe "api_users/_api_user" do
   
   before :each do                     # Must be :each (:all causes all tests to fail)
     ApiUser.destroy_all
-    render partial: "api_users/api_user", locals: {api_user: create(:api_user)}
+    render partial: "api_users/api_user", locals: {api_user: create(:api_user, indestructible: true)}
     @json = JSON.parse(rendered)
     @u = @json['api_user']
     @links = @u['_links'] rescue {}
@@ -95,6 +95,10 @@ describe "api_users/_api_user" do
 
   it "should have a login_blocked_reason" do
     @u['login_blocked_reason'].should == nil
+  end
+
+  it "should have a indestructible boolean" do
+    @u['indestructible'].should == true
   end
 
 end

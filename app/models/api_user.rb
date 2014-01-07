@@ -17,6 +17,7 @@
 #  shared_tokens           :boolean          default(FALSE), not null
 #  login_blocked           :boolean          default(FALSE), not null
 #  login_blocked_reason    :string(255)
+#  indestructible          :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -61,6 +62,13 @@ class ApiUser < ActiveRecord::Base
   validates :authentication_duration, presence: true, 
                                       numericality: { only_integer: true, greater_than: 0 }
 
+  # Callbacks
+  before_destroy do |u|
+    raise "HELL" if u.persisted? && u.indestructible
+  end
+
+
+  # Model logic
 
   def self.find_by_credentials(un, pw)
     # Don't bother going to the DB if credentials are missing
