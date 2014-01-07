@@ -26,6 +26,13 @@ describe ApiUsersController do
       delete :destroy, id: @api_user
       response.status.should == 400
     end
+
+    it "should return a 403 if the ApiUser is indestructible" do
+      @api_user.indestructible = true
+      @api_user.save
+      delete :destroy, id: @api_user
+      response.status.should == 403
+    end
             
     it "should return a 204 when successful" do
       delete :destroy, id: @api_user

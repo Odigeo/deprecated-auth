@@ -56,6 +56,7 @@ class ApiUsersController < ApplicationController
 
   # DELETE /api_users/1
   def destroy
+    render_api_error 403, "Indestructible" and return if @api_user.indestructible
     @api_user.destroy
     logger.info "ApiUser #{@api_user.username} (#{@api_user.real_name}) destroyed"
     render_head_204

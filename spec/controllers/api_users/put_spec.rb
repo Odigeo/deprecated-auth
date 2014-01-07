@@ -74,17 +74,19 @@ describe ApiUsersController do
       end
     end
 
-    it "should alter the user when successful" do
+    it "should alter the user when successful, except for the indestructible flag" do
       @u.real_name.should == "Brigitte"
       put :update, id: @u, username: "brigitte_bardot", real_name: "Bardot, Brigitte", email: "oui@example.com", lock_version: 0,
                            authentication_duration: 1.year.to_i,
-                           shared_tokens: true
+                           shared_tokens: true,
+                           indestructible: true
       response.status.should == 200
       @u.reload
       @u.real_name.should == "Bardot, Brigitte"
       @u.email.should == "oui@example.com"
       @u.authentication_duration.should == 1.year.to_i
       @u.shared_tokens.should == true
+      @u.indestructible.should == false
     end
 
     it "should hash any new password given" do

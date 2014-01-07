@@ -147,26 +147,6 @@ describe ApiUser do
       create(:api_user, indestructible: true).indestructible.should == true
       create(:api_user, indestructible: "quoi?").indestructible.should == false
     end
-
-    it "should not allow saved indestructible instances to be destroyed" do
-      expect { create(:api_user, indestructible: true).destroy }.to raise_error
-    end
-
-    it "should allow unsaved indestructible instances to be destroyed" do
-      u = build(:api_user, indestructible: true)
-      expect { u.destroy }.not_to raise_error
-    end
-
-    it "should allow indestructible instances to be reset and then destroyed" do
-      u = create(:api_user, indestructible: true)
-      u.indestructible = false
-      expect { u.destroy }.not_to raise_error
-    end
-
-    it "should  allow indestructible instances to be deleted" do
-      expect { create(:api_user, indestructible: true).delete }.not_to raise_error
-    end
-
   end
   
   

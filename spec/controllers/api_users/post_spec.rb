@@ -74,7 +74,14 @@ describe ApiUsersController do
       post :create, username: "berit", password: "sub_rosa", email: "berit@example.com"
       response.body.should be_a String
     end
-    
+
+    it "should not allow the indestructible flag to be set" do
+      post :create, username: "berit", password: "sub_rosa", email: "berit@example.com",
+                    indestructible: true
+      u = JSON.parse(response.body)['api_user']
+      u['username'].should == "berit"
+      u['indestructible'].should == nil
+    end
   end
   
 end
