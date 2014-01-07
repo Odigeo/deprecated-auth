@@ -69,12 +69,16 @@ namespace :ocean do
         unless user
           # New user
           puts "Creating #{username}."
-          ApiUser.create! data.merge({:username => username})
+          u = ApiUser.new data.merge({:username => username}).except('indestructible')
+          u.indestructible = data['indestructible']
+          u.save!
           next # Proceed to next user
         end
         # The user already existed. Update (if different)
         puts "Updating #{username}."
-        user.send(:update_attributes, data)
+        user.send(:assign_attributes, data.except('indestructible'))
+        u.indestructible = data['indestructible']
+        u.save!
       end
 
       # Set any created_by and updated_by fields which still have the default
