@@ -49,7 +49,7 @@ class Authentication < ActiveRecord::Base
   # Class methods 
 
   def self.new_token
-    SecureRandom.urlsafe_base64(20)
+    SecureRandom.urlsafe_base64(32)
   end
 
   

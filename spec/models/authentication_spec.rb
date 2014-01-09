@@ -45,9 +45,9 @@ describe Authentication do
     (auth.expires_at - auth.created_at).to_i.should == auth.max_age
   end
   
-  it "#new_token should return a fresh string token, 27 characters long" do
+  it "#new_token should return a fresh string token, 43 characters long" do
     Authentication.new_token.should be_a String
-    Authentication.new_token.size.should == 27
+    Authentication.new_token.size.should == 43
   end
   
   it "#active? should be true if it's not expired" do
