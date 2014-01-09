@@ -3,7 +3,7 @@
 # Table name: authentications
 #
 #  id          :integer          not null, primary key
-#  token       :string(32)       not null
+#  token       :string(255)      not null
 #  max_age     :integer          not null
 #  created_at  :datetime         not null
 #  expires_at  :datetime         not null
