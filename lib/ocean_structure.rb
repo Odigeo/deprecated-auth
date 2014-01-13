@@ -37,7 +37,10 @@ end
 def process_api_users(target, list)
   (list || []).each do |username|
     u = ApiUser.find_by_username username
-    puts "| Couldn't add non-existent ApiUser #{username}" and next unless u
+    unless u
+      puts "| Couldn't add non-existent ApiUser #{username}"
+      next
+    end
     if target.api_users.include?(u)
       puts "| The #{username} ApiUser already belongs to the #{target.name} group"
     else
