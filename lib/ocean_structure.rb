@@ -57,7 +57,10 @@ end
 def process_roles(target, list)
   (list || []).each do |rolename|
     r = Role.find_by_name rolename
-    puts "| Couldn't add non-existent Role #{rolename}" and next unless r
+    unless r
+      puts "| Couldn't add non-existent Role #{rolename}"
+      next
+    end
     if target.roles.include?(r)
       puts "| The #{rolename} Role already is part of the #{target.name} group"
     else
