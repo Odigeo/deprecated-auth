@@ -11,7 +11,7 @@ class ResourcesController < ApplicationController
   
   # GET /resources
   def index
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(collection_etag(Resource))
       @resources = Resource.collection(params)
       api_render @resources
@@ -21,7 +21,7 @@ class ResourcesController < ApplicationController
 
   # GET /resources/1
   def show
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(@resource)
       api_render @resource
     end
@@ -58,7 +58,7 @@ class ResourcesController < ApplicationController
 
   # GET /resources/1/rights
   def rights
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(collection_etag(@resource.rights))
       api_render @resource.rights
     end

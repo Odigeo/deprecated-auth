@@ -13,7 +13,7 @@ class GroupsController < ApplicationController
   
   # GET /groups
   def index
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(collection_etag(Group))
       @groups = Group.collection(params)
       api_render @groups
@@ -23,7 +23,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1
   def show
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(@group)
       api_render @group
     end
@@ -62,7 +62,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/api_users
   def api_users
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(collection_etag(@group.api_users))
       api_render @group.api_users
     end
@@ -71,7 +71,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/roles
   def roles
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(collection_etag(@group.roles))
       api_render @group.roles
     end
@@ -80,7 +80,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/rights
   def rights
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(collection_etag(@group.rights))
       api_render @group.rights
     end

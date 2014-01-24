@@ -11,7 +11,7 @@ class ServicesController < ApplicationController
   
   # GET /services
   def index
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(collection_etag(Service))
       @services = Service.collection(params)
       api_render @services
@@ -21,7 +21,7 @@ class ServicesController < ApplicationController
 
   # GET /services/1
   def show
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(@service)
       api_render @service
     end
@@ -59,7 +59,7 @@ class ServicesController < ApplicationController
 
   # GET /services/1/resources
   def resources
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(collection_etag(@service.resources))
       api_render @service.resources
     end

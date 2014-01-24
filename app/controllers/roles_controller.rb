@@ -13,7 +13,7 @@ class RolesController < ApplicationController
   
   # GET /roles
   def index
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(collection_etag(Role))
       @roles = Role.collection(params)
       api_render @roles
@@ -23,7 +23,7 @@ class RolesController < ApplicationController
 
   # GET /roles/1
   def show
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(@role)
       api_render @role
     end
@@ -62,7 +62,7 @@ class RolesController < ApplicationController
 
   # GET /roles/1/api_users
   def api_users
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(collection_etag(@role.api_users))
       api_render @role.api_users
     end
@@ -71,7 +71,7 @@ class RolesController < ApplicationController
 
   # GET /roles/1/groups
   def groups
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(collection_etag(@role.groups))
       api_render @role.groups
     end
@@ -80,7 +80,7 @@ class RolesController < ApplicationController
 
   # GET /roles/1/rights
   def rights
-    expires_in 0, 's-maxage' => 30.minutes
+    expires_in 0, 's-maxage' => 1.week
     if stale?(collection_etag(@role.rights))
       api_render @role.rights
     end
