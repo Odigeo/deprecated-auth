@@ -1,6 +1,6 @@
 Auth::Application.configure do
   # We don't want to see view render lines in production.
-  config.action_view = nil
+  config.action_view.logger = nil
 
   # Settings specified here will take precedence over those in config/application.rb
 
