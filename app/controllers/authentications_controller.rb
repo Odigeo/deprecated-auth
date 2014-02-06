@@ -70,7 +70,7 @@ class AuthenticationsController < ApplicationController
     end
     # Is the client authorised to perform the query?
     if !@authentication.authorized?(*query)
-      logger.info "[#{token}] Authorization DENIED: #{username} may NOT <#{params[:query]}>"
+      logger.warn "[#{token}] Authorization DENIED: #{username} may NOT <#{params[:query]}>"
       expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
       render_api_error 403, "Denied"
       return
@@ -119,7 +119,7 @@ class AuthenticationsController < ApplicationController
     end
     @api_user = ApiUser.find_by_credentials(username, password)
     unless @api_user
-      logger.info "Authentication doesn't authenticate for #{username}"
+      logger.warn "Authentication doesn't authenticate for #{username}"
       expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
       render_api_error 403, "Does not authenticate"
       return false
@@ -129,7 +129,7 @@ class AuthenticationsController < ApplicationController
 
   def ensure_not_blocked
     return true unless @api_user.login_blocked
-    logger.info "Login blocked for #{@api_user.username}: \"#{@api_user.login_blocked_reason}\""
+    logger.warn "Login blocked for #{@api_user.username}: \"#{@api_user.login_blocked_reason}\""
     expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
     res = ["Login blocked"]
     res << @api_user.login_blocked_reason if @api_user.login_blocked_reason.present?
