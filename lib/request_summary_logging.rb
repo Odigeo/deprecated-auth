@@ -34,7 +34,6 @@ ActiveSupport::Notifications.subscribe "process_action.action_controller" do |na
   end
 end
 
-
 def compute_status payload
   status = payload[:status]
   if status.nil? && payload[:exception].present?
@@ -53,6 +52,14 @@ ActiveSupport::Notifications.subscribe 'request.action_dispatch' do |*args|
   data[:remote_ip] = request.remote_ip
   data[:path] = request.filtered_path
   data[:_api_error] = JSON.parse(response.body)['_api_error'] if response.body =~ /\A\{"_api_error"/
+
+  ex = request.env["action_dispatch.exception"]
+  if ex && data[:status] != 404
+    # We might want to send an email here - exceptions in production
+    # should be taken seriously
+    data[:exception_message] = ex.message
+    data[:exception_backtrace] = ex.backtrace.to_json
+  end
 
   pp data
   # Rails.logger.info data
