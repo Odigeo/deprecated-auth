@@ -164,7 +164,7 @@ DEPENDENCIES
   immigrant
   jbuilder
   memory_test_fix
-  ocean-rails (>= 1.29.5)
+  ocean-rails (>= 1.29.7)
   pg
   protected_attributes
   rails (~> 4.0)
