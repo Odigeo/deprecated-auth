@@ -24,7 +24,7 @@ class AuthenticationsController < ApplicationController
                                              :max_age => max_age,
                                              :created_at => Time.now.utc,
                                              :expires_at => Time.now.utc + max_age)
-    logger.info "[#{@authentication.token}] Authentication CREATED for #{@api_user.username}"
+    logger.info "Authentication CREATED for #{@api_user.username} [#{@authentication.token}]"
     expires_now   # Tiny increase in security
     render partial: "authentication", object: @authentication, status: 201
   end
@@ -41,7 +41,7 @@ class AuthenticationsController < ApplicationController
     token = @authentication.token
     # Has the authentication expired?
     if @authentication.expired?
-      logger.info "[#{token}] Authentication EXPIRED for #{username}"
+      logger.info "Authentication EXPIRED for #{username} [#{token}]"
       expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
       render_api_error 419, "Authentication Timeout"
       return
@@ -70,7 +70,7 @@ class AuthenticationsController < ApplicationController
     end
     # Is the client authorised to perform the query?
     if !@authentication.authorized?(*query)
-      logger.warn "[#{token}] Authorization DENIED: #{username} may NOT <#{params[:query]}>"
+      logger.warn "Authorization DENIED: #{username} may NOT <#{params[:query]}> [#{token}]"
       expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
       render_api_error 403, "Denied"
       return
@@ -78,7 +78,7 @@ class AuthenticationsController < ApplicationController
     # Let the authorisation live in the Varnish cache while it's valid
     if stale?(last_modified: @authentication.created_at, etag: @authentication)
       smax_age = @authentication.seconds_remaining
-      logger.info "[#{token}] Authorization GRANTED: #{username} may <#{params[:query]}> for #{smax_age}s"
+      logger.info "Authorization GRANTED: #{username} may <#{params[:query]}> for #{smax_age}s [#{token}]"
       expires_in 0, 's-maxage' => smax_age, 'max-stale' => 0
       api_render @authentication
     end
@@ -93,7 +93,7 @@ class AuthenticationsController < ApplicationController
   def destroy
     user = @authentication.api_user
     @authentication.destroy
-    logger.info "[#{@authentication.token}] Authentication DESTROYED for #{user.username} "
+    logger.info "Authentication DESTROYED for #{user.username} [#{@authentication.token}]"
     render_head_204    
   end
 
