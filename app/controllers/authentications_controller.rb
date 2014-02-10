@@ -24,7 +24,7 @@ class AuthenticationsController < ApplicationController
                                              :max_age => max_age,
                                              :created_at => Time.now.utc,
                                              :expires_at => Time.now.utc + max_age)
-    logger.info "Authentication CREATED for #{@api_user.username} [#{@authentication.token}]"
+    logger.info "Authentication CREATED for #{@api_user.username}"
     expires_now   # Tiny increase in security
     render partial: "authentication", object: @authentication, status: 201
   end
@@ -41,7 +41,7 @@ class AuthenticationsController < ApplicationController
     token = @authentication.token
     # Has the authentication expired?
     if @authentication.expired?
-      logger.info "Authentication EXPIRED for #{username} [#{token}]"
+      logger.info "Authentication EXPIRED for #{username}"
       expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
       render_api_error 419, "Authentication Timeout"
       return
@@ -70,7 +70,7 @@ class AuthenticationsController < ApplicationController
     end
     # Is the client authorised to perform the query?
     if !@authentication.authorized?(*query)
-      logger.warn "Authorization DENIED: #{username} may NOT <#{params[:query]}> [#{token}]"
+      logger.warn "Authorization DENIED: #{username} may NOT <#{params[:query]}>"
       expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
       render_api_error 403, "Denied"
       return
@@ -78,7 +78,7 @@ class AuthenticationsController < ApplicationController
     # Let the authorisation live in the Varnish cache while it's valid
     if stale?(last_modified: @authentication.created_at, etag: @authentication)
       smax_age = @authentication.seconds_remaining
-      logger.info "Authorization GRANTED: #{username} may <#{params[:query]}> for #{smax_age}s [#{token}]"
+      logger.info "Authorization GRANTED: #{username} may <#{params[:query]}> for #{smax_age}s"
       expires_in 0, 's-maxage' => smax_age, 'max-stale' => 0
       api_render @authentication
     end
