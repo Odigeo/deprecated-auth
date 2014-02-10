@@ -1,11 +1,6 @@
 Rails.logger = ZeromqLogger.new
-#load 'lib/request_summary_logging.rb'
 
 Auth::Application.configure do
-  # We don't want to see view render lines in production.
-  config.action_view.logger = nil
-  config.action_controller.logger = nil
-
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests
