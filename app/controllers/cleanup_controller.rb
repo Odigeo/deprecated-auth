@@ -10,6 +10,7 @@ class CleanupController < ApplicationController
 
 
   def update
+    sleep rand(60)
     n = Authentication.count
     Authentication.old_expired.destroy_all
     logger.info "Cleaned up #{n - Authentication.count} old expired Authentications"
