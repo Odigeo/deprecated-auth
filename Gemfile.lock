@@ -81,7 +81,7 @@ GEM
       activemodel (~> 4.0)
       activesupport (~> 4.0)
       aws-sdk (~> 1.0)
-    ocean-rails (1.30.1)
+    ocean-rails (2.0.0)
       faraday
       faraday_middleware
       ffi (= 1.9.0)
@@ -164,7 +164,7 @@ DEPENDENCIES
   immigrant
   jbuilder
   memory_test_fix
-  ocean-rails (>= 1.30.1)
+  ocean-rails (>= 2.0.0)
   pg
   protected_attributes
   rails (~> 4.0)

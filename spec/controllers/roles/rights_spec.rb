@@ -41,7 +41,15 @@ describe RolesController do
     it "should return a collection" do
       get :rights, id: @it
       response.status.should == 200
-      JSON.parse(response.body).should be_an Array
+      wrapper = JSON.parse(response.body)
+      wrapper.should be_a Hash
+      resource = wrapper['_collection']
+      resource.should be_a Hash
+      coll = resource['resources']
+      coll.should be_an Array
+      coll.count.should == 3
+      n = resource['count']
+      n.should == 3
     end
 
   end
