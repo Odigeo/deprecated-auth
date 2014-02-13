@@ -14,7 +14,7 @@ class ApiUsersController < ApplicationController
   
   # GET /api_users
   def index
-    expires_in 0, 's-maxage' => 1.week
+    expires_in 0, 's-maxage' => 2.hours
     if stale?(collection_etag(ApiUser))
       @api_users = ApiUser.collection(params)
       api_render @api_users
@@ -24,7 +24,7 @@ class ApiUsersController < ApplicationController
 
   # GET /api_users/1
   def show
-    expires_in 0, 's-maxage' => 1.week
+    expires_in 0, 's-maxage' => 2.hours
     if stale?(@api_user)
       api_render @api_user
     end
@@ -71,7 +71,7 @@ class ApiUsersController < ApplicationController
   
   # GET /api_users/1/roles
   def roles
-    expires_in 0, 's-maxage' => 1.week
+    expires_in 0, 's-maxage' => 2.hours
     if stale?(collection_etag(@api_user.roles))
       api_render @api_user.roles
     end
@@ -80,7 +80,7 @@ class ApiUsersController < ApplicationController
   
   # GET /api_users/1/groups
   def groups
-    expires_in 0, 's-maxage' => 1.week
+    expires_in 0, 's-maxage' => 2.hours
     if stale?(collection_etag(@api_user.groups))
       api_render @api_user.groups
     end

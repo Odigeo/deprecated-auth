@@ -14,7 +14,7 @@ class RightsController < ApplicationController
   
   # GET /rights
   def index
-    expires_in 0, 's-maxage' => 1.week
+    expires_in 0, 's-maxage' => 2.hours
     if stale?(collection_etag(Right))
       @rights = Right.collection(params)
       api_render @rights
@@ -24,7 +24,7 @@ class RightsController < ApplicationController
 
   # GET /rights/1
   def show
-    expires_in 0, 's-maxage' => 1.week
+    expires_in 0, 's-maxage' => 2.hours
     if stale?(@right)
       api_render @right
     end
@@ -61,7 +61,7 @@ class RightsController < ApplicationController
 
   # GET /rights/1/groups
   def groups
-    expires_in 0, 's-maxage' => 1.week
+    expires_in 0, 's-maxage' => 2.hours
     if stale?(collection_etag(Group))
       api_render @right.groups
     end
@@ -70,7 +70,7 @@ class RightsController < ApplicationController
 
   # GET /rights/1/roles
   def roles
-    expires_in 0, 's-maxage' => 1.week
+    expires_in 0, 's-maxage' => 2.hours
     if stale?(collection_etag(@right.roles))
       api_render @right.roles
     end
