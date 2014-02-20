@@ -83,15 +83,15 @@ class ApiUser < ActiveRecord::Base
   end
 
 
-  #
-  # The sum of all rights in each group, plus the rights of each role
-  #
-  def all_rights
-    sum = []
-    groups.each { |group| sum = (sum + group.all_rights) }
-    roles.each { |role| sum = (sum + role.rights) }
-    sum.uniq
-  end
+  # #
+  # # The sum of all rights in each group, plus the rights of each role
+  # #
+  # def all_rights
+  #   sum = []
+  #   groups.each { |group| sum = (sum + group.all_rights) }
+  #   roles.each { |role| sum = (sum + role.rights) }
+  #   sum.uniq
+  # end
 
 
   #

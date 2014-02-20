@@ -140,45 +140,45 @@ describe Group do
   end
 
 
-  describe "all_rights" do
+  # describe "all_rights" do
 
-     before :each do
-      @right1 = create :right
-      @right2 = create :right
-      @right3 = create :right
-      @right4 = create :right
-      @right5 = create :right
-      @right6 = create :right
+  #    before :each do
+  #     @right1 = create :right
+  #     @right2 = create :right
+  #     @right3 = create :right
+  #     @right4 = create :right
+  #     @right5 = create :right
+  #     @right6 = create :right
 
-      @role1 = create :role
-      @role1.rights << @right1
-      @role1.rights << @right2
+  #     @role1 = create :role
+  #     @role1.rights << @right1
+  #     @role1.rights << @right2
 
-      @role2 = create :role
-      @role2.rights << @right2
-      @role2.rights << @right3
-      @role2.rights << @right4
-    end
+  #     @role2 = create :role
+  #     @role2.rights << @right2
+  #     @role2.rights << @right3
+  #     @role2.rights << @right4
+  #   end
 
 
-    it "should obtain the correct all_rights when there are duplicates between roles" do
-      g = create :group        # 1, 2; 2, 3, 4 => [1, 2, 3, 4]
-      g.roles << @role1
-      g.roles << @role2
-      g.all_rights.sort_by(&:id).should ==
-        [@right1, @right2, @right3, @right4].sort_by(&:id)
-    end
+  #   it "should obtain the correct all_rights when there are duplicates between roles" do
+  #     g = create :group        # 1, 2; 2, 3, 4 => [1, 2, 3, 4]
+  #     g.roles << @role1
+  #     g.roles << @role2
+  #     g.all_rights.sort_by(&:id).should ==
+  #       [@right1, @right2, @right3, @right4].sort_by(&:id)
+  #   end
 
-    it "should obtain the correct all_rights when there are duplicates between roles and rights" do
-      g = create :group        # 1, 2; 1; 6 => [1, 2, 6]
-      g.roles << @role1
-      g.rights << @right1
-      g.rights << @right6
-      g.all_rights.sort_by(&:id).should ==
-        [@right1, @right2, @right6].sort_by(&:id)
-    end
+  #   it "should obtain the correct all_rights when there are duplicates between roles and rights" do
+  #     g = create :group        # 1, 2; 1; 6 => [1, 2, 6]
+  #     g.roles << @role1
+  #     g.rights << @right1
+  #     g.rights << @right6
+  #     g.all_rights.sort_by(&:id).should ==
+  #       [@right1, @right2, @right6].sort_by(&:id)
+  #   end
 
-  end
+  # end
 
 
 end

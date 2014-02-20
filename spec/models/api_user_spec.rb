@@ -257,32 +257,32 @@ describe ApiUser do
     end
 
 
-    describe "all_rights" do
+    # describe "all_rights" do
 
-      it "should obtain the correct all_rights for duplicates within roles" do
-        u = create :api_user
-        u.roles << @role1
-        u.roles << @role2
-        u.all_rights.sort_by(&:id).should ==
-          [@right1, @right2, @right3, @right4].sort_by(&:id)
-      end
+    #   it "should obtain the correct all_rights for duplicates within roles" do
+    #     u = create :api_user
+    #     u.roles << @role1
+    #     u.roles << @role2
+    #     u.all_rights.sort_by(&:id).should ==
+    #       [@right1, @right2, @right3, @right4].sort_by(&:id)
+    #   end
 
-      it "should obtain the correct all_rights for duplicates within groups" do
-        u = create :api_user
-        u.groups << @group1
-        u.groups << @group2
-        u.all_rights.sort_by(&:id).should ==
-          [@right1, @right2, @right3, @right4, @right5, @right6].sort_by(&:id)
-      end
+    #   it "should obtain the correct all_rights for duplicates within groups" do
+    #     u = create :api_user
+    #     u.groups << @group1
+    #     u.groups << @group2
+    #     u.all_rights.sort_by(&:id).should ==
+    #       [@right1, @right2, @right3, @right4, @right5, @right6].sort_by(&:id)
+    #   end
 
-      it "should obtain the correct all_rights for duplicates between groups and roles" do
-        u = create :api_user
-        u.roles << @role1
-        u.groups << @group1
-        u.all_rights.sort_by(&:id).should ==
-          [@right1, @right2, @right6].sort_by(&:id)
-      end
-    end
+    #   it "should obtain the correct all_rights for duplicates between groups and roles" do
+    #     u = create :api_user
+    #     u.roles << @role1
+    #     u.groups << @group1
+    #     u.all_rights.sort_by(&:id).should ==
+    #       [@right1, @right2, @right6].sort_by(&:id)
+    #   end
+    # end
 
 
     describe "map_rights" do

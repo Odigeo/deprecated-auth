@@ -46,11 +46,11 @@ class Group < ActiveRecord::Base
   
 
 
-  def all_rights
-    # This is the sum of all rights in each role, plus the locally attached rights
-    sum = []
-    roles.each { |role| sum = (sum + role.rights) }
-    (sum + rights).uniq
-  end
+  # def all_rights
+  #   # This is the sum of all rights in each role, plus the locally attached rights
+  #   sum = []
+  #   roles.each { |role| sum = (sum + role.rights) }
+  #   (sum + rights).uniq
+  # end
 
 end
