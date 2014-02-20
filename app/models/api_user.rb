@@ -95,6 +95,46 @@ class ApiUser < ActiveRecord::Base
 
 
   #
+  # Map each right of this ApiUser to a function. Stop if fn returns false or nil.
+  # Each right is only considered once. The function is mandatory; each keyword
+  # adds further restriction if present and non-false.
+  #
+  def map_rights(fn, service: nil, resource: nil, hyperlink: nil, verb: nil, 
+                     app: nil, context: nil)
+    seen_rights = []
+    seen_roles = []
+    # Local function to consider a right. Since this is a Proc (not a lambda), any
+    # return in the body will return from the enclosing function (map_rights) rather
+    # than from the Proc. This is exactly what we want.
+    considerer = Proc.new { |right|
+      unless seen_rights.include?(right)
+        seen_rights << right
+        rservice, rresource, rhyperlink, rverb, rapp, rcontext = right.name.split(':')
+        if (!service   || rservice == '*'   || rservice == service) &&
+           (!resource  || rresource == '*'  || rresource == resource) &&
+           (!hyperlink || rhyperlink == '*' || rhyperlink == hyperlink) &&
+           (!verb      || rverb == '*'      || rverb == verb) &&
+           (!app       || rapp == '*'       || rapp == app) &&
+           (!context   || rcontext == '*'   || rcontext == context)
+          return unless fn.call(right)
+        end
+      end
+    }
+    roles.each { |role| 
+      seen_roles << role
+      role.rights.each { |right| considerer.call(right) } }
+    groups.each { |group| 
+      group.rights.each { |right| considerer.call(right) } 
+      group.roles.each { |role| 
+        next if seen_roles.include?(role)
+        seen_roles << role
+        role.rights.each { |right| considerer.call(right) } 
+      }
+    }
+  end
+
+
+  #
   # Returns the token to use when creating an Authentication for this ApiUser.
   # If shared_tokens is true, an existing token will be used, if one exists.
   # Otherwise a new token will be created and returned.

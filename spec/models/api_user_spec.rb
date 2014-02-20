@@ -224,15 +224,15 @@ describe ApiUser do
   end
   
 
-  describe "all_rights" do
+  describe do
 
     before :each do
-      @right1 = create :right
-      @right2 = create :right
-      @right3 = create :right
-      @right4 = create :right
-      @right5 = create :right
-      @right6 = create :right
+      @right1 = create :right, app: "foo", context: "quux"
+      @right2 = create :right, app: "bar", context: "*"
+      @right3 = create :right, app: "foo", context: "*"
+      @right4 = create :right, app: "*", context: "*"
+      @right5 = create :right, app: "baz", context: "zuul"
+      @right6 = create :right, app: "bar", context: "zuul"
 
       @role1 = create :role
       @role1.rights << @right1
@@ -257,31 +257,73 @@ describe ApiUser do
     end
 
 
-    it "should obtain the correct all_rights for duplicates within roles" do
-      u = create :api_user
-      u.roles << @role1
-      u.roles << @role2
-      u.all_rights.sort_by(&:id).should ==
-        [@right1, @right2, @right3, @right4].sort_by(&:id)
+    describe "all_rights" do
+
+      it "should obtain the correct all_rights for duplicates within roles" do
+        u = create :api_user
+        u.roles << @role1
+        u.roles << @role2
+        u.all_rights.sort_by(&:id).should ==
+          [@right1, @right2, @right3, @right4].sort_by(&:id)
+      end
+
+      it "should obtain the correct all_rights for duplicates within groups" do
+        u = create :api_user
+        u.groups << @group1
+        u.groups << @group2
+        u.all_rights.sort_by(&:id).should ==
+          [@right1, @right2, @right3, @right4, @right5, @right6].sort_by(&:id)
+      end
+
+      it "should obtain the correct all_rights for duplicates between groups and roles" do
+        u = create :api_user
+        u.roles << @role1
+        u.groups << @group1
+        u.all_rights.sort_by(&:id).should ==
+          [@right1, @right2, @right6].sort_by(&:id)
+      end
     end
 
-    it "should obtain the correct all_rights for duplicates within groups" do
-      u = create :api_user
-      u.groups << @group1
-      u.groups << @group2
-      u.all_rights.sort_by(&:id).should ==
-        [@right1, @right2, @right3, @right4, @right5, @right6].sort_by(&:id)
-    end
 
-    it "should obtain the correct all_rights for duplicates between groups and roles" do
-      u = create :api_user
-      u.roles << @role1
-      u.groups << @group1
-      u.all_rights.sort_by(&:id).should ==
-        [@right1, @right2, @right6].sort_by(&:id)
-    end
+    describe "map_rights" do
 
+      it "should traverse all rights given a function which always returns true" do
+        u = create :api_user
+        u.roles << @role1
+        u.roles << @role2
+        u.groups << @group1
+        u.groups << @group2
+        result = []
+        u.map_rights(lambda { |right| result << right; true })
+        result.sort_by(&:id).should == [@right1, @right2, @right3, @right4, @right5, @right6].sort_by(&:id)
+      end
+
+      it "should return exactly one right given a function which always returns false" do
+        u = create :api_user
+        u.roles << @role1
+        u.roles << @role2
+        u.groups << @group1
+        u.groups << @group2
+        result = []
+        u.map_rights(lambda { |right| result << right; false })
+        result.length.should == 1
+      end
+
+      it "should return three rights when queried for the foo app (one is a wildcard)" do
+        u = create :api_user
+        u.roles << @role1
+        u.roles << @role2
+        u.groups << @group1
+        u.groups << @group2
+        result = []
+        u.map_rights(lambda { |right| result << right; true }, app: "foo")
+        result.length.should == 3
+        result.sort_by(&:id).should == [@right1, @right3, @right4].sort_by(&:id)
+      end
+
+    end
   end
+
 
   describe "search" do
   
