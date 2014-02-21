@@ -24,7 +24,9 @@ class AuthenticationsController < ApplicationController
                                              :max_age => max_age,
                                              :created_at => Time.now.utc,
                                              :expires_at => Time.now.utc + max_age)
-    logger.info "Authentication CREATED for #{@api_user.username}"
+    Thread.current[:username] = @api_user.username
+    Thread.current[:token] = @authentication.token
+    #logger.info "Authentication CREATED for #{@api_user.username}"
     expires_now   # Tiny increase in security
     render partial: "authentication", object: @authentication, status: 201
   end
@@ -39,6 +41,8 @@ class AuthenticationsController < ApplicationController
   def show
     username = @authentication.api_user.username
     token = @authentication.token
+    Thread.current[:username] = username
+    Thread.current[:x_api_token] = token
     # Has the authentication expired?
     if @authentication.expired?
       logger.info "Authentication EXPIRED for #{username}"
@@ -78,7 +82,7 @@ class AuthenticationsController < ApplicationController
     # Let the authorisation live in the Varnish cache while it's valid
     if stale?(last_modified: @authentication.created_at, etag: @authentication)
       smax_age = @authentication.seconds_remaining
-      logger.info "Authorization GRANTED: #{username} may <#{params[:query]}> for #{smax_age}s"
+      #logger.info "Authorization GRANTED: #{username} may <#{params[:query]}> for #{smax_age}s"
       expires_in 0, 's-maxage' => smax_age, 'max-stale' => 0
       api_render @authentication
     end
@@ -101,8 +105,13 @@ class AuthenticationsController < ApplicationController
   private
   
   def find_authentication
+    # TODO: Eliminate find_by_token, eager load the ApiUser.
     @authentication = Authentication.find_by_token(params[:id])
-    return true if @authentication
+    if @authentication
+      Thread.current[:username] = @authentication.api_user.username
+      Thread.current[:token] = @authentication.token
+      return true 
+    end
     logger.info "Authentication not found for [#{params[:id]}]"
     expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
     render_api_error 400, "Authentication not found"
