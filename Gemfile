@@ -8,7 +8,7 @@ gem "foreigner"          # Foreign key constraints in MySQL, PostgreSQL, and SQL
 
 gem "jbuilder"           # We use Jbuilder to render our JSON responses
 
-gem "bcrypt-ruby", :require => "bcrypt"       # Password hashing, etc
+gem "bcrypt"             # Password hashing, etc
 
 
 group :test, :development do
