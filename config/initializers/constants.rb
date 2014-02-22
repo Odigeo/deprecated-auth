@@ -1,0 +1,2 @@
+
+DEFAULT_CACHE_TIME = 1.hour
