@@ -1,11 +1,10 @@
 class ResourcesController < ApplicationController
 
-  ocean_resource_controller extra_actions: { 'rights'       => ['rights', "GET"],
-                                             'right_create' => ["rights", "POST"]}
+  ocean_resource_controller extra_actions: { 'rights'       => ['rights', "GET"]}
 
   respond_to :json
 
-  before_action :find_resource, except: [:index, :create]
+  before_action :find_resource, except: :index
   
   
   
@@ -36,24 +35,17 @@ class ResourcesController < ApplicationController
   # relations.
 
 
-  # PUT /resources/1
-  def update
-    if missing_attributes?
-      render_api_error 422, "Missing resource attributes"
-      return
-    end
-    @resource.assign_attributes(filtered_params Resource)
-    set_updater(@resource)
-    @resource.save!
-    api_render @resource
-  end
-
-
-  # DELETE /resources/1
-  def destroy
-    @resource.destroy
-    render_head_204
-  end
+  # # PUT /resources/1
+  # def update
+  #   if missing_attributes?
+  #     render_api_error 422, "Missing resource attributes"
+  #     return
+  #   end
+  #   @resource.assign_attributes(filtered_params Resource)
+  #   set_updater(@resource)
+  #   @resource.save!
+  #   api_render @resource
+  # end
 
 
   # GET /resources/1/rights
@@ -65,13 +57,13 @@ class ResourcesController < ApplicationController
   end
   
 
-  # POST /resources/1/rights
-  def right_create
-    @right = @resource.rights.new(filtered_params Right)
-    set_updater(@right)
-    @right.save!
-    api_render @right, new: true
-  end
+  # # POST /resources/1/rights
+  # def right_create
+  #   @right = @resource.rights.new(filtered_params Right)
+  #   set_updater(@right)
+  #   @right.save!
+  #   api_render @right, new: true
+  # end
 
   
   private

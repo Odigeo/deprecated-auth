@@ -15,12 +15,12 @@ describe RightsController do
       post("/v1/rights").should_not be_routable
     end
 
-    it "routes to #update" do
-      put("/v1/rights/1").should route_to("rights#update", :id => "1")
+    it "should not route to #update" do
+      put("/v1/rights/1").should_not be_routable
     end
 
-    it "routes to #destroy" do
-      delete("/v1/rights/1").should route_to("rights#destroy", :id => "1")
+    it "should not route to #destroy" do
+      delete("/v1/rights/1").should_not be_routable
     end
 
     it "routes to #groups" do

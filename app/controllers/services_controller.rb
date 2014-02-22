@@ -1,11 +1,10 @@
 class ServicesController < ApplicationController
 
-  ocean_resource_controller extra_actions: { 'resources'       => ['resources', "GET"],
-                                             'resource_create' => ['resources', "POST"]}
+  ocean_resource_controller extra_actions: { 'resources'       => ['resources', "GET"]}
   
   respond_to :json
 
-  before_action :find_service, except: [:index, :create]
+  before_action :find_service, except: :index
   
   
   
@@ -28,33 +27,26 @@ class ServicesController < ApplicationController
   end
 
 
-  # POST /services
-  def create
-    @service = Service.new(filtered_params Service)
-    set_updater(@service)
-    @service.save!
-    api_render @service, new: true
-  end
+  # # POST /services
+  # def create
+  #   @service = Service.new(filtered_params Service)
+  #   set_updater(@service)
+  #   @service.save!
+  #   api_render @service, new: true
+  # end
 
 
-  # PUT /services/1
-  def update
-    if missing_attributes?
-      render_api_error 422, "Missing resource attributes"
-      return
-    end
-    @service.assign_attributes(filtered_params Service)
-    set_updater(@service)
-    @service.save!
-    api_render @service
-  end
-
-
-  # DELETE /services/1
-  def destroy
-    @service.destroy
-    render_head_204
-  end
+  # # PUT /services/1
+  # def update
+  #   if missing_attributes?
+  #     render_api_error 422, "Missing resource attributes"
+  #     return
+  #   end
+  #   @service.assign_attributes(filtered_params Service)
+  #   set_updater(@service)
+  #   @service.save!
+  #   api_render @service
+  # end
 
 
   # GET /services/1/resources
@@ -66,13 +58,13 @@ class ServicesController < ApplicationController
   end
 
 
-  # POST /services/1/resources
-  def resource_create
-    @resource = @service.resources.build(filtered_params Resource)
-    set_updater(@resource)
-    @resource.save!
-    api_render @resource, new: true
-  end
+  # # POST /services/1/resources
+  # def resource_create
+  #   @resource = @service.resources.build(filtered_params Resource)
+  #   set_updater(@resource)
+  #   @resource.save!
+  #   api_render @resource, new: true
+  # end
 
   
   

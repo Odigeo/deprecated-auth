@@ -11,24 +11,24 @@ describe ResourcesController do
       get("/v1/resources/1").should route_to("resources#show", :id => "1")
     end
 
-    it "not route to #create" do
+    it "should not route to #create" do
       post("/v1/resources").should_not be_routable
     end
 
-    it "routes to #update" do
-      put("/v1/resources/1").should route_to("resources#update", :id => "1")
+    it "should not route to #update" do
+      put("/v1/resources/1").should_not be_routable
     end
 
-    it "routes to #destroy" do
-      delete("/v1/resources/1").should route_to("resources#destroy", :id => "1")
+    it "should not route to #destroy" do
+      delete("/v1/resources/1").should_not be_routable
     end
 
     it "routes to #rights to retrieve the collection" do
       get("/v1/resources/1/rights").should route_to("resources#rights", id: "1")
     end
 
-    it "routes to #rights to create a new right" do
-      post("/v1/resources/1/rights").should route_to("resources#right_create", id: "1")
+    it "should not route to #rights to create a new right" do
+      post("/v1/resources/1/rights").should_not be_routable
     end
 
   end

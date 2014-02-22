@@ -4,21 +4,19 @@ Auth::Application.routes.draw do
 
   scope "/v1" do
 
-    resources :services, except: [:new, :edit] do
+    resources :services, except: [:create, :new, :edit, :update, :destroy] do
       member do
         get  'resources'
-        post 'resources' => 'services#resource_create'
       end
     end
  
-    resources :resources, except: [:create, :new, :edit] do
+    resources :resources, except: [:create, :new, :edit, :update, :destroy] do
       member do
         get  'rights'
-        post 'rights' => 'resources#right_create'
       end
     end
     
-    resources :rights, except: [:create, :new, :edit] do
+    resources :rights, except: [:create, :new, :edit, :update, :destroy] do
       member do
         get 'groups'
         get 'roles'
