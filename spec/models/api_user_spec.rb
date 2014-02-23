@@ -371,38 +371,5 @@ describe ApiUser do
         
     end
   end
-
-
-  describe "authentication_token" do
-
-    it "when shared_tokens=false should always return a new token" do
-      Authentication.should_receive(:new_token)
-      u = create :api_user, shared_tokens: false
-      u.authentication_token
-    end
-
-    describe "when shared_tokens=true" do
-
-      before :each do
-        @u = create :api_user, shared_tokens: true
-      end
-
-      it "should return a new token if the ApiUser has no Authentications" do
-        Authentication.destroy_all
-        Authentication.should_receive(:new_token)
-        @u.authentication_token
-      end
-
-      it "should re-use the most recently created token if the ApiUser has Authentications" do
-        a0 = create :authentication, api_user: @u, created_at: 5.minutes.ago.utc, expires_at: 25.minutes.from_now.utc
-        a1 = create :authentication, api_user: @u
-        a2 = create :authentication
-        Authentication.should_not_receive(:new_token)
-        @u.authentication_token.should == a1.token
-      end
-
-    end
-
-  end
   
 end

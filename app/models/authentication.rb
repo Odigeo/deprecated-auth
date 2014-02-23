@@ -69,16 +69,6 @@ class Authentication < ActiveRecord::Base
     !expired?
   end
   
-  # def authorized?(service, resource, hyperlink, verb, app, context)
-  #   rights = api_user.all_rights.select { |r| r.service.name == service && r.resource.name == resource }
-  #   rights.each do |r|
-  #     return true if (r.hyperlink == '*' || hyperlink == r.hyperlink) &&
-  #                    (r.verb == '*'      || verb == r.verb) &&
-  #                    (r.app == '*'       || app == r.app) &&
-  #                    (r.context == '*'   || context == r.context)
-  #   end
-  #   false
-  # end
 
   def authorized?(service, resource, hyperlink, verb, app, context)
     result = nil

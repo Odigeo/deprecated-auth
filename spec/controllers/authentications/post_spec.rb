@@ -90,7 +90,7 @@ describe AuthenticationsController do
       max_age.should == @api_user.authentication_duration
       max_age.should == 1.year.to_i
     end
-    
+
   end
   
 end

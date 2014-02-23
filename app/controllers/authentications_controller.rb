@@ -18,12 +18,16 @@ class AuthenticationsController < ApplicationController
   # This action is used for authenticating an ApiUser.
   #
   def create
-    max_age = @api_user.authentication_duration
-    @authentication = Authentication.create!(:api_user => @api_user,
-                                             :token => @api_user.authentication_token,
-                                             :max_age => max_age,
-                                             :created_at => Time.now.utc,
-                                             :expires_at => Time.now.utc + max_age)
+    # Is there an active authentication we can use?
+    @authentication = @api_user.authentications.order(:created_at).merge(Authentication.active).last
+    unless @authentication
+      max_age = @api_user.authentication_duration
+      @authentication = Authentication.create!(:api_user => @api_user,
+                                               :token => Authentication.new_token,
+                                               :max_age => max_age,
+                                               :created_at => Time.now.utc,
+                                               :expires_at => Time.now.utc + max_age)
+    end
     Thread.current[:username] = @api_user.username
     Thread.current[:token] = @authentication.token
     #logger.info "Authentication CREATED for #{@api_user.username}"

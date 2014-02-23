@@ -133,17 +133,4 @@ class ApiUser < ActiveRecord::Base
     }
   end
 
-
-  #
-  # Returns the token to use when creating an Authentication for this ApiUser.
-  # An existing token will be re-used, if one exists.
-  # Otherwise a new token will be created and returned.
-  #
-  def authentication_token
-    #return Authentication.new_token unless shared_tokens
-    auth = authentications.order(:created_at).merge(Authentication.active).last
-    return Authentication.new_token unless auth
-    auth.token
-  end
-
 end
