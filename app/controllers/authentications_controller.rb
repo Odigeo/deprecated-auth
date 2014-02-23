@@ -19,7 +19,8 @@ class AuthenticationsController < ApplicationController
   #
   def create
     # Is there an active authentication we can use?
-    @authentication = @api_user.authentications.order(:created_at).merge(Authentication.active).last
+    #@authentication = @api_user.authentications.order(:created_at).merge(Authentication.active).last
+    @authentication = @api_user.authentications.order(:expires_at).last
     unless @authentication
       max_age = @api_user.authentication_duration
       @authentication = Authentication.create!(:api_user => @api_user,

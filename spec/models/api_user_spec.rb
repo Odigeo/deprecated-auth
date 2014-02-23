@@ -14,7 +14,6 @@
 #  created_by              :integer          default(0), not null
 #  updated_by              :integer          default(0), not null
 #  authentication_duration :integer          default(1800), not null
-#  shared_tokens           :boolean          default(FALSE), not null
 #  login_blocked           :boolean          default(FALSE), not null
 #  login_blocked_reason    :string(255)
 #  indestructible          :boolean          default(FALSE), not null
@@ -120,13 +119,6 @@ describe ApiUser do
 
     it "should default the authentication_duration to 30 minutes" do
       create(:api_user).authentication_duration.should == 30.minutes
-    end
-
-
-    it "should have a shared_tokens boolean" do
-      build(:api_user).shared_tokens.should == false
-      build(:api_user, shared_tokens: true).shared_tokens.should == true
-      build(:api_user, shared_tokens: "quoi?").shared_tokens.should == false
     end
 
 

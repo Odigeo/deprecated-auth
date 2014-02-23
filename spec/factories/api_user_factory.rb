@@ -14,7 +14,6 @@
 #  created_by              :integer          default(0), not null
 #  updated_by              :integer          default(0), not null
 #  authentication_duration :integer          default(1800), not null
-#  shared_tokens           :boolean          default(FALSE), not null
 #  login_blocked           :boolean          default(FALSE), not null
 #  login_blocked_reason    :string(255)
 #  indestructible          :boolean          default(FALSE), not null

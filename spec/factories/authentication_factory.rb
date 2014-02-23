@@ -11,9 +11,9 @@
 #
 # Indexes
 #
-#  index_authentications_on_api_user_id  (api_user_id)
-#  index_authentications_on_created_at   (created_at)
-#  index_authentications_on_token        (token) UNIQUE
+#  index_authentications_on_expires_at  (expires_at)
+#  index_authentications_on_token       (token) UNIQUE
+#  index_authentications_per_user       (api_user_id,created_at,expires_at)
 #
 
 FactoryGirl.define do

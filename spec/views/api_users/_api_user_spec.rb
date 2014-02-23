@@ -85,10 +85,6 @@ describe "api_users/_api_user" do
     @u['authentication_duration'].should be_an Integer
   end
 
-  it "should have a shared_tokens boolean" do
-    @u['shared_tokens'].should == false
-  end
-
   it "should have a login_blocked boolean" do
     @u['login_blocked'].should == false
   end

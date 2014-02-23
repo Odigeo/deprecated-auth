@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140223030422) do
+ActiveRecord::Schema.define(version: 20140223034037) do
 
   create_table "api_users", force: true do |t|
     t.string   "username",                                null: false
@@ -25,7 +25,6 @@ ActiveRecord::Schema.define(version: 20140223030422) do
     t.integer  "created_by",              default: 0,     null: false
     t.integer  "updated_by",              default: 0,     null: false
     t.integer  "authentication_duration", default: 1800,  null: false
-    t.boolean  "shared_tokens",           default: false, null: false
     t.boolean  "login_blocked",           default: false, null: false
     t.string   "login_blocked_reason"
     t.boolean  "indestructible",          default: false, null: false
@@ -60,7 +59,7 @@ ActiveRecord::Schema.define(version: 20140223030422) do
     t.integer  "api_user_id"
   end
 
-  add_index "authentications", ["api_user_id", "created_at", "expires_at"], name: "index_authentications_per_user"
+  add_index "authentications", ["api_user_id", "expires_at"], name: "index_authentications_on_api_user_id_and_expires_at"
   add_index "authentications", ["expires_at"], name: "index_authentications_on_expires_at"
   add_index "authentications", ["token"], name: "index_authentications_on_token", unique: true
 

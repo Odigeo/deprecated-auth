@@ -3,7 +3,6 @@ json.api_user do |json|
 	json.real_name                 api_user.real_name
 	json.email                     api_user.email
 	json.authentication_duration   api_user.authentication_duration
-	json.shared_tokens             api_user.shared_tokens
 	json.login_blocked             api_user.login_blocked
 	json.login_blocked_reason      api_user.login_blocked_reason if api_user.login_blocked_reason.present?
 	json.created_at                api_user.created_at.utc.iso8601
