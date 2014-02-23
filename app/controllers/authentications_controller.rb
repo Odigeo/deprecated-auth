@@ -21,8 +21,10 @@ class AuthenticationsController < ApplicationController
     # Is there an active authentication we can use?
     #@authentication = @api_user.authentications.order(:created_at).merge(Authentication.active).last
     @authentication = @api_user.authentications.order(:expires_at).last
-    unless @authentication
-      max_age = @api_user.authentication_duration
+    max_age = @api_user.authentication_duration
+    if @authentication
+      @authentication.update_attributes(expires_at: Time.now.utc + max_age)
+    else
       @authentication = Authentication.create!(:api_user => @api_user,
                                                :token => Authentication.new_token,
                                                :max_age => max_age,
