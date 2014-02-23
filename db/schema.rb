@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140213055559) do
+ActiveRecord::Schema.define(version: 20140223030422) do
 
   create_table "api_users", force: true do |t|
     t.string   "username",                                null: false
@@ -60,8 +60,8 @@ ActiveRecord::Schema.define(version: 20140213055559) do
     t.integer  "api_user_id"
   end
 
-  add_index "authentications", ["api_user_id"], name: "index_authentications_on_api_user_id"
-  add_index "authentications", ["created_at"], name: "index_authentications_on_created_at"
+  add_index "authentications", ["api_user_id", "created_at", "expires_at"], name: "index_authentications_per_user"
+  add_index "authentications", ["expires_at"], name: "index_authentications_on_expires_at"
   add_index "authentications", ["token"], name: "index_authentications_on_token", unique: true
 
   create_table "groups", force: true do |t|
