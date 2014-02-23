@@ -94,7 +94,7 @@ describe AuthenticationsController do
       r.should be_a Hash
     end
     
-    it "should be cached for the remaining number of seconds until expiration" do
+    it "should be cached exactly AUTHORIZATION_DURATION seconds" do
       Authentication.should_receive(:find_by_token).and_return(create :authentication)
       Authentication.any_instance.stub(:authorized?).and_return(true)
       get :show, id: "87e87ff086543ee0a", query: "serv:res:self:GET:*:*"
@@ -105,8 +105,7 @@ describe AuthenticationsController do
       cc = response.headers['Cache-Control']
       cc.should be_a String
       cc_s_maxage = (/s-maxage=([0-9]+)/.match cc)[1].to_i
-      secs_left = (expires_at - Time.now.utc).to_i
-      cc_s_maxage.should be_within(5).of(secs_left)
+      cc_s_maxage.should == AUTHORIZATION_DURATION
     end
     
     it "should be privately cached" do

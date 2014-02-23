@@ -19,7 +19,6 @@ class AuthenticationsController < ApplicationController
   #
   def create
     # Is there an active authentication we can use?
-    #@authentication = @api_user.authentications.order(:created_at).merge(Authentication.active).last
     @authentication = @api_user.authentications.order(:expires_at).last
     max_age = @api_user.authentication_duration
     if @authentication
@@ -88,9 +87,9 @@ class AuthenticationsController < ApplicationController
     end
     # Let the authorisation live in the Varnish cache while it's valid
     if stale?(last_modified: @authentication.created_at, etag: @authentication)
-      smax_age = @authentication.seconds_remaining
+      #smax_age = @authentication.seconds_remaining
       #logger.info "Authorization GRANTED: #{username} may <#{params[:query]}> for #{smax_age}s"
-      expires_in 0, 's-maxage' => smax_age, 'max-stale' => 0
+      expires_in 0, 's-maxage' => AUTHORIZATION_DURATION, 'max-stale' => 0
       api_render @authentication
     end
   end
