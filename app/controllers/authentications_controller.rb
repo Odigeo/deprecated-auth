@@ -31,7 +31,7 @@ class AuthenticationsController < ApplicationController
                                                :expires_at => Time.now.utc + max_age)
     end
     Thread.current[:username] = @api_user.username
-    Thread.current[:token] = @authentication.token
+    Thread.current[:x_api_token] = @authentication.token
     #logger.info "Authentication CREATED for #{@api_user.username}"
     expires_now   # Tiny increase in security
     render partial: "authentication", object: @authentication, status: 201
