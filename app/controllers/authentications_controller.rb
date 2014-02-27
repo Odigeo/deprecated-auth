@@ -45,6 +45,7 @@ class AuthenticationsController < ApplicationController
   # Authentication.
   #
   def show
+    logger.info "X-Forwarded-For: #{request.headers['X-Forwarded-For']}"
     username = @authentication.api_user.username
     token = @authentication.token
     Thread.current[:username] = username
