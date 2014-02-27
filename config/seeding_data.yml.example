@@ -14,78 +14,67 @@ required_api_users:
 
   - - god
     - :real_name: The Ocean Superuser
-      :email:     someone@example.com     # Change this
-      :password:  changeme                # Change this
+      :email:     peter.bengtson@odigeo.com
+      :password:  sdf75r3i_562
       indestructible: true
 
   - - auth
     - :real_name: Auth service
-      :email:     someone@example.com     # Change this
-      :password:  changeme                # Change this
+      :email:     peter.bengtson@odigeo.com
+      :password:  65wetjiosyvd
       indestructible: true
 
   - - cms
     - :real_name: CMS service
-      :email:     someone@example.com     # Change this
-      :password:  changeme                # Change this
+      :email:     peter.bengtson@odigeo.com
+      :password:  UHdyfg00-sdfrw
       indestructible: true
 
   - - log
     - :real_name: Log service
-      :email:     someone@example.com     # Change this
-      :password:  changeme                # Change this
+      :email:     peter.bengtson@odigeo.com
+      :password:  HJff5Gsjvi
       indestructible: true
 
   - - media
     - :real_name: Media service
-      :email:     someone@example.com     # Change this
-      :password:  changeme                # Change this
+      :email:     peter.bengtson@odigeo.com
+      :password:  Xytfhgcdgfudfy5d
       indestructible: true
 
   - - jobs
     - :real_name: Asynchronous job service
-      :email:     someone@example.com     # Change this
-      :password:  changeme                # Change this
+      :email:     peter.bengtson@odigeo.com
+      :password:  26753frgoidc4hbtyo
       indestructible: true
-  
+ 
   - - xact
     - :real_name: Transaction handling service
-      :email:     someone@example.com     # Change this
-      :password:  changeme                # Change this
+      :email:     peter.bengtson@odigeo.com
+      :password:  6253bnbgirew5647t9ysgfi5wr
+      indestructible: true
+
+  - - sandbox
+    - :real_name: Sandbox paedagogical service
+      :email:     peter.bengtson@odigeo.com
+      :password:  7ygicvbgie8fg5ejf
       indestructible: true
 
   - - admin_client
     - :real_name: Admin client
-      :email:     someone@example.com     # Change this
-      :password:  changeme                # Change this
+      :email:     lasse.edlund@odigeo.com
+      :password:  76sadfyughijkn
       :shared_tokens:           false
       :authentication_duration: 900
       indestructible: true
 
   - - admin_client_testuser
     - :real_name: Admin client test user
-      :email:     someone@example.com     # Change this
-      :password:  changeme                # Change this
+      :email:     lasse.edlund@odigeo.com
+      :password:  8765rtdwcefg
       :shared_tokens:           false
       :authentication_duration: 900
       indestructible: true
-
-  - - webshop_client
-    - :real_name: Webshop client
-      :email:     someone@example.com     # Change this
-      :password:  changeme                # Change this
-      :shared_tokens:           true
-      :authentication_duration: 3600
-      indestructible: true
-
-  - - webshop_client_testuser
-    - :real_name: Webshop client test user
-      :email:     someone@example.com     # Change this
-      :password:  changeme                # Change this
-      :shared_tokens:           true
-      :authentication_duration: 3600
-      indestructible: true
-
 
 
 # These are the services, their resources, and their rights. These do not vary
@@ -191,24 +180,12 @@ structure:
     - description: Get a Service
       hyperlink: self
       verb: GET
-    - description: Modify a Service
-      hyperlink: self
-      verb: PUT
-    - description: Delete a Service
-      hyperlink: self
-      verb: DELETE
-    - description: Create a Service
-      hyperlink: self
-      verb: POST
     - description: Get a collection of Services
       hyperlink: self
       verb: GET*
     - description: Get a collection of the Service's Resources
       hyperlink: resources
       verb: GET
-    - description: Create a new Resource for the Service
-      hyperlink: resources
-      verb: POST
 
   - name: resources
     description: The Resource resource describes a Resource belonging to a Service,
@@ -219,21 +196,12 @@ structure:
     - description: Get a Resource
       hyperlink: self
       verb: GET
-    - description: Modify a Resource
-      hyperlink: self
-      verb: PUT
-    - description: Delete a Resource
-      hyperlink: self
-      verb: DELETE
     - description: Get a collection of Resources
       hyperlink: self
       verb: GET*
     - description: Get a collection of the Resource's Rights
       hyperlink: rights
       verb: GET
-    - description: Create a new Right for the Resource
-      hyperlink: rights
-      verb: POST
 
   - name: rights
     description: The Right resource describes an access right used for authorisation
@@ -244,12 +212,6 @@ structure:
     - description: Get a Right
       hyperlink: self
       verb: GET
-    - description: Modify a Right
-      hyperlink: self
-      verb: PUT
-    - description: Delete a Right
-      hyperlink: self
-      verb: DELETE
     - description: Get a collection of Rights
       hyperlink: self
       verb: GET*
