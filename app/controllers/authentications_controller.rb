@@ -18,7 +18,9 @@ class AuthenticationsController < ApplicationController
   # This action is used for authenticating an ApiUser.
   #
   def create
-    logger.info "X-Forwarded-For: #{request.headers.inspect}"
+    request.headers.each do |k, v|
+      logger.info "#{k.to_s}: #{v.to_s}"
+    end
     # Is there an active authentication we can use?
     @authentication = @api_user.authentications.order(:expires_at).last
     max_age = @api_user.authentication_duration
