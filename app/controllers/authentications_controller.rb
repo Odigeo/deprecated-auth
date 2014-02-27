@@ -18,9 +18,9 @@ class AuthenticationsController < ApplicationController
   # This action is used for authenticating an ApiUser.
   #
   def create
-    request.headers.each do |k, v|
-      logger.info "#{k.to_s}: #{v.to_s}"
-    end
+    logger.info "REMOTE_ADDR: #{request.headers['REMOTE_ADDR']}"
+    logger.info "HTTP_CLIENT_IP: #{request.headers['HTTP_CLIENT_IP']}"
+    logger.info "HTTP_X_FORWARDED_FOR: #{request.headers['HTTP_X_FORWARDED_FOR']}"
     # Is there an active authentication we can use?
     @authentication = @api_user.authentications.order(:expires_at).last
     max_age = @api_user.authentication_duration
@@ -48,7 +48,6 @@ class AuthenticationsController < ApplicationController
   # Authentication.
   #
   def show
-    logger.info "X-Forwarded-For: #{request.headers['X-Forwarded-For']}"
     username = @authentication.api_user.username
     token = @authentication.token
     Thread.current[:username] = username
