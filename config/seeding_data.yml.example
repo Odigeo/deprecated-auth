@@ -14,67 +14,72 @@ required_api_users:
 
   - - god
     - :real_name: The Ocean Superuser
-      :email:     peter.bengtson@odigeo.com
-      :password:  sdf75r3i_562
+      :email:     someone@example.com
+      :password:  ReplaceEachPasswordWithOneOfYourOwn
       indestructible: true
 
   - - auth
     - :real_name: Auth service
-      :email:     peter.bengtson@odigeo.com
-      :password:  65wetjiosyvd
+      :email:     someone@example.com
+      :password:  ReplaceEachPasswordWithOneOfYourOwn
       indestructible: true
 
   - - cms
     - :real_name: CMS service
-      :email:     peter.bengtson@odigeo.com
-      :password:  UHdyfg00-sdfrw
+      :email:     someone@example.com
+      :password:  ReplaceEachPasswordWithOneOfYourOwn
       indestructible: true
 
   - - log
     - :real_name: Log service
-      :email:     peter.bengtson@odigeo.com
-      :password:  HJff5Gsjvi
+      :email:     someone@example.com
+      :password:  ReplaceEachPasswordWithOneOfYourOwn
       indestructible: true
 
   - - media
     - :real_name: Media service
-      :email:     peter.bengtson@odigeo.com
-      :password:  Xytfhgcdgfudfy5d
+      :email:     someone@example.com
+      :password:  ReplaceEachPasswordWithOneOfYourOwn
       indestructible: true
 
   - - jobs
     - :real_name: Asynchronous job service
-      :email:     peter.bengtson@odigeo.com
-      :password:  26753frgoidc4hbtyo
+      :email:     someone@example.com
+      :password:  ReplaceEachPasswordWithOneOfYourOwn
       indestructible: true
  
   - - xact
     - :real_name: Transaction handling service
-      :email:     peter.bengtson@odigeo.com
-      :password:  6253bnbgirew5647t9ysgfi5wr
+      :email:     someone@example.com
+      :password:  ReplaceEachPasswordWithOneOfYourOwn
       indestructible: true
 
   - - sandbox
     - :real_name: Sandbox paedagogical service
-      :email:     peter.bengtson@odigeo.com
-      :password:  7ygicvbgie8fg5ejf
+      :email:     someone@example.com
+      :password:  ReplaceEachPasswordWithOneOfYourOwn
       indestructible: true
 
   - - admin_client
     - :real_name: Admin client
-      :email:     lasse.edlund@odigeo.com
-      :password:  76sadfyughijkn
-      :shared_tokens:           false
+      :email:     someone@example.com
+      :password:  ReplaceEachPasswordWithOneOfYourOwn
       :authentication_duration: 900
       indestructible: true
 
   - - admin_client_testuser
     - :real_name: Admin client test user
-      :email:     lasse.edlund@odigeo.com
-      :password:  8765rtdwcefg
-      :shared_tokens:           false
+      :email:     someone@example.com
+      :password:  ReplaceEachPasswordWithOneOfYourOwn
       :authentication_duration: 900
       indestructible: true
+
+  - - metrics
+    - :real_name: Metrics service
+      :email:     someone@example.com
+      :password:  ReplaceEachPasswordWithOneOfYourOwn
+      indestructible: true
+ 
 
 
 # These are the services, their resources, and their rights. These do not vary
