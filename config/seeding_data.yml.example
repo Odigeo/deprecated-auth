@@ -370,3 +370,22 @@ structure:
       verb: GET
     - description: Delete log entries
       verb: DELETE
+
+
+- name: metrics
+  description: The metrics service collects and serves Ocean metrics
+
+  resources:
+
+  - name: instances
+    description: An Instance is an AWS virtual server instance
+    version: v1
+    rights:
+    - description: Instance God
+    - description: Get a collection of Instances
+      hyperlink: self
+      verb: GET*
+    - description: Get an Instance
+      hyperlink: self
+      verb: GET
+
