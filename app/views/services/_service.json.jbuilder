@@ -5,6 +5,7 @@ json.service do |json|
   json._links hyperlinks(
     self:      service_url(service),
     resources: resources_service_url(service),
+    instances: instances_url(chef_env: CHEF_ENV, service: service.name),
     creator:   api_user_url(id: service.created_by || 0),
     updater:   api_user_url(id: service.updated_by || 0)
   )

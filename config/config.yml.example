@@ -40,6 +40,9 @@ LOAD_BALANCERS: []
 # This is the list of IP numbers for the ZeroMQ log hosts. (Only used in production.)
 LOG_HOSTS: []
 
+# The Chef environment
+CHEF_ENV: master
+
 
 ##########################################################################################
 # This section allows you to specify values specific for a particular Rails

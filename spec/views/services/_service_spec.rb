@@ -16,8 +16,8 @@ describe "services/show" do
   end
 
 
-  it "should have four hyperlinks" do
-    @links.size.should == 4
+  it "should have five hyperlinks" do
+    @links.size.should == 5
   end
 
   it "should have a self hyperlink" do
@@ -34,6 +34,10 @@ describe "services/show" do
 
   it "should have a updater hyperlink" do
     @links.should be_hyperlinked('updater', /api_users/)
+  end
+
+  it "should have an instances hyperlink" do
+    @links.should be_hyperlinked('instances', /instances/)
   end
 
 

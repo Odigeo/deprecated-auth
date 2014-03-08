@@ -13,5 +13,10 @@ module ApplicationHelper
     end
     result
   end
+
+
+  def instances_url(chef_env: CHEF_ENV, service: null)
+    "#{OCEAN_API_URL}/#{Api.version_for :instances}/instances?chef_env=#{chef_env}&service=#{service}"
+  end
   
 end
