@@ -47,10 +47,6 @@ GEM
     factory_girl_rails (4.4.1)
       factory_girl (~> 4.4.0)
       railties (>= 3.0.0)
-    faraday (0.8.9)
-      multipart-post (~> 1.2.0)
-    faraday_middleware (0.9.0)
-      faraday (>= 0.7.4, < 0.9)
     ffi (1.9.0)
     ffi-rzmq (1.0.3)
       ffi
@@ -73,7 +69,6 @@ GEM
     mini_portile (0.5.2)
     minitest (4.7.5)
     multi_json (1.9.0)
-    multipart-post (1.2.0)
     net-purge (0.1.0)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
@@ -81,15 +76,15 @@ GEM
       activemodel (~> 4.0)
       activesupport (~> 4.0)
       aws-sdk (~> 1.0)
-    ocean-rails (2.4.3)
-      faraday
-      faraday_middleware
+    ocean-rails (2.6.0)
       ffi (= 1.9.0)
       ffi-rzmq (~> 1.0)
       jbuilder
       net-purge
       ocean-dynamo (>= 0.5.7)
+      oj
       rack-attack
+      rails-patch-json-encode
       typhoeus
     oj (2.6.0)
     pg (0.17.1)
@@ -134,7 +129,7 @@ GEM
       multi_json
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
-    sprockets (2.11.0)
+    sprockets (2.12.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
