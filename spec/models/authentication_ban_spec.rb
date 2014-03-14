@@ -18,7 +18,7 @@ describe Authentication do
 
 
   it "should trigger no BANs when created" do
-    Api.should_not_receive(:call_p).with("http://127.0.0.1", :ban, Api.escape("/v[0-9]+/authentications/TheToken"))
+    Api.should_not_receive(:ban).with("/v[0-9]+/authentications/TheToken")
   	create :authentication, token: "TheToken"
   end
 
@@ -26,7 +26,7 @@ describe Authentication do
   it "should trigger no BANs when updated" do
     Api.stub(:call_p)
     m = create :authentication
-    Api.should_not_receive(:call_p).with("http://127.0.0.1", :ban, Api.escape("/v[0-9]+/authentications/#{m.token}"))
+    Api.should_not_receive(:ban).with("/v[0-9]+/authentications/#{m.token}")
     m.token = "Zalagadoola"
  	  m.save!
   end
@@ -35,7 +35,7 @@ describe Authentication do
   it "should trigger no BANs when touched" do
     Api.stub(:call_p)
     m = create :authentication
-    Api.should_not_receive(:call_p).with("http://127.0.0.1", :ban, Api.escape("/v[0-9]+/authentications/#{m.token}"))
+    Api.should_not_receive(:ban).with("/v[0-9]+/authentications/#{m.token}")
  	  m.touch
   end
 
@@ -43,7 +43,7 @@ describe Authentication do
   it "should trigger one BAN when destroyed" do
     Api.stub(:call_p)
     m = create :authentication
-    Api.should_receive(:call_p).with("http://127.0.0.1", :ban, Api.escape("/v[0-9]+/authentications/#{m.token}"))
+    Api.should_receive(:ban).with("/v[0-9]+/authentications/#{m.token}")
   	m.destroy
   end
 
