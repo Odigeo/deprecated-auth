@@ -1,13 +1,13 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 4.0"
-gem "ocean-rails", ">= 2.0.8"
+gem "ocean-rails", git: "https://github.com/OceanDev/ocean-rails.git"   # ">= 2.0.8"
 
 gem "pg"                 # PostgreSQL
 gem "foreigner"          # Foreign key constraints in MySQL, PostgreSQL, and SQLite3.
 
 gem "jbuilder"           # We use Jbuilder to render our JSON responses
-gem 'rails-patch-json-encode'
+gem 'rails-patch-json-encode'  # Required for Rails 4.0.x
 gem 'oj'
 
 gem "bcrypt"             # Password hashing, etc
