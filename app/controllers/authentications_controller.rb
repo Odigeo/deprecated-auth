@@ -18,10 +18,6 @@ class AuthenticationsController < ApplicationController
   # This action is used for authenticating an ApiUser.
   #
   def create
-    #logger.info "REMOTE_ADDR: #{request.headers['REMOTE_ADDR']}"
-    #logger.info "HTTP_CLIENT_IP: #{request.headers['HTTP_CLIENT_IP']}"
-    #logger.info "HTTP_X_FORWARDED_FOR: #{request.headers['HTTP_X_FORWARDED_FOR']}"
-    # Is there an active authentication we can use?
     @authentication = @api_user.authentications.order(:expires_at).last
     max_age = @api_user.authentication_duration
     if @authentication
@@ -35,7 +31,6 @@ class AuthenticationsController < ApplicationController
     end
     Thread.current[:username] = @api_user.username
     Thread.current[:x_api_token] = @authentication.token
-    #logger.info "Authentication CREATED for #{@api_user.username}"
     expires_now   # Tiny increase in security
     render partial: "authentication", object: @authentication, status: 201
   end
@@ -82,7 +77,8 @@ class AuthenticationsController < ApplicationController
       return
     end
     # Is the client authorised to perform the query?
-    if !@authentication.authorized?(*query)
+    @right = @authentication.authorized?(*query)
+    if !@right
       logger.warn "Authorization DENIED: #{username} may NOT <#{params[:query]}>"
       expires_in 0, 's-maxage' => 5.seconds, 'max-stale' => 0
       render_api_error 403, "Denied"
@@ -90,8 +86,6 @@ class AuthenticationsController < ApplicationController
     end
     # Let the authorisation live in the Varnish cache while it's valid
     if stale?(last_modified: @authentication.created_at, etag: @authentication)
-      #smax_age = @authentication.seconds_remaining
-      #logger.info "Authorization GRANTED: #{username} may <#{params[:query]}> for #{smax_age}s"
       expires_in 0, 's-maxage' => AUTHORIZATION_DURATION, 'max-stale' => 0
       api_render @authentication
     end
@@ -106,7 +100,6 @@ class AuthenticationsController < ApplicationController
   def destroy
     user = @authentication.api_user
     @authentication.destroy
-    logger.info "Authentication DESTROYED for #{user.username} [#{@authentication.token}]"
     render_head_204    
   end
 

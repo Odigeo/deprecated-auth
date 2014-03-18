@@ -44,13 +44,4 @@ class Group < ActiveRecord::Base
   # Validations
   validates :name, presence: true
   
-
-
-  # def all_rights
-  #   # This is the sum of all rights in each role, plus the locally attached rights
-  #   sum = []
-  #   roles.each { |role| sum = (sum + role.rights) }
-  #   (sum + rights).uniq
-  # end
-
 end

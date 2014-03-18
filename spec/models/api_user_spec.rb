@@ -249,48 +249,9 @@ describe ApiUser do
     end
 
 
-    # describe "all_rights" do
-
-    #   it "should obtain the correct all_rights for duplicates within roles" do
-    #     u = create :api_user
-    #     u.roles << @role1
-    #     u.roles << @role2
-    #     u.all_rights.sort_by(&:id).should ==
-    #       [@right1, @right2, @right3, @right4].sort_by(&:id)
-    #   end
-
-    #   it "should obtain the correct all_rights for duplicates within groups" do
-    #     u = create :api_user
-    #     u.groups << @group1
-    #     u.groups << @group2
-    #     u.all_rights.sort_by(&:id).should ==
-    #       [@right1, @right2, @right3, @right4, @right5, @right6].sort_by(&:id)
-    #   end
-
-    #   it "should obtain the correct all_rights for duplicates between groups and roles" do
-    #     u = create :api_user
-    #     u.roles << @role1
-    #     u.groups << @group1
-    #     u.all_rights.sort_by(&:id).should ==
-    #       [@right1, @right2, @right6].sort_by(&:id)
-    #   end
-    # end
-
-
     describe "map_rights" do
 
-      it "should traverse all rights given a function which always returns true" do
-        u = create :api_user
-        u.roles << @role1
-        u.roles << @role2
-        u.groups << @group1
-        u.groups << @group2
-        result = []
-        u.map_rights(lambda { |right| result << right; true })
-        result.sort_by(&:id).should == [@right1, @right2, @right3, @right4, @right5, @right6].sort_by(&:id)
-      end
-
-      it "should return exactly one right given a function which always returns false" do
+      it "should traverse all rights given a function which always returns false" do
         u = create :api_user
         u.roles << @role1
         u.roles << @role2
@@ -298,6 +259,17 @@ describe ApiUser do
         u.groups << @group2
         result = []
         u.map_rights(lambda { |right| result << right; false })
+        result.sort_by(&:id).should == [@right1, @right2, @right3, @right4, @right5, @right6].sort_by(&:id)
+      end
+
+      it "should return exactly one right given a function which always returns true" do
+        u = create :api_user
+        u.roles << @role1
+        u.roles << @role2
+        u.groups << @group1
+        u.groups << @group2
+        result = []
+        u.map_rights(lambda { |right| result << right; true })
         result.length.should == 1
       end
 
@@ -308,7 +280,7 @@ describe ApiUser do
         u.groups << @group1
         u.groups << @group2
         result = []
-        u.map_rights(lambda { |right| result << right; true }, app: "foo")
+        u.map_rights(lambda { |right| result << right; false }, app: "foo")
         result.length.should == 3
         result.sort_by(&:id).should == [@right1, @right3, @right4].sort_by(&:id)
       end

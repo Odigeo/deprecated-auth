@@ -9,4 +9,7 @@ json.authentication do |json|
     self:    authentication_url(authentication.token),
     creator: api_user_url(authentication.api_user)
   )
+  if @right.is_a?(Right) && (@right.app != '*' || @right.context != '*')
+    json.right [{'app' => @right.app, 'context' => @right.context}]
+  end
 end

@@ -82,19 +82,11 @@ class ApiUser < ActiveRecord::Base
   end
 
 
-  # #
-  # # The sum of all rights in each group, plus the rights of each role
-  # #
-  # def all_rights
-  #   sum = []
-  #   groups.each { |group| sum = (sum + group.all_rights) }
-  #   roles.each { |role| sum = (sum + role.rights) }
-  #   sum.uniq
-  # end
-
-
   #
-  # Map each right of this ApiUser to a function. Stop if fn returns false or nil.
+  # Map each right of this ApiUser to a function. Stop if fn returns true for
+  # a matching right. This method returns either the matching right, if one 
+  # was found, or false if none was found or if fn filtered away all matches.
+  #
   # Each right is only considered once. The function is mandatory; each keyword
   # adds further restriction if present and non-false.
   #
@@ -115,7 +107,9 @@ class ApiUser < ActiveRecord::Base
            (!verb      || rverb == '*'      || rverb == verb) &&
            (!app       || rapp == '*'       || rapp == app) &&
            (!context   || rcontext == '*'   || rcontext == context)
-          return unless fn.call(right)
+          # If the right authorises the request, return the right, unless a
+          # false value returned from fn forces the search to continue.
+          return right if fn.call(right)
         end
       end
     }
@@ -130,6 +124,7 @@ class ApiUser < ActiveRecord::Base
         role.rights.each { |right| considerer.call(right) } 
       }
     }
+    false
   end
 
 end

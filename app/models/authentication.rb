@@ -71,11 +71,10 @@ class Authentication < ActiveRecord::Base
   
 
   def authorized?(service, resource, hyperlink, verb, app, context)
-    result = nil
-    api_user.map_rights(lambda { |right| result = right; false },
+    # Return the first matching right or false if none
+    api_user.map_rights(lambda { |right| result = right; true },
                         service: service, resource: resource, hyperlink: hyperlink, verb: verb, 
                         app: app, context: context)
-    return !!result
   end
 
 end
