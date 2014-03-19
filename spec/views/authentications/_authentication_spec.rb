@@ -6,6 +6,10 @@ describe "authentications/_authentication" do
     Authentication.destroy_all
     ApiUser.destroy_all
     original = create(:authentication)
+    group1 = create(:group, name: "Superusers")
+    group2 = create(:group, name: "Some Other Group")
+    original.api_user.groups << group1
+    original.api_user.groups << group2
     @api_user_name = original.api_user.username
     @api_user_id = original.api_user.id
     render partial: "authentications/authentication", locals: {authentication: original}
@@ -53,6 +57,10 @@ describe "authentications/_authentication" do
 
   it "should have a numerical ApiUser ID" do
     @auth['user_id'].should == @api_user_id
+  end
+
+  it "should have an array of Group names" do
+    @auth['group_names'].should == ["Superusers", "Some Other Group"]
   end
 
 end
