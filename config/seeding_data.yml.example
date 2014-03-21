@@ -48,6 +48,12 @@ required_api_users:
       :password:  ReplaceEachPasswordWithOneOfYourOwn
       indestructible: true
  
+  - - mail
+    - :real_name: The Mail service user
+      :email:     someone@example.com
+      :password:  ReplaceEachPasswordWithOneOfYourOwn
+      indestructible: true
+ 
   - - xact
     - :real_name: Transaction handling service
       :email:     someone@example.com
@@ -374,6 +380,7 @@ structure:
       hyperlink: self
       verb: GET
     - description: Delete log entries
+      hyperlink: self
       verb: DELETE
 
 
@@ -405,4 +412,22 @@ structure:
     - description: Terminate an Instance
       hyperlink: terminate
       verb: DELETE
+
+- name: mail
+  description: Asynchronous Mail service
+
+  resources:
+
+  - name: mails
+    description: Email sending
+    version: v1
+    rights:
+    - description: Mail God
+    - description: Send email
+      hyperlink: self
+      verb: POST
+    - description: Send email synchronously
+      hyperlink: send
+      verb: POST
+
 
