@@ -123,6 +123,8 @@ describe Authentication do
     before :each do
       @api_user = create :api_user
       @role = create :role
+      @service = create(:service, name: "foo")
+      @resource = create(:resource, name: "bars", service: @service)
       @api_user.roles << @role
       # The @authentication
       @authentication = create(:authentication, api_user: @api_user)
@@ -134,26 +136,22 @@ describe Authentication do
     end
 
     it "should be true if the ApiUser has a matching wildcard Right" do
-      @role.rights << create(:right, resource: create(:resource, name: "bars", service: create(:service, name: "foo")),
-                                     hyperlink: '*', verb: '*', app: '*', context: '*')
+      @role.rights << create(:right, resource: @resource, hyperlink: '*', verb: '*', app: '*', context: '*')
       @authentication.authorized?("foo", "bars", "self", "GET", "*", "*").should be_true
     end
 
     it "should be true if the ApiUser has a matching non-wildcard Right" do
-      @role.rights << create(:right, resource: create(:resource, name: "bars", service: create(:service, name: "foo")),
-                                     hyperlink: 'self', verb: 'GET', app: 'ze_app', context: 'ze_context')
+      @role.rights << create(:right, resource: @resource, hyperlink: 'self', verb: 'GET', app: 'ze_app', context: 'ze_context')
       @authentication.authorized?("foo", "bars", "self", "GET", "ze_app", "ze_context").should be_true
     end
 
     it "should be false if the ApiUser has a non-matching non-wildcard Right" do
-      @role.rights << create(:right, resource: create(:resource, name: "bars", service: create(:service, name: "foo")),
-                                     hyperlink: 'self', verb: 'GET', app: 'ze_app', context: 'ze_context')
+      @role.rights << create(:right, resource: @resource, hyperlink: 'self', verb: 'GET', app: 'blah', context: '*')
       @authentication.authorized?("foo", "bars", "self", "DELETE", "ze_app", "ze_context").should be_false
     end
 
     it "should be false if the app and context don't match, even if they are * in the query" do
-      @role.rights << create(:right, resource: create(:resource, name: "bars", service: create(:service, name: "foo")),
-                                     hyperlink: 'self', verb: 'GET', app: 'ze_app', context: 'ze_context')
+      @role.rights << create(:right, resource: @resource, hyperlink: 'self', verb: 'GET', app: 'ze_app', context: 'ze_context')
       @authentication.authorized?("foo", "bars", "self", "GET", "*", "*").should be_false
     end
 
