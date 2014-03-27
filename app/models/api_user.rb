@@ -94,6 +94,8 @@ class ApiUser < ActiveRecord::Base
                      app: nil, context: nil, app_context_acc_fn: nil)
     seen_rights = []
     seen_roles = []
+    rsrc = Resource.where(name: resource).first if resource
+    cond = rsrc ? {resource_id: rsrc.id} : {}
     # Local function to consider a right. Since this is a Proc (not a lambda), any
     # return in the body will return from the enclosing function (map_rights) rather
     # than from the Proc. This is exactly what we want.
@@ -118,13 +120,13 @@ class ApiUser < ActiveRecord::Base
     }
     roles.each { |role| 
       seen_roles << role
-      role.rights.each { |right| considerer.call(right) } }
+      role.rights.where(cond).each { |right| considerer.call(right) } }
     groups.each { |group| 
-      group.rights.each { |right| considerer.call(right) } 
+      group.rights.where(cond).each { |right| considerer.call(right) } 
       group.roles.each { |role| 
         next if seen_roles.include?(role)
         seen_roles << role
-        role.rights.each { |right| considerer.call(right) } 
+        role.rights.where(cond).each { |right| considerer.call(right) } 
       }
     }
     false
