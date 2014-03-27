@@ -71,10 +71,17 @@ class Authentication < ActiveRecord::Base
   
 
   def authorized?(service, resource, hyperlink, verb, app, context)
-    # Return the first matching right or false if none
-    api_user.map_rights(lambda { |right| result = right; true },
-                        service: service, resource: resource, hyperlink: hyperlink, verb: verb, 
-                        app: app, context: context)
+    result = false
+    acs = []
+    wildcarded = (app == '*' && context == '*')
+    # Examine all rights, don't stop at a full match if both app and context are wildcarded
+    api_user.map_rights(lambda { |right| result = right; !wildcarded },
+          app_context_acc_fn: lambda { |right| acs << {'app' => right.app, 'context' => right.context} unless right.app == '*' && right.context == '*' },
+          service: service, resource: resource, 
+          hyperlink: hyperlink, verb: verb, 
+          app: app, context: context)
+    return result if result
+    wildcarded && acs != [] && acs
   end
 
 end

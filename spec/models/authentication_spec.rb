@@ -150,9 +150,14 @@ describe Authentication do
       @authentication.authorized?("foo", "bars", "self", "DELETE", "ze_app", "ze_context").should be_false
     end
 
-    it "should be false if the app and context don't match, even if they are * in the query" do
+    it "should return app/context pairs if the app and context don't match for */* matches but there are matching app/context rights" do
       @role.rights << create(:right, resource: @resource, hyperlink: 'self', verb: 'GET', app: 'ze_app', context: 'ze_context')
-      @authentication.authorized?("foo", "bars", "self", "GET", "*", "*").should be_false
+      @role.rights << create(:right, resource: @resource, hyperlink: 'self', verb: 'GET', app: 'anozer', context: '*')
+      @role.rights << create(:right, resource: @resource, hyperlink: 'self', verb: 'PUT', app: '*', context: '*')
+      @role.rights << create(:right, resource: @resource, hyperlink: 'quux', verb: 'GET', app: '*', context: '*')
+      @authentication.authorized?("foo", "bars", "self", "GET", "*", "*").
+        should == [{"app"=>"ze_app", "context"=>"ze_context"}, 
+                   {"app"=>"anozer", "context"=>"*"}]
     end
 
   end

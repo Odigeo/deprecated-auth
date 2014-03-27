@@ -91,7 +91,7 @@ class ApiUser < ActiveRecord::Base
   # adds further restriction if present and non-false.
   #
   def map_rights(fn, service: nil, resource: nil, hyperlink: nil, verb: nil, 
-                     app: nil, context: nil)
+                     app: nil, context: nil, app_context_acc_fn: nil)
     seen_rights = []
     seen_roles = []
     # Local function to consider a right. Since this is a Proc (not a lambda), any
@@ -100,16 +100,19 @@ class ApiUser < ActiveRecord::Base
     considerer = Proc.new { |right|
       unless seen_rights.include?(right)
         seen_rights << right
-        rservice, rresource, rhyperlink, rverb, rapp, rcontext = right.name.split(':')
-        if (!service   || rservice == '*'   || rservice == service) &&
-           (!resource  || rresource == '*'  || rresource == resource) &&
-           (!hyperlink || rhyperlink == '*' || rhyperlink == hyperlink) &&
-           (!verb      || rverb == '*'      || rverb == verb) &&
-           (!app       || rapp == '*'       || rapp == app) &&
-           (!context   || rcontext == '*'   || rcontext == context)
-          # If the right authorises the request, return the right, unless a
-          # false value returned from fn forces the search to continue.
-          return right if fn.call(right)
+        if (!service   ||                      right.service.name == service) &&
+           (!resource  ||                      right.resource.name == resource) &&
+           (!hyperlink || right.hyperlink == '*' || right.hyperlink == hyperlink) &&
+           (!verb      || right.verb == '*'      || right.verb == verb) 
+          # Only the app and context might differ. Process them if function given.
+          app_context_acc_fn.call(right) if app_context_acc_fn
+          # Now check if this is a full match. If so, call fn.
+          if (!app       || right.app == '*'       || right.app == app) &&
+             (!context   || right.context == '*'   || right.context == context)
+            # If the right authorises the request, return the right, unless a
+            # false value returned from fn forces the search to continue.
+            return right if fn.call(right)
+          end
         end
       end
     }
