@@ -58,6 +58,7 @@ class ApiUser < ActiveRecord::Base
   validates :password_salt, presence: true
   validates :lock_version, presence: true
   validates :email, presence: true
+  validates :email, email: { message: "is an invalid email address" }, allow_blank: true
   validates :authentication_duration, presence: true, 
                                       numericality: { only_integer: true, greater_than: 0 }
 

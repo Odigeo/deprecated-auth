@@ -11,7 +11,7 @@ gem 'rails-patch-json-encode'  # Required for Rails 4.0.x
 gem 'oj'
 
 gem "bcrypt"             # Password hashing, etc
-
+gem 'email_validator'
 
 group :test, :development do
   gem "sqlite3"            # Dev+testing+CI (staging and production use mySQL)

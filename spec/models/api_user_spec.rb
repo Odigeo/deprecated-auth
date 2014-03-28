@@ -105,6 +105,10 @@ describe ApiUser do
       create(:api_user).email.should be_a String
     end
 
+    it "should require a valid email address" do
+      build(:api_user, email: "john@@doe").should_not be_valid
+    end
+
 
     it "should have a Authentication duration" do
       create(:api_user).authentication_duration.should be_an Integer
