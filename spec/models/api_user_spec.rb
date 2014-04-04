@@ -109,6 +109,10 @@ describe ApiUser do
       build(:api_user, email: "john@@doe").should_not be_valid
     end
 
+    it "should not consider email addresses with names valid" do
+      build(:api_user, email: "John Doe <john@doe.com>").should_not be_valid
+    end
+
 
     it "should have a Authentication duration" do
       create(:api_user).authentication_duration.should be_an Integer
