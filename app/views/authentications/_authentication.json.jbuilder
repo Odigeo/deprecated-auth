@@ -8,7 +8,7 @@ json.authentication do |json|
     if @right.is_a?(Right)
       @right = [{'app' => @right.app, 'context' => @right.context}]
     end
-    json.right @right if @right != [{'app' => '*', 'context' => '*'}]
+    json.right @right if @right
   end
 
   json.group_names authentication.api_user.groups.collect(&:name)

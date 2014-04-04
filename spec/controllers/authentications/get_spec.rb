@@ -146,16 +146,6 @@ describe AuthenticationsController do
         auth['right'].should == [{"app"=>"foo", "context"=>"*"}]
       end
         
-      it "should NOT include app and context from the Right, if authorized? returns one and both are *" do
-        Authentication.should_receive(:find_by_token).and_return(create :authentication)
-        Authentication.any_instance.stub(:authorized?).and_return(create :right, app: "*", context: "*")
-        get :show, id: "87e87ff086543ee0a", query: "serv:res:self:GET:foo:bar"
-        response.content_type.should == "application/json"
-        response.status.should == 200
-        auth = JSON.parse(response.body)['authentication']
-        auth['right'].should == nil
-      end
-        
       it "should include an array as is, if authorized? returns one" do
         Authentication.should_receive(:find_by_token).and_return(create :authentication)
         Authentication.any_instance.stub(:authorized?).and_return([{app: 'x', context: 'y'},
