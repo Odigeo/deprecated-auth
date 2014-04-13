@@ -30,8 +30,8 @@ FactoryGirl.define do
   
   factory :api_user do
     username	{ "user_#{rand(100000000)}" }
- 	password 	{ "password_#{rand(10000000)}" }
- 	email       { "somebody_#{rand(10000000)}@example.com" }
+ 	  password 	{ "password_#{rand(10000000)}" }
+ 	  email       { "somebody_#{rand(10000000)}@example.com" }
   end
   
 end

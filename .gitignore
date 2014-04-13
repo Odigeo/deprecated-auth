@@ -35,3 +35,7 @@ config/config.yml
 
 # Ignore the tailored seeding_data.yml file
 config/seeding_data.yml
+
+# Ignore the tailored AWS configuration file
+config/aws.yml
+
