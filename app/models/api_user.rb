@@ -69,6 +69,7 @@ class ApiUser < ActiveRecord::Base
     block.call
     ApiUserShadow.find(old_username).destroy if delete_old
     ApiUserShadow.create username: api_user.username,
+                         api_user_id: api_user.id,
                          password_hash: api_user.password_hash,
                          password_salt: api_user.password_salt,
                          authentication_duration: api_user.authentication_duration,
@@ -81,6 +82,13 @@ class ApiUser < ActiveRecord::Base
   end
 
 
+  def password=(plaintext_password)
+    return if plaintext_password.blank?
+    self.password_salt = BCrypt::Engine.generate_salt
+    self.password_hash = BCrypt::Engine.hash_secret(plaintext_password, password_salt)
+  end
+  
+
   def self.find_by_credentials(un, pw)
     # Don't bother going to the DB if credentials are missing
     return nil if un == "" && pw == ""
@@ -89,13 +97,6 @@ class ApiUser < ActiveRecord::Base
     user && !!user.authenticates?(pw) && user
   end
 
-
-  def password=(plaintext_password)
-    return if plaintext_password.blank?
-  	self.password_salt = BCrypt::Engine.generate_salt
-  	self.password_hash = BCrypt::Engine.hash_secret(plaintext_password, password_salt)
-  end
-  
   def authenticates?(plaintext_password)
     password_hash == BCrypt::Engine.hash_secret(plaintext_password, password_salt)
   end

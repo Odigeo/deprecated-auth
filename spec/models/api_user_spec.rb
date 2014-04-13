@@ -360,6 +360,11 @@ describe ApiUser do
       @ua.should be_an ApiUserShadow
     end
 
+
+    it "should copy the api_user_id when created" do
+      @ua.api_user_id.should == @u.id
+    end
+
     it "should copy the password_hash when created" do
       @ua.password_hash.should == @u.password_hash
     end
@@ -379,6 +384,7 @@ describe ApiUser do
     it "should copy the login_blocked_reason when created" do
       @ua.login_blocked_reason.should == @u.login_blocked_reason
     end
+
 
     it "should copy the password_hash when updated" do
       @u.password_hash = "new_value"
@@ -415,20 +421,24 @@ describe ApiUser do
       @ua.login_blocked_reason.should == ""
     end
 
+
     it "should be deleted whenever the ApiUser is deleted" do
       @u.destroy
       ApiUserShadow.find_by_key("the_user", consistent: true).should == nil
     end
 
+
     it "should be reachable by #api_user_shadow" do
       @u.api_user_shadow.should == @ua
     end
+
 
     it "#api_user_shadow should be cached" do
       ApiUserShadow.should_receive(:find).with(@u.username).once.and_return(@ua)
       @u.api_user_shadow.should == @ua
       @u.api_user_shadow.should == @ua
     end
+
 
     it "should be deleted and recreated whenever the username changes" do
       @u.username = "the_renamed_user"

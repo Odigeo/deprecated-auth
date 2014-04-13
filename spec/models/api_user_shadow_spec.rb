@@ -11,7 +11,11 @@ describe ApiUserShadow do
   end
 
   it "should require the username to be present" do
-    ApiUserShadow.new.should_not be_valid
+    ApiUserShadow.new(username: nil).should_not be_valid
+  end
+
+  it "should require the api_user_id to be present" do
+    ApiUserShadow.new(api_user_id: nil).should_not be_valid
   end
 
   it "should have a hashed password" do
@@ -61,6 +65,17 @@ describe ApiUserShadow do
     s = ApiUserShadow.find("myuser", consistent: true)
     u.authenticates?("wrong").should be_false
     s.authenticates?("wrong").should be_false
+  end
+
+  it "should return an ApiUserShadow from #find_by_credentials when the credentials match" do
+    create :api_user, username: "myuser", password: "mypassword"
+    ApiUserShadow.find_by_credentials("myuser", "mypassword").should be_an ApiUserShadow
+  end
+
+  it "should return nil from #find_by_credentials when the credentials don't match" do
+    create :api_user, username: "myuser", password: "mypassword"
+    ApiUserShadow.find_by_credentials("myuser", "wrong").should == false
+    ApiUserShadow.find_by_credentials("some_other_user", "mypassword").should == false
   end
 
 end

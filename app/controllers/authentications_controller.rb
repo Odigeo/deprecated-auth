@@ -23,7 +23,7 @@ class AuthenticationsController < ApplicationController
     if @authentication
       @authentication.update_attributes(expires_at: Time.now.utc + max_age)
     else
-      @authentication = Authentication.create!(:api_user => @api_user,
+      @authentication = Authentication.create!(:api_user_id => @api_user.api_user_id,
                                                :token => Authentication.new_token,
                                                :max_age => max_age,
                                                :created_at => Time.now.utc,
@@ -128,8 +128,8 @@ class AuthenticationsController < ApplicationController
       render_api_error 400, "Malformed credentials"
       return false
     end
-    @api_user = ApiUser.find_by_credentials(username, password)
-    #@api_user = ApiUserShadow.find_by_key(username)
+    #@api_user = ApiUser.find_by_credentials(username, password)
+    @api_user = ApiUserShadow.find_by_credentials(username, password)
     unless @api_user
       logger.warn "Authentication doesn't authenticate for #{username}"
       expires_in 0, 's-maxage' => 10.seconds, 'max-stale' => 0

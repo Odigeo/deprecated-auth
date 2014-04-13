@@ -11,9 +11,9 @@
 #
 # Indexes
 #
-#  index_authentications_on_expires_at  (expires_at)
-#  index_authentications_on_token       (token) UNIQUE
-#  index_authentications_per_user       (api_user_id,created_at,expires_at)
+#  index_authentications_on_api_user_id_and_expires_at  (api_user_id,expires_at)
+#  index_authentications_on_expires_at                  (expires_at)
+#  index_authentications_on_token                       (token) UNIQUE
 #
 
 class Authentication < ActiveRecord::Base
@@ -31,7 +31,7 @@ class Authentication < ActiveRecord::Base
   belongs_to :api_user
   
   # Attributes
-  attr_accessible :api_user, :token, :max_age, :created_at, :expires_at
+  attr_accessible :api_user, :api_user_id, :token, :max_age, :created_at, :expires_at
   
   # Validations
   validates :api_user, :associated => true  
