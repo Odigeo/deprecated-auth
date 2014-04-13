@@ -343,5 +343,100 @@ describe ApiUser do
         
     end
   end
+
+
+  describe "ApiUserShadow" do
+
+    before :each do
+      ApiUserShadow.delete_all if ApiUserShadow.count > 0
+      @u = create :api_user, username: "the_user",
+                             authentication_duration: 1000,
+                             login_blocked: true, 
+                             login_blocked_reason: "because"
+      @ua = ApiUserShadow.find_by_key("the_user", consistent: true)
+    end
+
+    it "should be created whenever the ApiUser is created" do
+      @ua.should be_an ApiUserShadow
+    end
+
+    it "should copy the password_hash when created" do
+      @ua.password_hash.should == @u.password_hash
+    end
+
+    it "should copy the password_salt when created" do
+      @ua.password_salt.should == @u.password_salt
+    end
+
+    it "should copy the authentication_duration when created" do
+      @ua.authentication_duration.should == @u.authentication_duration
+    end
+
+    it "should copy the login_blocked when created" do
+      @ua.login_blocked.should == @u.login_blocked
+    end
+
+    it "should copy the login_blocked_reason when created" do
+      @ua.login_blocked_reason.should == @u.login_blocked_reason
+    end
+
+    it "should copy the password_hash when updated" do
+      @u.password_hash = "new_value"
+      @u.save!
+      @ua = ApiUserShadow.find_by_key("the_user", consistent: true)
+      @ua.password_hash.should == "new_value"
+    end
+
+    it "should copy the password_salt when updated" do
+      @u.password_salt = "new_value"
+      @u.save!
+      @ua = ApiUserShadow.find_by_key("the_user", consistent: true)
+      @ua.password_salt.should == "new_value"
+    end
+
+    it "should copy the authentication_duration when updated" do
+      @u.authentication_duration = 9999
+      @u.save!
+      @ua = ApiUserShadow.find_by_key("the_user", consistent: true)
+      @ua.authentication_duration.should == 9999
+    end
+
+    it "should copy the login_blocked when updated" do
+      @u.login_blocked = false
+      @u.save!
+      @ua = ApiUserShadow.find_by_key("the_user", consistent: true)
+      @ua.login_blocked.should == false
+    end
+
+    it "should copy the login_blocked_reason when updated" do
+      @u.login_blocked_reason = nil
+      @u.save!
+      @ua = ApiUserShadow.find_by_key("the_user", consistent: true)
+      @ua.login_blocked_reason.should == ""
+    end
+
+    it "should be deleted whenever the ApiUser is deleted" do
+      @u.destroy
+      ApiUserShadow.find_by_key("the_user", consistent: true).should == nil
+    end
+
+    it "should be reachable by #api_user_shadow" do
+      @u.api_user_shadow.should == @ua
+    end
+
+    it "#api_user_shadow should be cached" do
+      ApiUserShadow.should_receive(:find).with(@u.username).once.and_return(@ua)
+      @u.api_user_shadow.should == @ua
+      @u.api_user_shadow.should == @ua
+    end
+
+    it "should be deleted and recreated whenever the username changes" do
+      @u.username = "the_renamed_user"
+      @u.save!
+      ApiUserShadow.find_by_key("the_user", consistent: true).should == nil
+      ApiUserShadow.find_by_key("the_renamed_user", consistent: true).should be_an ApiUserShadow
+    end
+
+  end
   
 end

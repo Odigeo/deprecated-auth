@@ -62,6 +62,24 @@ class ApiUser < ActiveRecord::Base
   validates :authentication_duration, presence: true, 
                                       numericality: { only_integer: true, greater_than: 0 }
 
+  # Hooks for
+  around_save do |api_user, block|
+    delete_old = api_user.username_changed? && api_user.username_was
+    old_username = api_user.username_was
+    block.call
+    ApiUserShadow.find(old_username).destroy if delete_old
+    ApiUserShadow.create username: api_user.username,
+                         password_hash: api_user.password_hash,
+                         password_salt: api_user.password_salt,
+                         authentication_duration: api_user.authentication_duration,
+                         login_blocked: api_user.login_blocked,
+                         login_blocked_reason: api_user.login_blocked_reason
+  end
+
+  after_destroy do |api_user|
+    api_user_shadow.destroy
+  end
+
 
   def self.find_by_credentials(un, pw)
     # Don't bother going to the DB if credentials are missing
@@ -131,6 +149,11 @@ class ApiUser < ActiveRecord::Base
       }
     }
     false
+  end
+
+
+  def api_user_shadow
+    @api_user_shadow ||= ApiUserShadow.find(username)
   end
 
 end

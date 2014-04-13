@@ -129,6 +129,7 @@ class AuthenticationsController < ApplicationController
       return false
     end
     @api_user = ApiUser.find_by_credentials(username, password)
+    #@api_user = ApiUserShadow.find_by_key(username)
     unless @api_user
       logger.warn "Authentication doesn't authenticate for #{username}"
       expires_in 0, 's-maxage' => 10.seconds, 'max-stale' => 0

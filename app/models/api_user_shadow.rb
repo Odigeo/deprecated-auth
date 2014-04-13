@@ -1,4 +1,4 @@
-class ApiUserAuth < OceanDynamo::Table
+class ApiUserShadow < OceanDynamo::Table
 
   ocean_resource_model index: [:username], 
                        search: false,
@@ -17,5 +17,10 @@ class ApiUserAuth < OceanDynamo::Table
   end
   
   validates :username, presence: true
+
+
+  def authenticates?(plaintext_password)
+    password_hash == BCrypt::Engine.hash_secret(plaintext_password, password_salt)
+  end
 
 end
