@@ -7,10 +7,6 @@ describe ApiUsersController do
   describe "PUT /api_users/1/connect" do
     
     before :each do
-      # ApiUser.destroy_all
-      # Authentication.destroy_all
-      # Role.destroy_all
-      # Group.destroy_all
       permit_with 200
       @auth = create :authentication
       @auth.expired?.should == false

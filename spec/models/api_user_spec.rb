@@ -348,7 +348,7 @@ describe ApiUser do
   describe "ApiUserShadow" do
 
     before :each do
-      ApiUserShadow.delete_all if ApiUserShadow.count > 0
+      ApiUserShadow.delete_all
       @u = create :api_user, username: "the_user",
                              authentication_duration: 1000,
                              login_blocked: true, 
