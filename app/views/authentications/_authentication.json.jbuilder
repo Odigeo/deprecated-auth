@@ -11,7 +11,7 @@ json.authentication do |json|
     json.right @right if @right
   end
 
-  json.group_names authentication.api_user.groups.collect(&:name)
+  json.group_names @group_names if @group_names
   json.created_at authentication.created_at.utc.iso8601
   json.expires_at authentication.expires_at.utc.iso8601
   json._links hyperlinks(

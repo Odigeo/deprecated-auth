@@ -85,6 +85,7 @@ class AuthenticationsController < ApplicationController
       return
     end
     # Let the authorisation live in the Varnish cache while it's valid
+    @group_names = @authentication.api_user.groups.collect(&:name)
     if stale?(last_modified: @authentication.created_at, etag: @authentication)
       expires_in 0, 's-maxage' => AUTHORIZATION_DURATION, 'max-stale' => 0
       api_render @authentication
@@ -128,7 +129,6 @@ class AuthenticationsController < ApplicationController
       render_api_error 400, "Malformed credentials"
       return false
     end
-    #@api_user = ApiUser.find_by_credentials(username, password)
     @api_user = ApiUserShadow.find_by_credentials(username, password)
     unless @api_user
       logger.warn "Authentication doesn't authenticate for #{username}"

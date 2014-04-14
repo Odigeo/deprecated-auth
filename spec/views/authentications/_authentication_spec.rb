@@ -12,6 +12,8 @@ describe "authentications/_authentication" do
     original.api_user.groups << group2
     @api_user_name = original.api_user.username
     @api_user_id = original.api_user.id
+    assign :right, create(:right, app: "quux", context: "*")
+    assign :group_names, ["Superusers", "Some Other Group"]
     render partial: "authentications/authentication", locals: {authentication: original}
     @json = JSON.parse(rendered)
     @auth = @json['authentication']
@@ -57,6 +59,10 @@ describe "authentications/_authentication" do
 
   it "should have a numerical ApiUser ID" do
     @auth['user_id'].should == @api_user_id
+  end
+
+  it "should have a right" do
+    @auth['right'].should == [{"app"=>"quux", "context"=>"*"}]
   end
 
   it "should have an array of Group names" do
