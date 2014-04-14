@@ -41,7 +41,6 @@ class Authentication < ActiveRecord::Base
   after_destroy do |auth|
     # The following line invalidates all authorisations done using this Authentication
     Api.ban "/v[0-9]+/authentications/#{auth.token}"
-    # Authentication collections are never cached, thus no need to invalidate them.
   end
 
 

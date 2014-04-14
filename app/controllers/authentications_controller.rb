@@ -32,6 +32,8 @@ class AuthenticationsController < ApplicationController
     Thread.current[:username] = @api_user.username
     Thread.current[:x_api_token] = @authentication.token
     expires_now   # Tiny increase in security
+    @right = nil
+    @group_names = nil
     render partial: "authentication", object: @authentication, status: 201
   end
 
@@ -99,7 +101,6 @@ class AuthenticationsController < ApplicationController
   # This action revokas an authentication and all its authorisations.
   #
   def destroy
-    user = @authentication.api_user
     @authentication.destroy
     render_head_204    
   end
