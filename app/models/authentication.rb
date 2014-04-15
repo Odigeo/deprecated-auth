@@ -38,7 +38,16 @@ class Authentication < ActiveRecord::Base
   validates :api_user_id, :presence => true
   
   # Callbacks
+  after_save do |auth|
+    AuthenticationShadow.create! token: auth.token,
+                                 max_age: auth.max_age,
+                                 created_at: auth.created_at,
+                                 expires_at: auth.expires_at,
+                                 api_user_id: auth.api_user_id
+  end
+
   after_destroy do |auth|
+    auth.authentication_shadow.destroy
     # The following line invalidates all authorisations done using this Authentication
     Api.ban "/v[0-9]+/authentications/#{auth.token}"
   end
@@ -80,6 +89,11 @@ class Authentication < ActiveRecord::Base
           app: app, context: context)
     return result if result
     wildcarded && acs != [] && acs
+  end
+
+
+  def authentication_shadow
+    @authentication_shadow ||= AuthenticationShadow.find(token)
   end
 
 end

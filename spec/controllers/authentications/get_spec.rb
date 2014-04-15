@@ -18,8 +18,8 @@ describe AuthenticationsController do
     end
     
     it "should return a 200 when successful" do
-      Authentication.should_receive(:find_by_token).and_return(create :authentication)
-      Authentication.any_instance.stub(:authorized?).and_return(true)
+      AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
+      AuthenticationShadow.any_instance.stub(:authorized?).and_return(true)
       get :show, id: "ea243542300fcbe", query: "serv:res:self:GET:*:*"
       response.should render_template(partial: "_authentication", count: 1)
       response.content_type.should == "application/json"
@@ -28,8 +28,8 @@ describe AuthenticationsController do
     
     it "should not require an X-API-Token" do
       request.headers['X-API-Token'] = nil
-      Authentication.should_receive(:find_by_token).and_return(create :authentication)
-      Authentication.any_instance.stub(:authorized?).and_return(true)
+      AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
+      AuthenticationShadow.any_instance.stub(:authorized?).and_return(true)
       get :show, id: "ea243542300fcbe", query: "serv:res:self:GET:*:*"
       response.content_type.should == "application/json"
       response.status.should == 200
@@ -48,45 +48,45 @@ describe AuthenticationsController do
     end
 
     it "should return a 403 Forbidden if the client doesn't have authorization" do
-      Authentication.should_receive(:find_by_token).and_return(create :authentication)
-      Authentication.any_instance.stub(:authorized?).and_return(false)
+      AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
+      AuthenticationShadow.any_instance.stub(:authorized?).and_return(false)
       get :show, id: "ea243542300fcbe", query: "serv:res:self:GET:*:*"
       response.content_type.should == "application/json"
       response.status.should == 403
     end
 
     it "should return a 422 if the query arg is missing" do
-      Authentication.should_receive(:find_by_token).and_return(create :authentication)
+      AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
       get :show, id: "ea243542300fcbe"
       response.content_type.should == "application/json"
       response.status.should == 422
     end
         
     it "should return a 422 if the query arg is blank" do
-      Authentication.should_receive(:find_by_token).and_return(create :authentication)
+      AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
       get :show, id: "ea243542300fcbe", query: ""
       response.content_type.should == "application/json"
       response.status.should == 422
     end
 
     it "should return a 422 if the query arg is not in six parts" do
-      Authentication.should_receive(:find_by_token).and_return(create :authentication)
+      AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
       get :show, id: "ea243542300fcbe", query: "foo:bar"
       response.content_type.should == "application/json"
       response.status.should == 422
     end
         
     it "should return a 200 if the client has authorization" do
-      Authentication.should_receive(:find_by_token).and_return(create :authentication)
-      Authentication.any_instance.stub(:authorized?).and_return(true)
+      AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
+      AuthenticationShadow.any_instance.stub(:authorized?).and_return(true)
       get :show, id: "ea243542300fcbe", query: "serv:res:self:GET:*:*"
       response.content_type.should == "application/json"
       response.status.should == 200
     end
     
     it "should return a complete resource" do
-      Authentication.should_receive(:find_by_token).and_return(create :authentication)
-      Authentication.any_instance.stub(:authorized?).and_return(true)
+      AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
+      AuthenticationShadow.any_instance.stub(:authorized?).and_return(true)
       get :show, id: "87e87ff086543ee0a", query: "serv:res:self:GET:*:*"
       response.content_type.should == "application/json"
       response.status.should == 200
@@ -95,8 +95,8 @@ describe AuthenticationsController do
     end
     
     it "should be cached exactly AUTHORIZATION_DURATION seconds" do
-      Authentication.should_receive(:find_by_token).and_return(create :authentication)
-      Authentication.any_instance.stub(:authorized?).and_return(true)
+      AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
+      AuthenticationShadow.any_instance.stub(:authorized?).and_return(true)
       get :show, id: "87e87ff086543ee0a", query: "serv:res:self:GET:*:*"
       response.content_type.should == "application/json"
       response.status.should == 200
@@ -109,8 +109,8 @@ describe AuthenticationsController do
     end
     
     it "should be privately cached" do
-      Authentication.should_receive(:find_by_token).and_return(create :authentication)
-      Authentication.any_instance.stub(:authorized?).and_return(true)
+      AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
+      AuthenticationShadow.any_instance.stub(:authorized?).and_return(true)
       get :show, id: "87e87ff086543ee0a", query: "serv:res:self:GET:*:*"
       response.content_type.should == "application/json"
       response.status.should == 200
@@ -121,8 +121,8 @@ describe AuthenticationsController do
     end
     
     it "should have a max-stale cache setting of 0" do
-      Authentication.should_receive(:find_by_token).and_return(create :authentication)
-      Authentication.any_instance.stub(:authorized?).and_return(true)
+      AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
+      AuthenticationShadow.any_instance.stub(:authorized?).and_return(true)
       get :show, id: "87e87ff086543ee0a", query: "serv:res:self:GET:*:*"
       response.content_type.should == "application/json"
       response.status.should == 200
@@ -137,8 +137,8 @@ describe AuthenticationsController do
     describe "authentication attribute 'right'" do
 
       it "should include app and context from the Right, if authorized? returns one" do
-        Authentication.should_receive(:find_by_token).and_return(create :authentication)
-        Authentication.any_instance.stub(:authorized?).and_return(create :right, app: "foo", context: "*")
+        AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
+        AuthenticationShadow.any_instance.stub(:authorized?).and_return(create :right, app: "foo", context: "*")
         get :show, id: "87e87ff086543ee0a", query: "serv:res:self:GET:foo:bar"
         response.content_type.should == "application/json"
         response.status.should == 200
@@ -147,9 +147,9 @@ describe AuthenticationsController do
       end
         
       it "should include an array as is, if authorized? returns one" do
-        Authentication.should_receive(:find_by_token).and_return(create :authentication)
-        Authentication.any_instance.stub(:authorized?).and_return([{app: 'x', context: 'y'},
-                                                                   {app: 'z', context: '*'}])
+        AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
+        AuthenticationShadow.any_instance.stub(:authorized?).and_return([{app: 'x', context: 'y'},
+                                                                         {app: 'z', context: '*'}])
         get :show, id: "87e87ff086543ee0a", query: "serv:res:self:GET:foo:bar"
         response.content_type.should == "application/json"
         response.status.should == 200

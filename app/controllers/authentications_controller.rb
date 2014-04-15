@@ -90,7 +90,7 @@ class AuthenticationsController < ApplicationController
     @group_names = @authentication.api_user.groups.collect(&:name)
     if stale?(last_modified: @authentication.created_at, etag: @authentication)
       expires_in 0, 's-maxage' => AUTHORIZATION_DURATION, 'max-stale' => 0
-      api_render @authentication
+      api_render @authentication, override_partial: "authentications/authentication"
     end
   end
   
@@ -99,9 +99,11 @@ class AuthenticationsController < ApplicationController
   # DELETE /authentications/<token>
   # 
   # This action revokas an authentication and all its authorisations.
+  # We do this by destroying the Authentication, which in turn destroys
+  # its AuthenticationShadow.
   #
   def destroy
-    @authentication.destroy
+    @authentication.authentication.destroy
     render_head_204    
   end
 
@@ -110,7 +112,7 @@ class AuthenticationsController < ApplicationController
   
   def find_authentication
     # TODO: Eliminate find_by_token, eager load the ApiUser.
-    @authentication = Authentication.find_by_token(params[:id])
+    @authentication = AuthenticationShadow.find_by_key(params[:id])
     if @authentication
       Thread.current[:username] = @authentication.api_user.username
       Thread.current[:token] = @authentication.token

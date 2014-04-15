@@ -19,6 +19,19 @@
 require 'spec_helper'
 
 describe Authentication do
+
+  # it "should be a DynamoDB table" do
+  #   Authentication.superclass.should == OceanDynamo::Table
+  # end
+
+  # it "should use the username as its hash key" do
+  #   Authentication.table_hash_key.should == :username
+  # end
+   
+  # it "should use expires_at as the range key" do
+  #   Authentication.table_range_key.should == :expires_at
+  # end
+
       
   it "should be instantiatable" do
     create :authentication
@@ -44,6 +57,12 @@ describe Authentication do
     auth = create(:authentication)
     (auth.expires_at - auth.created_at).to_i.should == auth.max_age
   end
+
+
+  it "should belong to an ApiUser" do
+    create(:authentication).api_user.should be_an ApiUser
+  end
+
   
   it "#new_token should return a fresh string token, 43 characters long" do
     Authentication.new_token.should be_a String
@@ -159,7 +178,111 @@ describe Authentication do
         should == [{"app"=>"ze_app", "context"=>"ze_context"}, 
                    {"app"=>"anozer", "context"=>"*"}]
     end
-
   end
   
+
+  describe "AuthenticationShadow" do
+    before :each do
+      AuthenticationShadow.delete_all
+      @u = create :api_user, username: "the_user"
+      @au = create :authentication, expires_at: 1.hour.from_now.utc,
+                                    token: "the_token",
+                                    api_user_id: @u.id,
+                                    max_age: 1800,
+                                    created_at: Time.now.utc
+      @as = AuthenticationShadow.find("the_token", consistent: true)
+    end
+
+    it "should be created whenever the Authentication is created" do
+      @au.should be_an Authentication
+      @as.should be_an AuthenticationShadow
+    end
+
+
+    it "should copy created_at when created" do
+      @as.created_at.to_s.should == @au.created_at.to_s
+    end
+
+    it "should copy expires_at when created" do
+      @as.expires_at.to_s.should == @au.expires_at.to_s
+    end
+
+    it "should copy the token when created" do
+      @as.token.should == @au.token
+    end
+
+    it "should copy max_age when created" do
+      @as.max_age.should == @au.max_age
+    end
+
+    it "should copy api_user_id when created" do
+      @as.api_user_id.should == @au.api_user_id
+    end
+
+
+    it "should copy created_at when updated" do
+      @au.created_at = "2001-09-11 00:00:00"
+      @au.save!
+      @as = AuthenticationShadow.find("the_token", consistent: true)
+      @as.created_at.should == "2001-09-11 00:00:00"
+    end
+
+    it "should copy expires_at when updated" do
+      @au.expires_at = "2020-09-11 00:00:00"
+      @au.save!
+      @as = AuthenticationShadow.find("the_token", consistent: true)
+      @as.expires_at.should == "2020-09-11 00:00:00"
+    end
+
+    # it "should barf on changes to the token when updated, since it's the key" do
+    #   @au.token = "BLAHONGA"
+    #   @au.save!
+    #   @as = AuthenticationShadow.find("BLAHONGA", consistent: true)
+    #   @as.token.should == "BLAHONGA"
+    # end
+
+    it "should copy the max_age when updated" do
+      @au.max_age = 98765
+      @au.save!
+      @as = AuthenticationShadow.find("the_token", consistent: true)
+      @as.max_age.should == 98765
+    end
+
+    it "should copy api_user_id when updated" do
+      @au.api_user_id = 22222
+      @au.save!
+      @as = AuthenticationShadow.find("the_token", consistent: true)
+      @as.api_user_id.should == 22222
+    end
+
+
+    it "should be deleted whenever the Authentication is deleted" do
+      @au.destroy
+      AuthenticationShadow.find_by_key("the_token", consistent: true).should == nil
+    end
+
+    it "should be deleted whenever the ApiUser is deleted" do
+      @u.destroy
+      AuthenticationShadow.find_by_key("the_token", consistent: true).should == nil
+    end
+
+
+    it "should be reachable by #authentication_shadow" do
+      @au.authentication_shadow.should == @as
+    end
+
+    it "#api_user_shadow should be cached" do
+      AuthenticationShadow.should_receive(:find).with(@au.token).once.and_return(@as)
+      @au.authentication_shadow.should == @as
+      @au.authentication_shadow.should == @as
+    end
+
+
+    it "should be able to retrieve its authentication" do
+      @as.authentication.should == @au
+    end
+
+
+  end
+
 end

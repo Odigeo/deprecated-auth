@@ -6,8 +6,12 @@ describe ApiUserShadow do
     ApiUserShadow.superclass.should == OceanDynamo::Table
   end
 
-  it "should have a username as its key" do
+  it "should have a username as its hash key" do
     ApiUserShadow.table_hash_key.should == :username
+  end
+
+  it "should not use a range key" do
+    ApiUserShadow.table_range_key.should == nil
   end
 
   it "should require the username to be present" do
