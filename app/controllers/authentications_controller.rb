@@ -111,7 +111,6 @@ class AuthenticationsController < ApplicationController
   private
   
   def find_authentication
-    # TODO: Eliminate find_by_token, eager load the ApiUser.
     @authentication = AuthenticationShadow.find_by_key(params[:id])
     if @authentication
       Thread.current[:username] = @authentication.api_user.username
