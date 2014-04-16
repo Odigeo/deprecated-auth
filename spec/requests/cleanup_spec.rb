@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "/cleanup (for purging old authentications from the DB)" do
 
   it "should return a 204" do
+    Authentication.destroy_all
     create :authentication, expires_at: 1.year.ago.utc
     create :authentication, expires_at: 1.month.ago.utc
     create :authentication, expires_at: 1.day.ago.utc

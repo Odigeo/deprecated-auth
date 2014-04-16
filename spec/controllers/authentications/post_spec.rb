@@ -7,6 +7,7 @@ describe AuthenticationsController do
   describe "POST" do
     
     before :each do
+      Authentication.destroy_all
       request.headers['HTTP_ACCEPT'] = "application/json"
     end
 

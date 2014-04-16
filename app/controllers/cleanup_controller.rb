@@ -12,11 +12,16 @@ class CleanupController < ApplicationController
   def update
     n = Authentication.count
     return if n == 0
-    sleep rand(10)
+    sleep rand(10) unless Rails.env == 'test'
     n = Authentication.count
     return if n == 0
-    Authentication.old_expired.destroy_all
-    logger.info "Cleaned up #{n - Authentication.count} old expired Authentications"
+    killed = 0
+    t = 1.hour.ago.utc
+    Authentication.find_each do |auth|
+      auth.destroy if auth.expires_at.utc <= t
+      killed += 1
+    end
+    logger.info "Cleaned up #{killed} old expired Authentications"
     render_head_204
   end
   

@@ -34,8 +34,18 @@ class ApiUserShadow < OceanDynamo::Table
   end
 
 
-  def authentications
-    Authentication.where(api_user_id: api_user_id)
+  # def latest_authentication
+  #   Authentication.where(api_user_id: api_user_id).order(:expires_at).last
+  # end
+
+
+  def latest_authentication
+    Authentication.dynamo_items.query(hash_value: username, range_gte: 0,
+                                      scan_index_forward: false, batch_size: 1,
+                                      select: :all) do |item_data|
+      return Authentication.new._setup_from_dynamo(item_data)
+    end
+    nil
   end
 
 end

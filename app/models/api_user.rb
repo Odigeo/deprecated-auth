@@ -33,7 +33,14 @@ class ApiUser < ActiveRecord::Base
   
 
   # Relations
-  has_many :authentications, dependent: :destroy
+  def authentications
+    Authentication._late_connect?
+    result = []
+    Authentication.dynamo_items.query(hash_value: username, range_gte: 0) do |item_data|
+      result << Authentication.new._setup_from_dynamo(item_data)
+    end
+    result
+  end
 
   has_and_belongs_to_many :groups,    # via api_users_groups
     after_add:    [:touch_both],  
@@ -79,6 +86,7 @@ class ApiUser < ActiveRecord::Base
 
   after_destroy do |api_user|
     api_user_shadow.destroy
+    api_user.authentications.each(&:destroy)
   end
 
 

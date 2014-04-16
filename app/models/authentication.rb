@@ -1,22 +1,4 @@
-# == Schema Information
-#
-# Table name: authentications
-#
-#  id          :integer          not null, primary key
-#  token       :string(255)      not null
-#  max_age     :integer          not null
-#  created_at  :datetime         not null
-#  expires_at  :datetime         not null
-#  api_user_id :integer
-#
-# Indexes
-#
-#  index_authentications_on_api_user_id_and_expires_at  (api_user_id,expires_at)
-#  index_authentications_on_expires_at                  (expires_at)
-#  index_authentications_on_token                       (token) UNIQUE
-#
-
-class Authentication < ActiveRecord::Base
+class Authentication < OceanDynamo::Table
 
   ocean_resource_model index: [:token], 
                        search: false,
@@ -24,18 +6,38 @@ class Authentication < ActiveRecord::Base
                        invalidate_collection: []
 
 
-  scope :active,      lambda { where("expires_at > ?", Time.current.utc) }
-  scope :old_expired, lambda { where("expires_at <= ?", 1.hour.ago.utc) }
+  dynamo_schema(:username, :expires_at,
+                table_name_suffix: Api.basename_suffix, 
+                create: Rails.env != "production",
+                timestamps: nil,
+                locking: false) do
+    attribute :token,       :string
+    attribute :max_age,     :integer
+    attribute :created_at,  :datetime
+    attribute :expires_at,  :datetime
+    attribute :api_user_id, :integer
+  end
+
+
+  # scope :active,      lambda { where("expires_at > ?", Time.current.utc) }
+  # scope :old_expired, lambda { where("expires_at <= ?", 1.hour.ago.utc) }
   
   # Relations
-  belongs_to :api_user
+  #belongs_to :api_user
+  def api_user=(u)
+    self.api_user_id = u.id
+  end
+
+  def api_user
+    ApiUser.find api_user_id
+  end
   
   # Attributes
-  attr_accessible :api_user, :api_user_id, :token, :max_age, :created_at, :expires_at
+  #attr_accessible :api_user, :api_user_id, :token, :max_age, :created_at, :expires_at
   
   # Validations
-  validates :api_user, :associated => true  
-  validates :api_user_id, :presence => true
+  #validates :api_user, :associated => true  
+  #validates :api_user_id, :presence => true
   
   # Callbacks
   after_save do |auth|
@@ -43,7 +45,8 @@ class Authentication < ActiveRecord::Base
                                  max_age: auth.max_age,
                                  created_at: auth.created_at,
                                  expires_at: auth.expires_at,
-                                 api_user_id: auth.api_user_id
+                                 api_user_id: auth.api_user_id,
+                                 username: auth.username
   end
 
   after_destroy do |auth|
@@ -93,7 +96,7 @@ class Authentication < ActiveRecord::Base
 
 
   def authentication_shadow
-    @authentication_shadow ||= AuthenticationShadow.find(token)
+    AuthenticationShadow.find(token)
   end
 
 end

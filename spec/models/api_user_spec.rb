@@ -148,7 +148,7 @@ describe ApiUser do
       create(:api_user, indestructible: "quoi?").indestructible.should == false
     end
   end
-  
+
   
   describe "class method find_by_credentials" do
 

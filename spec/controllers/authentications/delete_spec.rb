@@ -7,6 +7,7 @@ describe AuthenticationsController do
   describe "DELETE" do
     
     before :each do
+      Authentication.destroy_all
       permit_with 200
       @auth = create :authentication
       @auth.expired?.should == false

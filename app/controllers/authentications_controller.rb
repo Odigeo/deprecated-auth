@@ -18,16 +18,16 @@ class AuthenticationsController < ApplicationController
   # This action is used for authenticating an ApiUser.
   #
   def create
-    @authentication = @api_user.authentications.order(:expires_at).last
+    @authentication = @api_user.latest_authentication
     max_age = @api_user.authentication_duration
     if @authentication
       @authentication.update_attributes(expires_at: Time.now.utc + max_age)
     else
-      @authentication = Authentication.create!(:api_user_id => @api_user.api_user_id,
-                                               :token => Authentication.new_token,
-                                               :max_age => max_age,
-                                               :created_at => Time.now.utc,
-                                               :expires_at => Time.now.utc + max_age)
+      @authentication = Authentication.create!(api_user_id: @api_user.api_user_id,
+                                               token: Authentication.new_token,
+                                               max_age: max_age,
+                                               created_at: Time.now.utc,
+                                               expires_at: Time.now.utc + max_age)
     end
     Thread.current[:username] = @api_user.username
     Thread.current[:x_api_token] = @authentication.token

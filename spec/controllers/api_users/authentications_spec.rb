@@ -7,11 +7,13 @@ describe ApiUsersController do
   describe "GET api_users/1/authentications" do
     
     before :each do
+      Authentication.destroy_all
       permit_with 200
       @it = create :api_user
-      @it.authentications << create(:authentication)
-      @it.authentications << create(:authentication)
-      @it.authentications << create(:authentication)
+      create(:authentication, username: @it.username, expires_at: 1.week.ago.utc)
+      create(:authentication, username: @it.username, expires_at: 1.hour.from_now.utc)
+      create(:authentication, username: @it.username, expires_at: 1.year.from_now.utc)
+      create(:authentication, username: 'irrelevant')
       request.headers['HTTP_ACCEPT'] = "application/json"
       request.headers['X-API-Token'] = "boy-is-this-fake"
     end

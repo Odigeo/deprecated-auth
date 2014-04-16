@@ -20,17 +20,22 @@ require 'spec_helper'
 
 describe Authentication do
 
-  # it "should be a DynamoDB table" do
-  #   Authentication.superclass.should == OceanDynamo::Table
-  # end
+  before :each do
+    Authentication.delete_all
+  end
 
-  # it "should use the username as its hash key" do
-  #   Authentication.table_hash_key.should == :username
-  # end
+
+  it "should be a DynamoDB table" do
+    Authentication.superclass.should == OceanDynamo::Table
+  end
+
+  it "should use the username as its hash key" do
+    Authentication.table_hash_key.should == :username
+  end
    
-  # it "should use expires_at as the range key" do
-  #   Authentication.table_range_key.should == :expires_at
-  # end
+  it "should use expires_at as the range key" do
+    Authentication.table_range_key.should == :expires_at
+  end
 
       
   it "should be instantiatable" do
@@ -89,53 +94,6 @@ describe Authentication do
     create(:authentication, :expires_at => 1.year.ago.utc).seconds_remaining.should == 0
   end
 
-  it "should have a scope which returns only active authentications" do
-    create(:authentication)
-    create(:authentication)
-    create(:authentication, created_at: (2.years.ago - 30.minutes).utc, expires_at: 2.years.ago.utc)
-    create(:authentication, created_at: (1.year.ago - 30.minutes).utc, expires_at: 1.year.ago.utc)
-    create(:authentication)
-    Authentication.count.should == 5
-    Authentication.active.count.should == 3
-    Authentication.destroy_all
-  end
-  
-
-  describe "search" do
-  
-    describe ".collection" do
-    
-      before :each do
-        @r1 = create :authentication, token: "foofoofoo"
-        @r2 = create :authentication, token: "barfoobar"
-        @r3 = create :authentication, token: "barbazzuul"
-      end
-      
-    
-      it "should return an array of Authentication instances" do
-        ix = Authentication.collection
-        ix.length.should == 3
-        ix[0].should be_an Authentication
-      end
-    
-      it "should allow matches on token" do
-        Authentication.collection(token: 'NOWAI').length.should == 0
-        Authentication.collection(token: @r1.token).length.should == 1
-        Authentication.collection(token: @r2.token).length.should == 1
-      end
-      
-      it "should not allow searches" do
-        Authentication.collection(search: 'foo').length.should == 0
-        Authentication.collection(search: 'zuul').length.should == 0
-      end
-      
-      it "key/value pairs not in the index_only array should quietly be ignored" do
-        Authentication.collection(token: @r3.token, aardvark: 12).length.should == 1
-      end
-        
-    end
-  end
-
 
   describe "#authorized?" do
 
@@ -183,11 +141,12 @@ describe Authentication do
 
   describe "AuthenticationShadow" do
     before :each do
-      AuthenticationShadow.delete_all
+      AuthenticationShadow.delete_all if AuthenticationShadow.count > 0
       @u = create :api_user, username: "the_user"
       @au = create :authentication, expires_at: 1.hour.from_now.utc,
                                     token: "the_token",
                                     api_user_id: @u.id,
+                                    username: @u.username,
                                     max_age: 1800,
                                     created_at: Time.now.utc
       @as = AuthenticationShadow.find("the_token", consistent: true)
@@ -221,17 +180,19 @@ describe Authentication do
 
 
     it "should copy created_at when updated" do
-      @au.created_at = "2001-09-11 00:00:00"
+      t = 1.day.ago.utc
+      @au.created_at = t
       @au.save!
       @as = AuthenticationShadow.find("the_token", consistent: true)
-      @as.created_at.should == "2001-09-11 00:00:00"
+      (@as.created_at - t).to_i.should == 0
     end
 
     it "should copy expires_at when updated" do
-      @au.expires_at = "2020-09-11 00:00:00"
+      t = 1.week.from_now.utc
+      @au.expires_at = t
       @au.save!
       @as = AuthenticationShadow.find("the_token", consistent: true)
-      @as.expires_at.should == "2020-09-11 00:00:00"
+      (@as.expires_at - t).to_i.should == 0
     end
 
     # it "should barf on changes to the token when updated, since it's the key" do
@@ -271,15 +232,10 @@ describe Authentication do
       @au.authentication_shadow.should == @as
     end
 
-    it "#api_user_shadow should be cached" do
-      AuthenticationShadow.should_receive(:find).with(@au.token).once.and_return(@as)
-      @au.authentication_shadow.should == @as
-      @au.authentication_shadow.should == @as
-    end
-
-
     it "should be able to retrieve its authentication" do
-      @as.authentication.should == @au
+      asau = @as.authentication
+      asau.username.should == @au.username
+      (asau.expires_at - @au.expires_at).to_i.should == 0
     end
 
 

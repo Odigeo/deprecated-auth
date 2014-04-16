@@ -5,14 +5,16 @@ class AuthenticationShadow < OceanDynamo::Table
                        invalidate_member: [],
                        invalidate_collection: []
 
-  dynamo_schema(:token, table_name_suffix: Api.basename_suffix, 
-                        create: Rails.env != "production",
-                        timestamps: nil,
-                        locking: false) do
+  dynamo_schema(:token, 
+                table_name_suffix: Api.basename_suffix, 
+                create: Rails.env != "production",
+                timestamps: nil,
+                locking: false) do
     attribute :max_age,     :integer
     attribute :created_at,  :datetime
     attribute :expires_at,  :datetime
     attribute :api_user_id, :integer
+    attribute :username,    :string
   end
 
 
@@ -36,7 +38,7 @@ class AuthenticationShadow < OceanDynamo::Table
   end
 
   def authentication
-    Authentication.where(api_user_id: api_user_id).first
+    Authentication.find_by_key(ApiUser.find(api_user_id).username, expires_at, consistent: true)
   end
 
 

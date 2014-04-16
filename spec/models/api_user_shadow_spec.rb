@@ -82,4 +82,15 @@ describe ApiUserShadow do
     ApiUserShadow.find_by_credentials("some_other_user", "mypassword").should == false
   end
 
+
+  it "should have a #latest_authentication method" do
+    u = create :api_user, username: "myuser"
+    a1 = create :authentication, api_user: u, expires_at: 1.hour.from_now.utc
+    a2 = create :authentication, api_user: u, expires_at: 2.hour.from_now.utc
+    a3 = create :authentication, api_user: u, expires_at: 3.hour.from_now.utc
+    s = ApiUserShadow.find("myuser", consistent: true)
+    s.latest_authentication.expires_at.to_i.should == a3.expires_at.to_i
+  end
+
+
 end
