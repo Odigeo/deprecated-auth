@@ -40,6 +40,7 @@ class ApiUserShadow < OceanDynamo::Table
 
 
   def latest_authentication
+    return nil unless Authentication.dynamo_items 
     Authentication.dynamo_items.query(hash_value: username, range_gte: 0,
                                       scan_index_forward: false, batch_size: 1,
                                       select: :all) do |item_data|
