@@ -1,7 +1,7 @@
 class DropSqlAuthentications < ActiveRecord::Migration
 
   def up
-    ActiveRecord::Base.connection.execute("DROP TABLE authentications")
+    ActiveRecord::Base.connection.execute("DROP TABLE authentications") rescue nil
   end
 
 
