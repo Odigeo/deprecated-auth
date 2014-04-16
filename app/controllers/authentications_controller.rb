@@ -24,6 +24,7 @@ class AuthenticationsController < ApplicationController
       @authentication.update_attributes(expires_at: Time.now.utc + max_age)
     else
       @authentication = Authentication.create!(api_user_id: @api_user.api_user_id,
+                                               username: @api_user.username,
                                                token: Authentication.new_token,
                                                max_age: max_age,
                                                created_at: Time.now.utc,

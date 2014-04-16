@@ -18,9 +18,6 @@ class Authentication < OceanDynamo::Table
     attribute :api_user_id, :integer
   end
 
-
-  # scope :active,      lambda { where("expires_at > ?", Time.current.utc) }
-  # scope :old_expired, lambda { where("expires_at <= ?", 1.hour.ago.utc) }
   
   # Relations
   #belongs_to :api_user
