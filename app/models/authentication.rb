@@ -93,7 +93,8 @@ class Authentication < OceanDynamo::Table
 
 
   def authentication_shadow
-    AuthenticationShadow.find(token)
+    # When there's a 1:1 relation between original and shadow, .find can be used.
+    AuthenticationShadow.find_by_key(token)
   end
 
 end
