@@ -20,6 +20,7 @@ class Authentication < OceanDynamo::Table
 
   
   # Relations
+  
   #belongs_to :api_user
   def api_user=(u)
     self.api_user_id = u.id
@@ -28,14 +29,8 @@ class Authentication < OceanDynamo::Table
   def api_user
     ApiUser.find api_user_id
   end
-  
-  # Attributes
-  #attr_accessible :api_user, :api_user_id, :token, :max_age, :created_at, :expires_at
-  
-  # Validations
-  #validates :api_user, :associated => true  
-  #validates :api_user_id, :presence => true
-  
+    
+
   # Callbacks
   after_save do |auth|
     AuthenticationShadow.create! token: auth.token,
@@ -47,9 +42,14 @@ class Authentication < OceanDynamo::Table
   end
 
   after_destroy do |auth|
-    auth.authentication_shadow.destroy
     # The following line invalidates all authorisations done using this Authentication
     Api.ban "/v[0-9]+/authentications/#{auth.token}"
+    # Until we have secondary indices and thus can avoid the AuthenticationShadow
+    # altogether, the 1:1 relationship between original and shadow can't be guaranteed.
+    # Thus the destroy is conditional as the shadow may already have been deleted.
+    shadow = auth.authentication_shadow
+    shadow.destroy if shadow
+    true
   end
 
 
