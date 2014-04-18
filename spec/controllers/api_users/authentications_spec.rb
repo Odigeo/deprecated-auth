@@ -10,9 +10,9 @@ describe ApiUsersController do
       Authentication.destroy_all
       permit_with 200
       @it = create :api_user
-      create(:authentication, username: @it.username, expires_at: 1.week.ago.utc)
-      create(:authentication, username: @it.username, expires_at: 1.hour.from_now.utc)
-      create(:authentication, username: @it.username, expires_at: 1.year.from_now.utc)
+      create(:authentication, username: @it.username, expires_at: 1.week.ago.utc)       # Expired
+      create(:authentication, username: @it.username, expires_at: 1.hour.from_now.utc)  # Valid
+      create(:authentication, username: @it.username, expires_at: 1.year.from_now.utc)  # Valid
       create(:authentication, username: 'irrelevant')
       request.headers['HTTP_ACCEPT'] = "application/json"
       request.headers['X-API-Token'] = "boy-is-this-fake"
@@ -21,7 +21,7 @@ describe ApiUsersController do
     
     it "should render the object partial" do
       get :authentications, id: @it
-      response.should render_template(partial: '_authentication', count: 3)
+      response.should render_template(partial: '_authentication', count: 2)
     end
     
     it "should return JSON" do
@@ -50,9 +50,9 @@ describe ApiUsersController do
       resource.should be_a Hash
       coll = resource['resources']
       coll.should be_an Array
-      coll.count.should == 3
+      coll.count.should == 2
       n = resource['count']
-      n.should == 3
+      n.should == 2
     end
 
   end

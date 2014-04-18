@@ -65,7 +65,7 @@ class ApiUsersController < ApplicationController
 
   # GET /api_users/1/authentications
   def authentications
-    api_render @api_user.authentications
+    api_render @api_user.authentications(Time.now.utc) # Return only active authentications
   end
   
   

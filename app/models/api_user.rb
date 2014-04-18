@@ -33,11 +33,11 @@ class ApiUser < ActiveRecord::Base
   
 
   # Relations
-  def authentications
+  def authentications(t=0)
     Authentication._late_connect?
     return [] unless Authentication.dynamo_items
     result = []
-    Authentication.dynamo_items.query(hash_value: username, range_gte: 0) do |item_data|
+    Authentication.dynamo_items.query(hash_value: username, range_gte: t.to_i) do |item_data|
       result << Authentication.new._setup_from_dynamo(item_data)
     end
     result
