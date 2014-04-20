@@ -46,7 +46,7 @@ class AuthenticationsController < ApplicationController
   # Authentication.
   #
   def show
-    username = @authentication.api_user.username
+    username = @authentication.username
     token = @authentication.token
     Thread.current[:username] = username
     Thread.current[:x_api_token] = token
