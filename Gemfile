@@ -8,7 +8,6 @@ gem "pg"                 # PostgreSQL
 gem "foreigner"          # Foreign key constraints in MySQL, PostgreSQL, and SQLite3.
 
 gem "jbuilder"           # We use Jbuilder to render our JSON responses
-gem 'rails-patch-json-encode'  # Required for Rails 4.0.x
 gem 'oj'
 
 gem "bcrypt"             # Password hashing, etc
