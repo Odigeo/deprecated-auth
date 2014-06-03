@@ -166,7 +166,7 @@ DEPENDENCIES
   jbuilder
   memory_test_fix
   ocean-dynamo (>= 0.6.1)
-  ocean-rails (>= 2.11.2)
+  ocean-rails (>= 2.11.3)
   oj
   pg
   protected_attributes
