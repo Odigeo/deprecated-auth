@@ -39,17 +39,17 @@ class RightsController < ApplicationController
   # relations.
 
 
-  # # PUT /rights/1
-  # def update
-  #   if missing_attributes?
-  #     render_api_error 422, "Missing resource attributes"
-  #     return
-  #   end
-  #   @right.assign_attributes(filtered_params Right)
-  #   set_updater(@right)
-  #   @right.save!
-  #   api_render @right
-  # end
+  # PUT /rights/1
+  def update
+    if missing_attributes?
+      render_api_error 422, "Missing resource attributes"
+      return
+    end
+    @right.assign_attributes(filtered_params Right)
+    set_updater(@right)
+    @right.save!
+    api_render @right
+  end
 
 
   # DELETE /rights/1

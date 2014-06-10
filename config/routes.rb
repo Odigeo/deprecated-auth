@@ -17,7 +17,7 @@ Auth::Application.routes.draw do
       end
     end
     
-    resources :rights, except: [:create, :new, :edit, :update] do
+    resources :rights, except: [:create, :new, :edit] do
       member do
         get 'groups'
         get 'roles'
