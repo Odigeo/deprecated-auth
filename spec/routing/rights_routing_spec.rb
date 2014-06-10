@@ -19,8 +19,8 @@ describe RightsController do
       put("/v1/rights/1").should_not be_routable
     end
 
-    it "should not route to #destroy" do
-      delete("/v1/rights/1").should_not be_routable
+    it "routes to #destroy" do
+      delete("/v1/rights/1").should route_to("rights#destroy", :id => "1")
     end
 
     it "routes to #groups" do

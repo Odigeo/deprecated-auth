@@ -52,6 +52,13 @@ class RightsController < ApplicationController
   # end
 
 
+  # DELETE /rights/1
+  def destroy
+    @right.destroy
+    render_head_204
+  end
+
+
   # GET /rights/1/groups
   def groups
     expires_in 0, 's-maxage' => DEFAULT_CACHE_TIME
