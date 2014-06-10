@@ -13,6 +13,7 @@ Auth::Application.routes.draw do
     resources :resources, except: [:create, :new, :edit, :update, :destroy] do
       member do
         get  'rights'
+        post 'rights' => 'resources#right_create'
       end
     end
     

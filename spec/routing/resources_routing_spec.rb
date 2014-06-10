@@ -27,8 +27,8 @@ describe ResourcesController do
       get("/v1/resources/1/rights").should route_to("resources#rights", id: "1")
     end
 
-    it "should not route to #rights to create a new right" do
-      post("/v1/resources/1/rights").should_not be_routable
+    it "routes to #rights to create a new right" do
+      post("/v1/resources/1/rights").should route_to("resources#right_create", id: "1")
     end
 
   end

@@ -1,6 +1,7 @@
 class ResourcesController < ApplicationController
 
-  ocean_resource_controller extra_actions: { 'rights'       => ['rights', "GET"]}
+  ocean_resource_controller extra_actions: { 'rights'       => ['rights', "GET"],
+                                             'right_create' => ["rights", "POST"]}
 
   respond_to :json
 
@@ -57,13 +58,13 @@ class ResourcesController < ApplicationController
   end
   
 
-  # # POST /resources/1/rights
-  # def right_create
-  #   @right = @resource.rights.new(filtered_params Right)
-  #   set_updater(@right)
-  #   @right.save!
-  #   api_render @right, new: true
-  # end
+  # POST /resources/1/rights
+  def right_create
+    @right = @resource.rights.new(filtered_params Right)
+    set_updater(@right)
+    @right.save!
+    api_render @right, new: true
+  end
 
   
   private
