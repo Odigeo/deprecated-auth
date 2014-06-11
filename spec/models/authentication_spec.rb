@@ -75,11 +75,11 @@ describe Authentication do
   end
   
   it "#active? should be true if it's not expired" do
-    create(:authentication, :max_age => 1.hour).active?.should be_true
+    create(:authentication, :max_age => 1.hour).active?.should == true
   end
 
   it "#expired? should be false if it's not expired" do
-    create(:authentication, :max_age => 1.hour).expired?.should be_false
+    create(:authentication, :max_age => 1.hour).expired?.should == false
   end
   
   it "#seconds_remaining should give the time until expiration" do
@@ -109,22 +109,22 @@ describe Authentication do
 
 
     it "should be false at once if the ApiUser has no Rights at all for the service and resource" do
-      @authentication.authorized?("foo", "bars", "self", "GET", "*", "*").should be_false
+      @authentication.authorized?("foo", "bars", "self", "GET", "*", "*").should == false
     end
 
-    it "should be true if the ApiUser has a matching wildcard Right" do
+    it "should return the matching Right if the ApiUser has a matching wildcard Right" do
       @role.rights << create(:right, resource: @resource, hyperlink: '*', verb: '*', app: '*', context: '*')
-      @authentication.authorized?("foo", "bars", "self", "GET", "*", "*").should be_true
+      @authentication.authorized?("foo", "bars", "self", "GET", "*", "*").should be_a Right
     end
 
-    it "should be true if the ApiUser has a matching non-wildcard Right" do
+    it "should return the matching Right if the ApiUser has a matching non-wildcard Right" do
       @role.rights << create(:right, resource: @resource, hyperlink: 'self', verb: 'GET', app: 'ze_app', context: 'ze_context')
-      @authentication.authorized?("foo", "bars", "self", "GET", "ze_app", "ze_context").should be_true
+      @authentication.authorized?("foo", "bars", "self", "GET", "ze_app", "ze_context").should be_a Right
     end
 
     it "should be false if the ApiUser has a non-matching non-wildcard Right" do
       @role.rights << create(:right, resource: @resource, hyperlink: 'self', verb: 'GET', app: 'blah', context: '*')
-      @authentication.authorized?("foo", "bars", "self", "DELETE", "ze_app", "ze_context").should be_false
+      @authentication.authorized?("foo", "bars", "self", "DELETE", "ze_app", "ze_context").should == false
     end
 
     it "should return app/context pairs if the app and context don't match for */* matches but there are matching app/context rights" do

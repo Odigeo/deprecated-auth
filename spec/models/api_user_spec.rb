@@ -78,12 +78,12 @@ describe ApiUser do
   
     it "should return true from #authenticates? when there is a password match" do
       u = create :api_user, username: "myuser", password: "mypassword"
-      u.authenticates?("mypassword").should be_true
+      u.authenticates?("mypassword").should == true
     end
 
     it "should return false from #authenticates? when there is a password mismatch" do
       u = create :api_user, username: "myuser", password: "mypassword"
-      u.authenticates?("wrong").should be_false
+      u.authenticates?("wrong").should == false
     end
 
     it "should have a real_name defaulting to the empty string" do
@@ -159,11 +159,11 @@ describe ApiUser do
 
     it "should return false when the credentials don't match" do
       user = create :api_user, username: 'zizek', password: 'stalin'
-      ApiUser.find_by_credentials('zizek', 'wrong').should be_false
+      ApiUser.find_by_credentials('zizek', 'wrong').should == false
     end
 
-    it "should return false when no such user exists" do
-      ApiUser.find_by_credentials('zizek', 'stalin').should be_false
+    it "should return nil when no such user exists" do
+      ApiUser.find_by_credentials('zizek', 'stalin').should == nil
     end
     
     it "should not touch the DB when credentials are empty" do

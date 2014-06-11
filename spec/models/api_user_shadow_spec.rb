@@ -60,15 +60,15 @@ describe ApiUserShadow do
   it "should return true from #authenticates? when there is a password match" do
     u = create :api_user, username: "myuser", password: "mypassword"
     s = ApiUserShadow.find("myuser", consistent: true)
-    u.authenticates?("mypassword").should be_true
-    s.authenticates?("mypassword").should be_true
+    u.authenticates?("mypassword").should == true
+    s.authenticates?("mypassword").should == true
   end
 
   it "should return false from #authenticates? when there is a password mismatch" do
     u = create :api_user, username: "myuser", password: "mypassword"
     s = ApiUserShadow.find("myuser", consistent: true)
-    u.authenticates?("wrong").should be_false
-    s.authenticates?("wrong").should be_false
+    u.authenticates?("wrong").should == false
+    s.authenticates?("wrong").should == false
   end
 
   it "should return an ApiUserShadow from #find_by_credentials when the credentials match" do
