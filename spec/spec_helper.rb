@@ -44,6 +44,9 @@ RSpec.configure do |config|
   
   # Make "FactoryGirl" superfluous
   config.include FactoryGirl::Syntax::Methods
+
+  # RSpec 3 compatibility
+  config.infer_spec_type_from_file_location!
 end
 
 aws_access_key_id = ENV['AWS_ACCESS_KEY_ID']
