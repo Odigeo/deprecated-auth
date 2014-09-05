@@ -47,6 +47,14 @@ RSpec.configure do |config|
 
   # RSpec 3 compatibility
   config.infer_spec_type_from_file_location!
+
+  config.before(:suite) do 
+    `curl -s -X DELETE http://localhost:4567`
+  end
+
+  config.after(:suite) do
+    `curl -s -X DELETE http://localhost:4567`
+  end
 end
 
 aws_access_key_id = ENV['AWS_ACCESS_KEY_ID']
