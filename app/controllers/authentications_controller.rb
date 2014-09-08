@@ -1,7 +1,8 @@
 class AuthenticationsController < ApplicationController
 
-  ocean_resource_controller required_attributes: []
-  
+  ocean_resource_controller required_attributes: [],
+                            extra_actions: { 'cleanup' => ['cleanup', "PUT"]}
+
   respond_to :json
   
   skip_before_action :require_x_api_token, only: [:create, :show]
@@ -106,6 +107,22 @@ class AuthenticationsController < ApplicationController
   def destroy
     @authentication.authentication.destroy
     render_head_204    
+  end
+
+
+  # 
+  # PUT /authentications/cleanup
+  # 
+  def cleanup
+    killed = 0
+    t = (Time.now - EXPIRED_AUTHENTICATION_LIFE).utc
+    Authentication.find_each do |auth|
+      auth.destroy if auth.expires_at.utc <= t
+      killed += 1
+      sleep 0.1
+    end
+    logger.info "Cleaned up #{killed} old expired Authentications"
+    render_head_204
   end
 
 

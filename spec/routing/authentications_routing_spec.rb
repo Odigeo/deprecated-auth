@@ -24,5 +24,9 @@ describe AuthenticationsController do
       delete("/v1/authentications/ea890a7f").should route_to("authentications#destroy", id: "ea890a7f")
     end
 
+    it "routes to #cleanup" do
+      put("/v1/authentications/cleanup").should route_to("authentications#cleanup")
+    end
+
   end
 end

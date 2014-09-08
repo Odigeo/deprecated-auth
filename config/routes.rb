@@ -1,7 +1,5 @@
 Auth::Application.routes.draw do
 
-  put "/cleanup" => "cleanup#update"
-
   scope "/v1" do
 
     resources :services, except: [:create, :new, :edit, :update, :destroy] do
@@ -56,7 +54,11 @@ Auth::Application.routes.draw do
       end
     end
 
-    resources :authentications, except: [:index, :new, :edit, :update], constraints: {id: /.+/}
+    resources :authentications, except: [:index, :new, :edit, :update], constraints: {id: /.+/} do
+      collection do
+        put "cleanup"
+      end
+    end
     
   end
 end
