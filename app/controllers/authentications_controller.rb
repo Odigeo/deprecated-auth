@@ -117,9 +117,10 @@ class AuthenticationsController < ApplicationController
     killed = 0
     t = (Time.now - EXPIRED_AUTHENTICATION_LIFE).utc
     Authentication.find_each do |auth|
-      auth.destroy if auth.expires_at.utc <= t
-      killed += 1
-      sleep 0.1
+      if auth.expires_at.utc <= t
+        auth.destroy 
+        killed += 1
+      end
     end
     logger.info "Cleaned up #{killed} old expired Authentications"
     render_head_204
