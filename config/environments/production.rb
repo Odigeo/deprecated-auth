@@ -53,4 +53,7 @@ Auth::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  # Turn on flooding protection
+  config.middleware.use Rack::Attack
 end

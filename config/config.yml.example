@@ -40,6 +40,9 @@ LOAD_BALANCERS: []
 # This is the list of IP numbers for the ZeroMQ log hosts. (Only used in production.)
 LOG_HOSTS: []
 
+# This is the list of IP numbers for the memcached servers. (Only used in production.)
+MEMCACHED_SERVERS: []
+
 # The Chef environment
 CHEF_ENV: master
 
