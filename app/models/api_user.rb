@@ -58,7 +58,8 @@ class ApiUser < ActiveRecord::Base
 
   # Validations
   validates :username, presence: true
-  validates :username, format: /\A[A-Za-z][A-Za-z0-9_-]+\z/, 
+  #validates :username, format: /\A[A-Za-z][A-Za-z0-9_-]+\z/, 
+  validates :username, format: /\A[A-Za-z0-9\-@._-]{2,}\z/, 
                        unless: lambda { |u| u.username.blank? }
   validates :password, presence: true, on: :create, 
                                        if: lambda { |u| u.password_hash.blank? }

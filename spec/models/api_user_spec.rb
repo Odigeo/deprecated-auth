@@ -48,16 +48,21 @@ describe ApiUser do
         should raise_exception # ActiveRecord::RecordNotUnique
     end
 
-    it "should require the username to conform to /[A-Za-z][A-Za-z0-9_-]+/" do
+    it "should require the username to use alphanumeric characters plus ., -, @, and _" do
+      build(:api_user, username: "x").should_not be_valid
+      build(:api_user, username: "xx").should be_valid
       build(:api_user, username: "FOO").should be_valid
+      build(:api_user, username: "9monkeys").should be_valid
       build(:api_user, username: "foo-Bar").should be_valid
       build(:api_user, username: "foo-bar2").should be_valid
       build(:api_user, username: "foo_BAR_2").should be_valid
       build(:api_user, username: "A----___--__--").should be_valid
-      build(:api_user, username: "xx").should be_valid
-      build(:api_user, username: "x").should_not be_valid
+      build(:api_user, username: "_foo").should be_valid
+      build(:api_user, username: "someone@example.com").should be_valid
+      build(:api_user, username: "_Some-One@an.Example.com").should be_valid
       build(:api_user, username: "foo bar").should_not be_valid
-      build(:api_user, username: "_foo").should_not be_valid
+      build(:api_user, username: "someone#hey@example.com").should_not be_valid
+      build(:api_user, username: "someone!hey@example.com").should_not be_valid
    end
   
   
