@@ -52,12 +52,14 @@ describe ApiUser do
       build(:api_user, username: "x").should_not be_valid
       build(:api_user, username: "xx").should be_valid
       build(:api_user, username: "FOO").should be_valid
+      build(:api_user, username: "_foo").should be_valid
       build(:api_user, username: "9monkeys").should be_valid
       build(:api_user, username: "foo-Bar").should be_valid
       build(:api_user, username: "foo-bar2").should be_valid
       build(:api_user, username: "foo_BAR_2").should be_valid
-      build(:api_user, username: "A----___--__--").should be_valid
-      build(:api_user, username: "_foo").should be_valid
+      build(:api_user, username: "----___--__--").should be_valid
+      build(:api_user, username: "..").should be_valid
+      build(:api_user, username: "@@").should be_valid
       build(:api_user, username: "someone@example.com").should be_valid
       build(:api_user, username: "_Some-One@an.Example.com").should be_valid
       build(:api_user, username: "foo bar").should_not be_valid
