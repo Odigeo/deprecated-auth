@@ -29,7 +29,7 @@ class Service < ActiveRecord::Base
   has_many :resources, dependent: :destroy
 
   # Attributes
-  attr_accessible :description, :lock_version, :name
+  attr_accessible :description, :lock_version, :name, :documentation_href
   
   # Validations
   validates :name, presence: true

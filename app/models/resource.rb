@@ -30,7 +30,7 @@ class Resource < ActiveRecord::Base
   has_many :rights, dependent: :destroy
 
   # Attributes
-  attr_accessible :description, :lock_version, :name
+  attr_accessible :description, :lock_version, :name, :documentation_href
   
   # Validations
   validates :name, presence: true
