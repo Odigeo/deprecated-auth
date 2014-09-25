@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925122808) do
+ActiveRecord::Schema.define(version: 20140925125438) do
 
   create_table "api_users", force: true do |t|
     t.string   "username",                                null: false
@@ -146,13 +146,14 @@ ActiveRecord::Schema.define(version: 20140925122808) do
   add_index "roles", ["updated_by"], name: "index_roles_on_updated_by"
 
   create_table "services", force: true do |t|
-    t.string   "name",                      null: false
-    t.string   "description",  default: "", null: false
-    t.integer  "lock_version", default: 0,  null: false
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.integer  "created_by",   default: 0,  null: false
-    t.integer  "updated_by",   default: 0,  null: false
+    t.string   "name",                            null: false
+    t.string   "description",        default: "", null: false
+    t.integer  "lock_version",       default: 0,  null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "created_by",         default: 0,  null: false
+    t.integer  "updated_by",         default: 0,  null: false
+    t.string   "documentation_href"
   end
 
   add_index "services", ["created_by"], name: "index_services_on_created_by"
