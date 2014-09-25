@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140416101924) do
+ActiveRecord::Schema.define(version: 20140925122808) do
 
   create_table "api_users", force: true do |t|
     t.string   "username",                                null: false
@@ -84,14 +84,15 @@ ActiveRecord::Schema.define(version: 20140416101924) do
   add_index "groups_roles", ["role_id", "group_id"], name: "index_groups_roles_on_role_id_and_group_id", unique: true
 
   create_table "resources", force: true do |t|
-    t.string   "name",                      null: false
-    t.string   "description",  default: "", null: false
-    t.integer  "lock_version", default: 0,  null: false
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.string   "name",                            null: false
+    t.string   "description",        default: "", null: false
+    t.integer  "lock_version",       default: 0,  null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.integer  "service_id"
     t.integer  "created_by"
     t.integer  "updated_by"
+    t.string   "documentation_href"
   end
 
   add_index "resources", ["name"], name: "index_resources_on_name", unique: true

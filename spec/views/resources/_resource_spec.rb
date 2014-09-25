@@ -4,7 +4,8 @@ describe "resources/_resource" do
   
   before :each do
     Service.destroy_all
-    render partial: "resources/resource", locals: {resource: create(:resource)}
+    render partial: "resources/resource", 
+      locals: {resource: create(:resource, documentation_href: "http://wiki.acme.com/blah/baz")}
     @json = JSON.parse(rendered)
     @u = @json['resource']
     @links = @u['_links'] rescue {}
@@ -16,8 +17,8 @@ describe "resources/_resource" do
   end
 
 
-  it "should have five hyperlinks" do
-    @links.size.should == 5
+  it "should have six hyperlinks" do
+    @links.size.should == 6
   end
 
   it "should have a self hyperlink" do
@@ -38,6 +39,10 @@ describe "resources/_resource" do
 
   it "should have a updater hyperlink" do
      @links.should be_hyperlinked('updater', /api_users/)
+  end
+
+  it "should have a documentation hyperlink" do
+     @links.should be_hyperlinked('documentation', /http:\/\/wiki.acme.com\/blah\/baz/, 'text/html')
   end
 
 

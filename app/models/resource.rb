@@ -2,15 +2,16 @@
 #
 # Table name: resources
 #
-#  id           :integer          not null, primary key
-#  name         :string(255)      not null
-#  description  :string(255)      default(""), not null
-#  lock_version :integer          default(0), not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  service_id   :integer
-#  created_by   :integer
-#  updated_by   :integer
+#  id                 :integer          not null, primary key
+#  name               :string(255)      not null
+#  description        :string(255)      default(""), not null
+#  lock_version       :integer          default(0), not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  service_id         :integer
+#  created_by         :integer
+#  updated_by         :integer
+#  documentation_href :string(255)
 #
 # Indexes
 #
