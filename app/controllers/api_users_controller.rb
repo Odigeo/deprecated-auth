@@ -3,6 +3,7 @@ class ApiUsersController < ApplicationController
   ocean_resource_controller required_attributes: [:username, :real_name, :email, :lock_version],
                             no_validation_errors_on: [:password_hash, :password_salt],
                             extra_actions: { 'authentications' => ['authentications', "GET"],
+                                             'rights'          => ['rights', "GET"],
                                              'roles'           => ['roles', "GET"],
                                              'groups'          => ['groups', "GET"]}
                             
@@ -66,6 +67,15 @@ class ApiUsersController < ApplicationController
   # GET /api_users/1/authentications
   def authentications
     api_render @api_user.authentications(Time.now.utc) # Return only active authentications
+  end
+  
+  
+  # GET /api_users/1/rights
+  def rights
+    expires_in 0, 's-maxage' => DEFAULT_CACHE_TIME
+    if stale?(collection_etag(rights = @api_user.effective_rights))
+      api_render rights
+    end
   end
   
   

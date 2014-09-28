@@ -162,6 +162,13 @@ class ApiUser < ActiveRecord::Base
   end
 
 
+  def effective_rights
+    result = []
+    map_rights(lambda { |right| result << right; false })
+    result
+  end
+
+
   def api_user_shadow
     @api_user_shadow ||= ApiUserShadow.find(username)
   end

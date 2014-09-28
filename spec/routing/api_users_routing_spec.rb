@@ -35,6 +35,10 @@ describe ApiUsersController do
       get("/v1/api_users/1/groups").should route_to("api_users#groups", id: "1")
     end
 
+    it "routes to #rights" do
+      get("/v1/api_users/1/rights").should route_to("api_users#rights", id: "1")
+    end
+
     it "routes to #connect to connect to another resource" do
       put("/v1/api_users/1/connect").should route_to("api_users#connect", id: "1")
     end

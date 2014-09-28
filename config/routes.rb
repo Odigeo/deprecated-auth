@@ -49,6 +49,7 @@ Auth::Application.routes.draw do
         get 'authentications'
         get 'roles'
         get 'groups'
+        get 'rights'
         put    'connect'
         delete 'connect' => 'api_users#disconnect'
       end

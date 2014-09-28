@@ -12,6 +12,7 @@ json.api_user do |json|
 	json._links hyperlinks(
 	  self:            api_user_url(api_user),
 	  authentications: authentications_api_user_url(api_user),
+	  rights:          rights_api_user_url(api_user),
 	  roles:           roles_api_user_url(api_user),
 	  groups:          groups_api_user_url(api_user),
 	  connect:         connect_api_user_url(api_user),

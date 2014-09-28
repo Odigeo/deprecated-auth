@@ -299,6 +299,20 @@ describe ApiUser do
         result.length.should == 3
         result.sort_by(&:id).should == [@right1, @right3, @right4].sort_by(&:id)
       end
+    end
+
+    describe "effective_rights" do
+
+      it "should return an array" do
+        u = create :api_user
+        expect(u.effective_rights).to eq []
+      end
+
+      it "should return all the rights of the user" do
+        u = create :api_user
+        u.groups << @group1
+        expect(u.effective_rights.to_set).to eq [@right1, @right2, @right6].to_set
+      end
 
     end
   end

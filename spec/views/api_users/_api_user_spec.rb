@@ -16,8 +16,8 @@ describe "api_users/_api_user" do
   end
 
 
-  it "should have seven hyperlinks" do
-    @links.size.should == 7
+  it "should have eight hyperlinks" do
+    @links.size.should == 8
   end
 
   it "should have a self hyperlink" do
@@ -34,6 +34,10 @@ describe "api_users/_api_user" do
 
   it "should have a groups hyperlink" do
     @links.should be_hyperlinked('groups', /api_users/)
+  end
+
+  it "should have a rights hyperlink" do
+    @links.should be_hyperlinked('rights', /api_users/)
   end
 
   it "should have a connect hyperlink" do
