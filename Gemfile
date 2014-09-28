@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 4.1.0"
-gem "ocean-rails", ">= 2.11.3"
+gem "ocean-rails", ">= 3.5.1"
 gem "ocean-dynamo", ">= 0.6.1"
 
 gem "pg"                 # PostgreSQL
