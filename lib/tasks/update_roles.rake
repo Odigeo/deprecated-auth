@@ -45,6 +45,7 @@ namespace :ocean do
         role.assign_attributes name: data['name'], description: data['description']
       end
       role.indestructible = !!data['indestructible']
+      role.documentation_href = data['documentation_href']
       role.save!
 
       # Process any rights

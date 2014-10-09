@@ -45,6 +45,7 @@ namespace :ocean do
         group.assign_attributes name: data['name'], description: data['description']
       end
       group.indestructible = !!data['indestructible']
+      group.documentation_href = data['documentation_href']
       group.save!
 
       # Process any rights
