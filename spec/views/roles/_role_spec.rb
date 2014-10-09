@@ -4,7 +4,8 @@ describe "roles/_role" do
   
   before :each do
     Role.destroy_all
-    render partial: "roles/role", locals: {role: create(:role, indestructible: true)}
+    render partial: "roles/role", locals: {role: create(:role, indestructible: true, 
+                                                        documentation_href: "http://wiki.acme.com/blah/baz")}
     @json = JSON.parse(rendered)
     @u = @json['role']
     @links = @u['_links'] rescue {}
@@ -16,12 +17,16 @@ describe "roles/_role" do
   end
 
 
-  it "should have seven hyperlinks" do
-    @links.size.should == 7
+  it "should have eight hyperlinks" do
+    @links.size.should == 8
   end
 
   it "should have a self hyperlink" do
     @links.should be_hyperlinked('self', /roles/)
+  end
+
+  it "should have a documentation hyperlink" do
+     @links.should be_hyperlinked('documentation', /http:\/\/wiki.acme.com\/blah\/baz/, 'text/html')
   end
 
   it "should have an api_users hyperlink" do

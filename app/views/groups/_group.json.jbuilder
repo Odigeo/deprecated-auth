@@ -5,6 +5,9 @@ json.group do |json|
 	json.indestructible group.indestructible if group.indestructible
 	json._links hyperlinks(
 	  self:      group_url(group),
+      documentation: group.documentation_href.present? && 
+                     {href: group.documentation_href, 
+                      type: "text/html"},
 	  api_users: api_users_group_url(group),
 	  roles:     roles_group_url(group),
 	  rights:    rights_group_url(group),

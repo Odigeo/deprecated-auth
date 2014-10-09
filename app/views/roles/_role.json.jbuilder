@@ -5,6 +5,9 @@ json.role do |json|
 	json.indestructible role.indestructible if role.indestructible
 	json._links hyperlinks(
 	  self:      role_url(role),
+      documentation: role.documentation_href.present? && 
+                     {href: role.documentation_href, 
+                      type: "text/html"},
 	  api_users: api_users_role_url(role),
 	  groups:    groups_role_url(role),
 	  rights:    rights_role_url(role),

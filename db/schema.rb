@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925125438) do
+ActiveRecord::Schema.define(version: 20141009215645) do
 
   create_table "api_users", force: true do |t|
     t.string   "username",                                null: false
@@ -52,14 +52,15 @@ ActiveRecord::Schema.define(version: 20140925125438) do
   add_index "api_users_roles", ["role_id", "api_user_id"], name: "index_api_users_roles_on_role_id_and_api_user_id", unique: true
 
   create_table "groups", force: true do |t|
-    t.string   "name",                           null: false
-    t.string   "description",    default: "",    null: false
-    t.integer  "lock_version",   default: 0,     null: false
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.integer  "created_by",     default: 0,     null: false
-    t.integer  "updated_by",     default: 0,     null: false
-    t.boolean  "indestructible", default: false, null: false
+    t.string   "name",                               null: false
+    t.string   "description",        default: "",    null: false
+    t.integer  "lock_version",       default: 0,     null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.integer  "created_by",         default: 0,     null: false
+    t.integer  "updated_by",         default: 0,     null: false
+    t.boolean  "indestructible",     default: false, null: false
+    t.string   "documentation_href"
   end
 
   add_index "groups", ["created_by"], name: "index_groups_on_created_by"
@@ -130,14 +131,15 @@ ActiveRecord::Schema.define(version: 20140925125438) do
   add_index "rights_roles", ["role_id", "right_id"], name: "index_rights_roles_on_role_id_and_right_id", unique: true
 
   create_table "roles", force: true do |t|
-    t.string   "name",                           null: false
-    t.string   "description",    default: "",    null: false
-    t.integer  "lock_version",   default: 0,     null: false
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.integer  "created_by",     default: 0,     null: false
-    t.integer  "updated_by",     default: 0,     null: false
-    t.boolean  "indestructible", default: false, null: false
+    t.string   "name",                               null: false
+    t.string   "description",        default: "",    null: false
+    t.integer  "lock_version",       default: 0,     null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.integer  "created_by",         default: 0,     null: false
+    t.integer  "updated_by",         default: 0,     null: false
+    t.boolean  "indestructible",     default: false, null: false
+    t.string   "documentation_href"
   end
 
   add_index "roles", ["created_by"], name: "index_roles_on_created_by"

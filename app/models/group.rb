@@ -2,15 +2,16 @@
 #
 # Table name: groups
 #
-#  id             :integer          not null, primary key
-#  name           :string(255)      not null
-#  description    :string(255)      default(""), not null
-#  lock_version   :integer          default(0), not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  created_by     :integer          default(0), not null
-#  updated_by     :integer          default(0), not null
-#  indestructible :boolean          default(FALSE), not null
+#  id                 :integer          not null, primary key
+#  name               :string(255)      not null
+#  description        :string(255)      default(""), not null
+#  lock_version       :integer          default(0), not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  created_by         :integer          default(0), not null
+#  updated_by         :integer          default(0), not null
+#  indestructible     :boolean          default(FALSE), not null
+#  documentation_href :string(255)
 #
 # Indexes
 #
@@ -39,7 +40,7 @@ class Group < ActiveRecord::Base
     after_remove: :touch_both
     
   # Attributes
-  attr_accessible :description, :lock_version, :name
+  attr_accessible :description, :lock_version, :name, :documentation_href
   
   # Validations
   validates :name, presence: true

@@ -72,6 +72,12 @@ describe RolesController do
       u['name'].should == "Ze Foo Role"
       u['indestructible'].should == nil
     end
+
+    it "should allow documentation to be set" do
+      post :create, @args.merge(documentation_href: "http://acme.com")
+      u = JSON.parse(response.body)['role']
+      u['_links']['documentation'].should == {"href"=>"http://acme.com", "type"=>"text/html"}
+    end
   end
   
 end

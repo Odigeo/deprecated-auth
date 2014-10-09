@@ -74,12 +74,13 @@ describe RolesController do
 
     it "should alter the role when successful, except for the indestructible flag" do
       put :update, id: @u, name: "secret role", description: "very descriptive",
-                           indestructible: true, lock_version: 0
+                           indestructible: true, lock_version: 0, documentation_href: "http://acme.com"
       response.status.should == 200
       @u.reload
       @u.name.should == "secret role"
       @u.description.should == "very descriptive"
       @u.indestructible.should == false
+      @u.documentation_href == "http://acme.com"
     end
   end
   

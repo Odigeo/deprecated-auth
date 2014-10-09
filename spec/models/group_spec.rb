@@ -2,15 +2,16 @@
 #
 # Table name: groups
 #
-#  id             :integer          not null, primary key
-#  name           :string(255)      not null
-#  description    :string(255)      default(""), not null
-#  lock_version   :integer          default(0), not null
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  created_by     :integer          default(0), not null
-#  updated_by     :integer          default(0), not null
-#  indestructible :boolean          default(FALSE), not null
+#  id                 :integer          not null, primary key
+#  name               :string(255)      not null
+#  description        :string(255)      default(""), not null
+#  lock_version       :integer          default(0), not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  created_by         :integer          default(0), not null
+#  updated_by         :integer          default(0), not null
+#  indestructible     :boolean          default(FALSE), not null
+#  documentation_href :string(255)
 #
 # Indexes
 #
@@ -34,6 +35,9 @@ describe Group do
       create(:group, name: "glurg", description: "A group description").description.should == "A group description"
     end
     
+    it "should include a documentation_href" do
+      create(:group, documentation_href: "http://wiki.example.com/foo").documentation_href.should == "http://wiki.example.com/foo"
+    end
     it "should include a lock_version" do
       create(:group, lock_version: 24).lock_version.should == 24
     end
