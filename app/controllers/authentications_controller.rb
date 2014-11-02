@@ -116,14 +116,17 @@ class AuthenticationsController < ApplicationController
   def cleanup
     killed = 0
     t = (Time.now - EXPIRED_AUTHENTICATION_LIFE).utc
-    Authentication.find_each do |auth|
-      if auth.expires_at.utc <= t
-        auth.destroy 
-        killed += 1
+    if Authentication.count > 0
+      Authentication.find_each do |auth|
+        if auth.expires_at.utc <= t
+          auth.destroy 
+          killed += 1
+        end
       end
     end
-    logger.info "Cleaned up #{killed} old expired Authentications"
-    render_head_204
+    remaining = Authentication.count
+    logger.info "Cleaned up #{killed} old expired Authentications. Remaining: #{remaining}"
+    render json: {cleaned_up: killed, remaining: remaining}
   end
 
 

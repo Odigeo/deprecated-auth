@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "/v1/authentications/cleanup (for purging old authentications from the DB)" do
 
-  it "should return a 204" do
+  it "should return a 200 and statistics" do
     permit_with 200
     Authentication.delete_all
     AuthenticationShadow.delete_all
@@ -14,8 +14,20 @@ describe "/v1/authentications/cleanup (for purging old authentications from the 
     create :authentication, expires_at: 1.hour.from_now.utc    # And this one
     put "/v1/authentications/cleanup", {}, {'HTTP_ACCEPT' => "application/json",
                                             "X-API-Token" => "boy-is-this-fake"}
-    response.status.should be(204)
+    response.status.should be(200)
     Authentication.count.should == 3
+    response.body.should == '{"cleaned_up":3,"remaining":3}'
   end
   
+  it "should handle the case where nothing is purged" do
+    permit_with 200
+    Authentication.delete_all
+    AuthenticationShadow.delete_all
+    put "/v1/authentications/cleanup", {}, {'HTTP_ACCEPT' => "application/json",
+                                            "X-API-Token" => "boy-is-this-fake"}
+    response.status.should be(200)
+    Authentication.count.should == 0
+    response.body.should == '{"cleaned_up":0,"remaining":0}'
+  end
+
 end
