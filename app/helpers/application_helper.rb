@@ -6,7 +6,7 @@ module ApplicationHelper
   def hyperlinks(links={})
     result = {}
     links.each do |qi, val|
-      next unless val
+      next unless val.present?
       result[qi.to_s] = { 
                  "href" => val.kind_of?(String) ? val : val[:href], 
                  "type" => val.kind_of?(String) ? "application/json" : val[:type]
