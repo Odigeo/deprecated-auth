@@ -1,14 +1,13 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 4.1.0"
-gem "ocean-rails", ">= 3.5.1"
-gem "ocean-dynamo", ">= 0.6.1"
+gem "rails", "4.1.9"
+gem "ocean-rails"
+gem "ocean-dynamo"
 
 gem "pg"                 # PostgreSQL
 gem "foreigner"          # Foreign key constraints in MySQL, PostgreSQL, and SQLite3.
 
 gem "jbuilder"           # We use Jbuilder to render our JSON responses
-gem 'oj'
 
 gem "bcrypt"             # Password hashing, etc
 gem 'email_validator'
