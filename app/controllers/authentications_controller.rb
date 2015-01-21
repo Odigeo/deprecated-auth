@@ -74,7 +74,7 @@ class AuthenticationsController < ApplicationController
       return
     end
     # Is the verb a supported one?
-    if !["*", "POST", "GET", "GET*", "PUT", "DELETE"].include?(query[3])
+    if !["*", "POST", "GET", "GET*", "PUT", "DELETE", "DELETE*"].include?(query[3])
       expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
       render_api_error 422, "Malformed query string", 
                             "Unsupported verb"
