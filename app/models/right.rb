@@ -52,8 +52,8 @@ class Right < ActiveRecord::Base
   validates :resource_id, presence: true
   validates :hyperlink,   format: { with: /\A(\*|[a-z][a-z0-9_]*)\z/,
                                     message: "may only contain the characters a-z, 0-9, and underscores, and must start with a lowercase letter" }
-  validates :verb,        inclusion: { in: ['*', 'POST', 'GET', 'GET*', 'PUT', 'DELETE'],
-                                       message: "must be one of *, POST, GET, GET*, PUT, or DELETE" }
+  validates :verb,        inclusion: { in: ['*', 'POST', 'GET', 'GET*', 'PUT', 'DELETE', 'DELETE*'],
+                                       message: "must be one of *, POST, GET, GET*, PUT, DELETE, or DELETE*" }
   validates :app,         format: { with: /\A(\*|[A-Za-z0-9_-]+)\z/,
                                     message: "may only contain the characters A-Z, a-z, 0-9, underscore and hyphen" }
   validates :context,     format: { with: /\A(\*|[A-Za-z0-9_-]+)\z/,

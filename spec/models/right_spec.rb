@@ -96,9 +96,9 @@ describe Right do
     it "should accept a wildcard value for the verb" do
       build(:right, verb: "*").should be_valid
     end
-    
-    it "should limit the wildcard value to one of GET, POST, PUT, DELETE, and GET*" do
-      ['GET', 'POST', 'PUT', 'DELETE', 'GET*'].each do |v|
+
+    it "should limit the wildcard value to one of GET, POST, PUT, DELETE, GET*, and DELETE*" do
+      ['GET', 'POST', 'PUT', 'DELETE', 'GET*', 'DELETE*'].each do |v|
         build(:right, verb: v).should be_valid
       end
     end

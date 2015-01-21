@@ -47,7 +47,7 @@ describe ResourcesController do
       post :right_create, @args.merge(:verb => "HEAD")
       response.status.should == 422
       response.content_type.should == "application/json"
-      JSON.parse(response.body).should == {"verb"=>["must be one of *, POST, GET, GET*, PUT, or DELETE"]}
+      JSON.parse(response.body).should == {"verb"=>["must be one of *, POST, GET, GET*, PUT, DELETE, or DELETE*"]}
     end
                 
     it "should return a 201 when successful" do
