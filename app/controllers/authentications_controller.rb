@@ -61,21 +61,21 @@ class AuthenticationsController < ApplicationController
     # Is the query string present?
     query = params[:query]
     if query.blank?
-      expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
+      expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0, public: true
       render_api_error 422, "Query missing"
       return
     end
     # Is the query string well-formed?
     query = query.to_s.split(':')
     if query.length != 6
-      expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
+      expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0, public: true
       render_api_error 422, "Malformed query string", 
                             "Must consist of exactly six colon-separated parts"
       return
     end
     # Is the verb a supported one?
     if !["*", "POST", "GET", "GET*", "PUT", "DELETE", "DELETE*"].include?(query[3])
-      expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0
+      expires_in 0, 's-maxage' => 1.day, 'max-stale' => 0, public: true
       render_api_error 422, "Malformed query string", 
                             "Unsupported verb"
       return
@@ -84,14 +84,14 @@ class AuthenticationsController < ApplicationController
     @right = @authentication.authorized?(*query)
     if !@right
       logger.warn "Authorization DENIED: #{username} may NOT <#{params[:query]}>"
-      expires_in 0, 's-maxage' => 5.seconds, 'max-stale' => 0
+      expires_in 0, 's-maxage' => 5.seconds, 'max-stale' => 0, public: true
       render_api_error 403, "Denied"
       return
     end
     # Let the authorisation live in the Varnish cache while it's valid
     @group_names = @authentication.api_user.groups.collect(&:name)
     if stale?(last_modified: @authentication.created_at, etag: @authentication)
-      expires_in 0, 's-maxage' => AUTHORIZATION_DURATION, 'max-stale' => 0
+      expires_in 0, 's-maxage' => AUTHORIZATION_DURATION, 'max-stale' => 0, public: true
       api_render @authentication, override_partial: "authentications/authentication"
     end
   end

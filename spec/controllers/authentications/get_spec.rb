@@ -109,7 +109,7 @@ describe AuthenticationsController do
       cc_s_maxage.should == AUTHORIZATION_DURATION
     end
     
-    it "should be privately cached" do
+    it "should be publicly cached" do
       AuthenticationShadow.should_receive(:find_by_key).and_return(create :authentication_shadow)
       AuthenticationShadow.any_instance.stub(:authorized?).and_return(true)
       get :show, id: "87e87ff086543ee0a", query: "serv:res:self:GET:*:*"
@@ -118,7 +118,7 @@ describe AuthenticationsController do
       auth = JSON.parse(response.body)['authentication']
       cc = response.headers['Cache-Control']
       cc.should be_a String
-      cc.should match /private/
+      cc.should match /public/
     end
     
     it "should have a max-stale cache setting of 0" do
