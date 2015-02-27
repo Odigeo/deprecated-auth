@@ -29,19 +29,19 @@ describe Role do
   describe "attributes" do
     
     it "should include a name" do
-      create(:role, name: "A Role").name.should == "A Role"
+      expect(create(:role, name: "A Role").name).to eq("A Role")
     end
     
     it "should include a description" do
-      create(:role, description: "A role description").description.should == "A role description"
+      expect(create(:role, description: "A role description").description).to eq("A role description")
     end
     
     it "should include a documentation_href" do
-      create(:role, documentation_href: "http://wiki.example.com/foo").documentation_href.should == "http://wiki.example.com/foo"
+      expect(create(:role, documentation_href: "http://wiki.example.com/foo").documentation_href).to eq("http://wiki.example.com/foo")
     end
 
     it "should include a lock_version" do
-      create(:role, lock_version: 24).lock_version.should == 24
+      expect(create(:role, lock_version: 24).lock_version).to eq(24)
     end
     
   end
@@ -55,56 +55,56 @@ describe Role do
     
     
     it "should include api_users HABTM" do
-      @my.api_users.should == []
+      expect(@my.api_users).to eq([])
       @u = create :api_user
       @my.api_users << @u
-      @my.api_users.should == [@u]
-      @u.roles.should == [@my]
+      expect(@my.api_users).to eq([@u])
+      expect(@u.roles).to eq([@my])
     end
         
     it "should add and remove api_users correctly" do
       @my.api_users << (@x = create :api_user)
       @my.api_users << create(:api_user)
-      @my.api_users.size.should == 2
+      expect(@my.api_users.size).to eq(2)
       @x.destroy
       @my.reload
-      @my.api_users.size.should == 1
+      expect(@my.api_users.size).to eq(1)
     end
 
 
     it "should include groups HABTM" do
-      @my.groups.should == []
+      expect(@my.groups).to eq([])
       @r = create :group
       @my.groups << @r
-      @my.groups.should == [@r]
-      @r.roles.should == [@my]
+      expect(@my.groups).to eq([@r])
+      expect(@r.roles).to eq([@my])
     end
     
     it "should add and remove groups correctly" do
       @my.groups << (@x = create :group)
       @my.groups << create(:group)
-      @my.groups.size.should == 2
+      expect(@my.groups.size).to eq(2)
       @x.destroy
       @my.reload
-      @my.groups.size.should == 1
+      expect(@my.groups.size).to eq(1)
     end
     
         
     it "should include rights HABTM" do
-      @my.rights.should == []
+      expect(@my.rights).to eq([])
       @r = create :right
       @my.rights << @r
-      @my.rights.should == [@r]
-      @r.roles.should == [@my]
+      expect(@my.rights).to eq([@r])
+      expect(@r.roles).to eq([@my])
     end
     
     it "should add and remove rights correctly" do
       @my.rights << (@x = create :right)
       @my.rights << create(:right)
-      @my.rights.size.should == 2
+      expect(@my.rights.size).to eq(2)
       @x.destroy
       @my.reload
-      @my.rights.size.should == 1
+      expect(@my.rights.size).to eq(1)
     end
     
   end
@@ -122,23 +122,23 @@ describe Role do
     
       it "should return an array of Role instances" do
         ix = Role.collection
-        ix.length.should == 3
-        ix[0].should be_a Role
+        expect(ix.length).to eq(3)
+        expect(ix[0]).to be_a Role
       end
     
       it "should allow matches on name" do
-        Role.collection(name: 'NOWAI').length.should == 0
-        Role.collection(name: 'Webshop Designer').length.should == 1
-        Role.collection(name: 'Accountant').length.should == 1
+        expect(Role.collection(name: 'NOWAI').length).to eq(0)
+        expect(Role.collection(name: 'Webshop Designer').length).to eq(1)
+        expect(Role.collection(name: 'Accountant').length).to eq(1)
       end
       
       it "should allow searches on description" do
-        Role.collection(search: 'wa').length.should == 2
-        Role.collection(search: 'e').length.should == 3
+        expect(Role.collection(search: 'wa').length).to eq(2)
+        expect(Role.collection(search: 'e').length).to eq(3)
       end
       
       it "key/value pairs not in the index_only array should quietly be ignored" do
-        Role.collection(name: 'System Administrator', aardvark: 12).length.should == 1
+        expect(Role.collection(name: 'System Administrator', aardvark: 12).length).to eq(1)
       end
         
     end

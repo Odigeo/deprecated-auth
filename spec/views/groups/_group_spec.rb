@@ -13,68 +13,68 @@ describe "groups/_group" do
   
 
   it "has a named root" do
-    @u.should_not == nil
+    expect(@u).not_to eq(nil)
   end
 
 
   it "should have eight hyperlinks" do
-    @links.size.should == 8
+    expect(@links.size).to eq(8)
   end
 
   it "should have a self hyperlink" do
-    @links.should be_hyperlinked('self', /groups/)
+    expect(@links).to be_hyperlinked('self', /groups/)
   end
 
   it "should have a documentation hyperlink" do
-     @links.should be_hyperlinked('documentation', /http:\/\/wiki.acme.com\/blah\/baz/, 'text/html')
+     expect(@links).to be_hyperlinked('documentation', /http:\/\/wiki.acme.com\/blah\/baz/, 'text/html')
   end
 
   it "should have an api_users hyperlink" do
-    @links.should be_hyperlinked('api_users', /groups/)
+    expect(@links).to be_hyperlinked('api_users', /groups/)
   end
 
   it "should have a roles hyperlink" do
-    @links.should be_hyperlinked('roles', /groups/)
+    expect(@links).to be_hyperlinked('roles', /groups/)
   end
 
   it "should have a rights hyperlink" do
-    @links.should be_hyperlinked('rights', /groups/)
+    expect(@links).to be_hyperlinked('rights', /groups/)
   end
 
   it "should have a connect hyperlink" do
-    @links.should be_hyperlinked('connect', /groups/)
+    expect(@links).to be_hyperlinked('connect', /groups/)
   end
 
   it "should have a creator hyperlink" do
-     @links.should be_hyperlinked('creator', /api_users/)
+     expect(@links).to be_hyperlinked('creator', /api_users/)
   end
 
   it "should have a updater hyperlink" do
-     @links.should be_hyperlinked('updater', /api_users/)
+     expect(@links).to be_hyperlinked('updater', /api_users/)
   end
 
 
   it "should have a created_at time" do
-    @u['created_at'].should be_a String
+    expect(@u['created_at']).to be_a String
   end
 
   it "should have an updated_at time" do
-    @u['updated_at'].should be_a String
+    expect(@u['updated_at']).to be_a String
   end
 
   it "should have a lock_version field" do
-    @u['lock_version'].should be_an Integer
+    expect(@u['lock_version']).to be_an Integer
   end
  
   it "should have a name" do
-    @u['name'].should be_a String
+    expect(@u['name']).to be_a String
   end
 
   it "should have a description" do
-    @u['description'].should be_a String
+    expect(@u['description']).to be_a String
   end
   
   it "should have a indestructible boolean" do
-    @u['indestructible'].should == true
+    expect(@u['indestructible']).to eq(true)
   end
 end

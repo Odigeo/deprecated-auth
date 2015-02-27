@@ -26,15 +26,15 @@ describe Authentication do
 
 
   it "should be a DynamoDB table" do
-    Authentication.superclass.should == OceanDynamo::Table
+    expect(Authentication.superclass).to eq(OceanDynamo::Table)
   end
 
   it "should use the username as its hash key" do
-    Authentication.table_hash_key.should == :username
+    expect(Authentication.table_hash_key).to eq(:username)
   end
    
   it "should use expires_at as the range key" do
-    Authentication.table_range_key.should == :expires_at
+    expect(Authentication.table_range_key).to eq(:expires_at)
   end
 
       
@@ -43,55 +43,55 @@ describe Authentication do
   end
   
   it "should have an authorisation token string" do
-    create(:authentication).token.should be_a String
+    expect(create(:authentication).token).to be_a String
   end
   
   it "should have a max age in seconds" do
-    create(:authentication).max_age.should be_an Integer
+    expect(create(:authentication).max_age).to be_an Integer
   end
   
   it "should have a creation time" do
-    create(:authentication).created_at.should be_a Time
+    expect(create(:authentication).created_at).to be_a Time
   end
 
   it "should have an expiration time" do
-    create(:authentication).expires_at.should be_a Time
+    expect(create(:authentication).expires_at).to be_a Time
   end
   
   it "should have its expiration time set in relation to the max age" do
     auth = create(:authentication)
-    (auth.expires_at - auth.created_at).to_i.should == auth.max_age
+    expect((auth.expires_at - auth.created_at).to_i).to eq(auth.max_age)
   end
 
 
   it "should belong to an ApiUser" do
-    create(:authentication).api_user.should be_an ApiUser
+    expect(create(:authentication).api_user).to be_an ApiUser
   end
 
   
   it "#new_token should return a fresh string token, 43 characters long" do
-    Authentication.new_token.should be_a String
-    Authentication.new_token.size.should == 43
+    expect(Authentication.new_token).to be_a String
+    expect(Authentication.new_token.size).to eq(43)
   end
   
   it "#active? should be true if it's not expired" do
-    create(:authentication, :max_age => 1.hour).active?.should == true
+    expect(create(:authentication, :max_age => 1.hour).active?).to eq(true)
   end
 
   it "#expired? should be false if it's not expired" do
-    create(:authentication, :max_age => 1.hour).expired?.should == false
+    expect(create(:authentication, :max_age => 1.hour).expired?).to eq(false)
   end
   
   it "#seconds_remaining should give the time until expiration" do
     max_age = 30.seconds
     created_at = Time.now.utc
     expires_at = created_at + max_age
-    create(:authentication, :max_age => max_age, :created_at => created_at, 
-           :expires_at => expires_at).seconds_remaining.should <= 30
+    expect(create(:authentication, :max_age => max_age, :created_at => created_at, 
+           :expires_at => expires_at).seconds_remaining).to be <= 30
   end
 
   it "#seconds_remaining should return 0 if expired" do
-    create(:authentication, :expires_at => 1.year.ago.utc).seconds_remaining.should == 0
+    expect(create(:authentication, :expires_at => 1.year.ago.utc).seconds_remaining).to eq(0)
   end
 
 
@@ -109,22 +109,22 @@ describe Authentication do
 
 
     it "should be false at once if the ApiUser has no Rights at all for the service and resource" do
-      @authentication.authorized?("foo", "bars", "self", "GET", "*", "*").should == false
+      expect(@authentication.authorized?("foo", "bars", "self", "GET", "*", "*")).to eq(false)
     end
 
     it "should return the matching Right if the ApiUser has a matching wildcard Right" do
       @role.rights << create(:right, resource: @resource, hyperlink: '*', verb: '*', app: '*', context: '*')
-      @authentication.authorized?("foo", "bars", "self", "GET", "*", "*").should be_a Right
+      expect(@authentication.authorized?("foo", "bars", "self", "GET", "*", "*")).to be_a Right
     end
 
     it "should return the matching Right if the ApiUser has a matching non-wildcard Right" do
       @role.rights << create(:right, resource: @resource, hyperlink: 'self', verb: 'GET', app: 'ze_app', context: 'ze_context')
-      @authentication.authorized?("foo", "bars", "self", "GET", "ze_app", "ze_context").should be_a Right
+      expect(@authentication.authorized?("foo", "bars", "self", "GET", "ze_app", "ze_context")).to be_a Right
     end
 
     it "should be false if the ApiUser has a non-matching non-wildcard Right" do
       @role.rights << create(:right, resource: @resource, hyperlink: 'self', verb: 'GET', app: 'blah', context: '*')
-      @authentication.authorized?("foo", "bars", "self", "DELETE", "ze_app", "ze_context").should == false
+      expect(@authentication.authorized?("foo", "bars", "self", "DELETE", "ze_app", "ze_context")).to eq(false)
     end
 
     it "should return app/context pairs if the app and context don't match for */* matches but there are matching app/context rights" do
@@ -132,9 +132,9 @@ describe Authentication do
       @role.rights << create(:right, resource: @resource, hyperlink: 'self', verb: 'GET', app: 'anozer', context: '*')
       @role.rights << create(:right, resource: @resource, hyperlink: 'self', verb: 'PUT', app: '*', context: '*')
       @role.rights << create(:right, resource: @resource, hyperlink: 'quux', verb: 'GET', app: '*', context: '*')
-      @authentication.authorized?("foo", "bars", "self", "GET", "*", "*").
-        should == [{"app"=>"ze_app", "context"=>"ze_context"}, 
-                   {"app"=>"anozer", "context"=>"*"}]
+      expect(@authentication.authorized?("foo", "bars", "self", "GET", "*", "*")).
+        to eq([{"app"=>"ze_app", "context"=>"ze_context"}, 
+                   {"app"=>"anozer", "context"=>"*"}])
     end
   end
   
@@ -153,29 +153,29 @@ describe Authentication do
     end
 
     it "should be created whenever the Authentication is created" do
-      @au.should be_an Authentication
-      @as.should be_an AuthenticationShadow
+      expect(@au).to be_an Authentication
+      expect(@as).to be_an AuthenticationShadow
     end
 
 
     it "should copy created_at when created" do
-      @as.created_at.to_s.should == @au.created_at.to_s
+      expect(@as.created_at.to_s).to eq(@au.created_at.to_s)
     end
 
     it "should copy expires_at when created" do
-      @as.expires_at.to_s.should == @au.expires_at.to_s
+      expect(@as.expires_at.to_s).to eq(@au.expires_at.to_s)
     end
 
     it "should copy the token when created" do
-      @as.token.should == @au.token
+      expect(@as.token).to eq(@au.token)
     end
 
     it "should copy max_age when created" do
-      @as.max_age.should == @au.max_age
+      expect(@as.max_age).to eq(@au.max_age)
     end
 
     it "should copy api_user_id when created" do
-      @as.api_user_id.should == @au.api_user_id
+      expect(@as.api_user_id).to eq(@au.api_user_id)
     end
 
 
@@ -184,7 +184,7 @@ describe Authentication do
       @au.created_at = t
       @au.save!
       @as = AuthenticationShadow.find("the_token", consistent: true)
-      (@as.created_at - t).to_i.should == 0
+      expect((@as.created_at - t).to_i).to eq(0)
     end
 
     it "should copy expires_at when updated" do
@@ -192,7 +192,7 @@ describe Authentication do
       @au.expires_at = t
       @au.save!
       @as = AuthenticationShadow.find("the_token", consistent: true)
-      (@as.expires_at - t).to_i.should == 0
+      expect((@as.expires_at - t).to_i).to eq(0)
     end
 
     # it "should barf on changes to the token when updated, since it's the key" do
@@ -206,36 +206,36 @@ describe Authentication do
       @au.max_age = 98765
       @au.save!
       @as = AuthenticationShadow.find("the_token", consistent: true)
-      @as.max_age.should == 98765
+      expect(@as.max_age).to eq(98765)
     end
 
     it "should copy api_user_id when updated" do
       @au.api_user_id = 22222
       @au.save!
       @as = AuthenticationShadow.find("the_token", consistent: true)
-      @as.api_user_id.should == 22222
+      expect(@as.api_user_id).to eq(22222)
     end
 
 
     it "should be deleted whenever the Authentication is deleted" do
       @au.destroy
-      AuthenticationShadow.find_by_key("the_token", consistent: true).should == nil
+      expect(AuthenticationShadow.find_by_key("the_token", consistent: true)).to eq(nil)
     end
 
     it "should be deleted whenever the ApiUser is deleted" do
       @u.destroy
-      AuthenticationShadow.find_by_key("the_token", consistent: true).should == nil
+      expect(AuthenticationShadow.find_by_key("the_token", consistent: true)).to eq(nil)
     end
 
 
     it "should be reachable by #authentication_shadow" do
-      @au.authentication_shadow.should == @as
+      expect(@au.authentication_shadow).to eq(@as)
     end
 
     it "should be able to retrieve its authentication" do
       asau = @as.authentication
-      asau.username.should == @au.username
-      (asau.expires_at - @au.expires_at).to_i.should == 0
+      expect(asau.username).to eq(@au.username)
+      expect((asau.expires_at - @au.expires_at).to_i).to eq(0)
     end
 
 

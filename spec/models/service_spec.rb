@@ -27,7 +27,7 @@ describe Service do
   describe "attributes" do
         
     it "should include a name" do
-      create(:service, name: "service_a").name.should == "service_a"
+      expect(create(:service, name: "service_a").name).to eq("service_a")
     end
 
     it "should require the name to be unique" do
@@ -36,27 +36,27 @@ describe Service do
     end
 
     it "should require the name to conform to [a-z][a-z0-9_]*" do
-      build(:service, name: "x").should be_valid
-      build(:service, name: "fo2o").should be_valid
-      build(:service, name: "foo_bar").should be_valid
-      build(:service, name: "foo_").should be_valid
-      build(:service, name: "Foo").should_not be_valid
-      build(:service, name: "2foo").should_not be_valid
-      build(:service, name: "_foo").should_not be_valid
-      build(:service, name: "foo-bar").should_not be_valid
+      expect(build(:service, name: "x")).to be_valid
+      expect(build(:service, name: "fo2o")).to be_valid
+      expect(build(:service, name: "foo_bar")).to be_valid
+      expect(build(:service, name: "foo_")).to be_valid
+      expect(build(:service, name: "Foo")).not_to be_valid
+      expect(build(:service, name: "2foo")).not_to be_valid
+      expect(build(:service, name: "_foo")).not_to be_valid
+      expect(build(:service, name: "foo-bar")).not_to be_valid
     end
 
     
     it "should include a description" do
-      create(:service, name: "blah", description: "A service description").description.should == "A service description"
+      expect(create(:service, name: "blah", description: "A service description").description).to eq("A service description")
     end
     
     it "should include a documentation_href" do
-      create(:service, documentation_href: "http://wiki.example.com/foo").documentation_href.should == "http://wiki.example.com/foo"
+      expect(create(:service, documentation_href: "http://wiki.example.com/foo").documentation_href).to eq("http://wiki.example.com/foo")
     end
 
     it "should include a lock_version" do
-      create(:service, lock_version: 24).lock_version.should == 24
+      expect(create(:service, lock_version: 24).lock_version).to eq(24)
     end
     
   end
@@ -70,7 +70,7 @@ describe Service do
     
     
     it "should contain a number of Resources" do
-      @my.resources.should == []
+      expect(@my.resources).to eq([])
     end
     
     it "should destroy all dependent Resources when the Service is destroyed" do
@@ -78,9 +78,9 @@ describe Service do
       r1 = create :resource, service: @my
       r2 = create :resource, service: @my
       r3 = create :resource
-      @my.resources.count.should == 2
+      expect(@my.resources.count).to eq(2)
       @my.destroy
-      Resource.all.should == [r3]
+      expect(Resource.all).to eq([r3])
     end
             
   end
@@ -98,23 +98,23 @@ describe Service do
     
       it "should return an array of Service instances" do
         ix = Service.collection
-        ix.length.should == 3
-        ix[0].should be_a Service
+        expect(ix.length).to eq(3)
+        expect(ix[0]).to be_a Service
       end
     
       it "should allow matches on name" do
-        Service.collection(name: 'NOWAI').length.should == 0
-        Service.collection(name: 'bar').length.should == 1
-        Service.collection(name: 'baz').length.should == 1
+        expect(Service.collection(name: 'NOWAI').length).to eq(0)
+        expect(Service.collection(name: 'bar').length).to eq(1)
+        expect(Service.collection(name: 'baz').length).to eq(1)
       end
       
       it "should allow searches on description" do
-        Service.collection(search: 'B').length.should == 2
-        Service.collection(search: 'service').length.should == 3
+        expect(Service.collection(search: 'B').length).to eq(2)
+        expect(Service.collection(search: 'service').length).to eq(3)
       end
       
       it "key/value pairs not in the index_only array should quietly be ignored" do
-        Service.collection(name: 'bar', aardvark: 12).length.should == 1
+        expect(Service.collection(name: 'bar', aardvark: 12).length).to eq(1)
       end
         
     end

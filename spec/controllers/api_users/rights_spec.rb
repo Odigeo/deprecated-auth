@@ -18,38 +18,38 @@ describe ApiUsersController do
     
     it "should return JSON" do
       get :rights, id: @it
-      response.content_type.should == "application/json"
+      expect(response.content_type).to eq("application/json")
     end
     
     it "should return a 400 if the X-API-Token header is missing" do
       request.headers['X-API-Token'] = nil
       get :rights, id: @it
-      response.status.should == 400
-      response.content_type.should == "application/json"
+      expect(response.status).to eq(400)
+      expect(response.content_type).to eq("application/json")
     end
     
     it "should return a 200 when successful" do
       get :rights, id: @it
-      response.status.should == 200
+      expect(response.status).to eq(200)
     end
     
     it "should render the object partial" do
       get :rights, id: @it
-      response.should render_template(partial: 'rights/_right', count: @the_rights.length)
+      expect(response).to render_template(partial: 'rights/_right', count: @the_rights.length)
     end
     
     it "should return a collection" do
       get :rights, id: @it
-      response.status.should == 200
+      expect(response.status).to eq(200)
       wrapper = JSON.parse(response.body)
-      wrapper.should be_a Hash
+      expect(wrapper).to be_a Hash
       resource = wrapper['_collection']
-      resource.should be_a Hash
+      expect(resource).to be_a Hash
       coll = resource['resources']
-      coll.should be_an Array
-      coll.count.should == @the_rights.length
+      expect(coll).to be_an Array
+      expect(coll.count).to eq(@the_rights.length)
       n = resource['count']
-      n.should == @the_rights.length
+      expect(n).to eq(@the_rights.length)
     end
     
   end

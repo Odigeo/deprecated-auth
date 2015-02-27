@@ -27,7 +27,7 @@ describe Resource do
   describe "attributes" do
     
     it "should include a name" do
-      create(:resource, name: "resource_a").name.should == "resource_a"
+      expect(create(:resource, name: "resource_a").name).to eq("resource_a")
     end
 
     it "should require the name to be unique" do
@@ -36,25 +36,25 @@ describe Resource do
     end
     
     it "should require the name to conform to [a-z][a-z0-9_]*" do
-      build(:resource, name: "fo2o").should be_valid
-      build(:resource, name: "foo_bar").should be_valid
-      build(:resource, name: "foo_").should be_valid
-      build(:resource, name: "Foo").should_not be_valid
-      build(:resource, name: "2foo").should_not be_valid
-      build(:resource, name: "_foo").should_not be_valid
-      build(:resource, name: "foo-bar").should_not be_valid
+      expect(build(:resource, name: "fo2o")).to be_valid
+      expect(build(:resource, name: "foo_bar")).to be_valid
+      expect(build(:resource, name: "foo_")).to be_valid
+      expect(build(:resource, name: "Foo")).not_to be_valid
+      expect(build(:resource, name: "2foo")).not_to be_valid
+      expect(build(:resource, name: "_foo")).not_to be_valid
+      expect(build(:resource, name: "foo-bar")).not_to be_valid
     end
 
     it "should include a description" do
-      create(:resource, description: "A resource description").description.should == "A resource description"
+      expect(create(:resource, description: "A resource description").description).to eq("A resource description")
     end
     
     it "should include a lock_version" do
-      create(:resource, lock_version: 24).lock_version.should == 24
+      expect(create(:resource, lock_version: 24).lock_version).to eq(24)
     end
     
     it "should include a documentation_href" do
-      create(:resource, documentation_href: "http://wiki.example.com/foo").documentation_href.should == "http://wiki.example.com/foo"
+      expect(create(:resource, documentation_href: "http://wiki.example.com/foo").documentation_href).to eq("http://wiki.example.com/foo")
     end
     
   end
@@ -68,20 +68,20 @@ describe Resource do
       
 
     it "should belong to a Service" do
-      @my.service.should be_a(Service)
+      expect(@my.service).to be_a(Service)
     end
     
     it "should contain a number of Rights" do
-      @my.rights.should == []
+      expect(@my.rights).to eq([])
     end
     
     it "should destroy all dependent Resources when the Service is destroyed" do
       r1 = create :right, resource: @my
       r2 = create :right, resource: @my
       r3 = create :right
-      @my.rights.count.should == 2
+      expect(@my.rights.count).to eq(2)
       @my.destroy
-      Right.all.should == [r3]
+      expect(Right.all).to eq([r3])
     end
     
   end
@@ -99,23 +99,23 @@ describe Resource do
     
       it "should return an array of Resource instances" do
         ix = Resource.collection
-        ix.length.should == 3
-        ix[0].should be_a Resource
+        expect(ix.length).to eq(3)
+        expect(ix[0]).to be_a Resource
       end
     
       it "should allow matches on name" do
-        Resource.collection(name: 'NOWAI').length.should == 0
-        Resource.collection(name: 'bar').length.should == 1
-        Resource.collection(name: 'baz').length.should == 1
+        expect(Resource.collection(name: 'NOWAI').length).to eq(0)
+        expect(Resource.collection(name: 'bar').length).to eq(1)
+        expect(Resource.collection(name: 'baz').length).to eq(1)
       end
       
       it "should allow searches on description" do
-        Resource.collection(search: 'B').length.should == 2
-        Resource.collection(search: 'resource').length.should == 3
+        expect(Resource.collection(search: 'B').length).to eq(2)
+        expect(Resource.collection(search: 'resource').length).to eq(3)
       end
       
       it "key/value pairs not in the index_only array should quietly be ignored" do
-        Resource.collection(name: 'bar', aardvark: 12).length.should == 1
+        expect(Resource.collection(name: 'bar', aardvark: 12).length).to eq(1)
       end
         
     end

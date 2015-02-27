@@ -9,41 +9,41 @@ describe Authentication do
 
 
   it "should have an empty varnish_invalidate_member list" do
-    Authentication.varnish_invalidate_member.length.should == 0
+    expect(Authentication.varnish_invalidate_member.length).to eq(0)
   end
 
   it "should have an empty varnish_invalidate_collection list" do
-    Authentication.varnish_invalidate_collection.length.should == 0
+    expect(Authentication.varnish_invalidate_collection.length).to eq(0)
   end
 
 
   it "should trigger no BANs when created" do
-    Api.should_not_receive(:ban).with("/v[0-9]+/authentications/TheToken")
+    expect(Api).not_to receive(:ban).with("/v[0-9]+/authentications/TheToken")
   	create :authentication, token: "TheToken"
   end
 
 
   it "should trigger no BANs when updated" do
-    Api.stub(:call_p)
+    allow(Api).to receive(:call_p)
     m = create :authentication
-    Api.should_not_receive(:ban).with("/v[0-9]+/authentications/#{m.token}")
+    expect(Api).not_to receive(:ban).with("/v[0-9]+/authentications/#{m.token}")
     m.token = "Zalagadoola"
  	  m.save!
   end
 
 
   it "should trigger no BANs when touched" do
-    Api.stub(:call_p)
+    allow(Api).to receive(:call_p)
     m = create :authentication
-    Api.should_not_receive(:ban).with("/v[0-9]+/authentications/#{m.token}")
+    expect(Api).not_to receive(:ban).with("/v[0-9]+/authentications/#{m.token}")
  	  m.touch
   end
 
 
   it "should trigger one BAN when destroyed" do
-    Api.stub(:call_p)
+    allow(Api).to receive(:call_p)
     m = create :authentication
-    Api.should_receive(:ban).with("/v[0-9]+/authentications/#{m.token}")
+    expect(Api).to receive(:ban).with("/v[0-9]+/authentications/#{m.token}")
   	m.destroy
   end
 

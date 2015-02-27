@@ -13,49 +13,49 @@ describe "resources/_resource" do
   
 
   it "has a named root" do
-    @u.should_not == nil
+    expect(@u).not_to eq(nil)
   end
 
 
   it "should have six hyperlinks" do
-    @links.size.should == 6
+    expect(@links.size).to eq(6)
   end
 
   it "should have a self hyperlink" do
-     @links.should be_hyperlinked('self', /resources/)
+     expect(@links).to be_hyperlinked('self', /resources/)
   end
 
   it "should have a service hyperlink" do
-     @links.should be_hyperlinked('service', /services/)
+     expect(@links).to be_hyperlinked('service', /services/)
   end
 
   it "should have a rights hyperlink" do
-     @links.should be_hyperlinked('rights', /resources/)
+     expect(@links).to be_hyperlinked('rights', /resources/)
   end
 
   it "should have a creator hyperlink" do
-     @links.should be_hyperlinked('creator', /api_users/)
+     expect(@links).to be_hyperlinked('creator', /api_users/)
   end
 
   it "should have a updater hyperlink" do
-     @links.should be_hyperlinked('updater', /api_users/)
+     expect(@links).to be_hyperlinked('updater', /api_users/)
   end
 
   it "should have a documentation hyperlink" do
-     @links.should be_hyperlinked('documentation', /http:\/\/wiki.acme.com\/blah\/baz/, 'text/html')
+     expect(@links).to be_hyperlinked('documentation', /http:\/\/wiki.acme.com\/blah\/baz/, 'text/html')
   end
 
 
   it "should have a created_at time" do
-    @u['created_at'].should be_a String
+    expect(@u['created_at']).to be_a String
   end
 
   it "should have an updated_at time" do
-    @u['updated_at'].should be_a String
+    expect(@u['updated_at']).to be_a String
   end
 
   it "should have a lock_version field" do
-    @u['lock_version'].should be_an Integer
+    expect(@u['lock_version']).to be_an Integer
   end
   
 end

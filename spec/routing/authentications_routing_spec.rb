@@ -4,28 +4,28 @@ describe AuthenticationsController do
   describe "routing" do
 
     it "doesn't route to #index" do
-      get("/v1/authentications").should_not be_routable
+      expect(get("/v1/authentications")).not_to be_routable
     end
     
     it "routes to #show" do
-      get("/v1/authentications/ea890a7f").should route_to("authentications#show", id: "ea890a7f")
+      expect(get("/v1/authentications/ea890a7f")).to route_to("authentications#show", id: "ea890a7f")
     end
 
     it "routes to #create" do
-      post("/v1/authentications").should route_to("authentications#create")
+      expect(post("/v1/authentications")).to route_to("authentications#create")
     end
 
     it "doesn't route to #update" do
-      put("/v1/authentications/7ea890a7f").should_not be_routable
+      expect(put("/v1/authentications/7ea890a7f")).not_to be_routable
     end
     
 
     it "routes to #destroy" do
-      delete("/v1/authentications/ea890a7f").should route_to("authentications#destroy", id: "ea890a7f")
+      expect(delete("/v1/authentications/ea890a7f")).to route_to("authentications#destroy", id: "ea890a7f")
     end
 
     it "routes to #cleanup" do
-      put("/v1/authentications/cleanup").should route_to("authentications#cleanup")
+      expect(put("/v1/authentications/cleanup")).to route_to("authentications#cleanup")
     end
 
   end

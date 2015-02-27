@@ -14,9 +14,9 @@ describe "/v1/authentications/cleanup (for purging old authentications from the 
     create :authentication, expires_at: 1.hour.from_now.utc    # And this one
     put "/v1/authentications/cleanup", {}, {'HTTP_ACCEPT' => "application/json",
                                             "X-API-Token" => "boy-is-this-fake"}
-    response.status.should be(200)
-    Authentication.count.should == 3
-    response.body.should == '{"cleaned_up":3,"remaining":3}'
+    expect(response.status).to be(200)
+    expect(Authentication.count).to eq(3)
+    expect(response.body).to eq('{"cleaned_up":3,"remaining":3}')
   end
   
   it "should handle the case where nothing is purged" do
@@ -25,9 +25,9 @@ describe "/v1/authentications/cleanup (for purging old authentications from the 
     AuthenticationShadow.delete_all
     put "/v1/authentications/cleanup", {}, {'HTTP_ACCEPT' => "application/json",
                                             "X-API-Token" => "boy-is-this-fake"}
-    response.status.should be(200)
-    Authentication.count.should == 0
-    response.body.should == '{"cleaned_up":0,"remaining":0}'
+    expect(response.status).to be(200)
+    expect(Authentication.count).to eq(0)
+    expect(response.body).to eq('{"cleaned_up":0,"remaining":0}')
   end
 
 end

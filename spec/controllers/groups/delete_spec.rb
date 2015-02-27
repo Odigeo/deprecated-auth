@@ -16,32 +16,32 @@ describe GroupsController do
     
     it "should return JSON" do
       delete :destroy, id: @group
-      response.content_type.should == "application/json"
+      expect(response.content_type).to eq("application/json")
     end
 
     it "should return a 400 if the X-API-Token header is missing" do
       request.headers['X-API-Token'] = nil
       delete :destroy, id: @group
-      response.status.should == 400
+      expect(response.status).to eq(400)
     end
             
     it "should return a 403 if indestructible" do
       @group.indestructible = true
       @group.save
       delete :destroy, id: @group
-      response.status.should == 403
+      expect(response.status).to eq(403)
     end
             
     it "should return a 204 when successful" do
       delete :destroy, id: @group
-      response.status.should == 204
-      response.content_type.should == "application/json"
+      expect(response.status).to eq(204)
+      expect(response.content_type).to eq("application/json")
     end
 
     it "should destroy the Group when successful" do
       delete :destroy, id: @group
-      response.status.should == 204
-      Group.find_by_id(@group.id).should be_nil
+      expect(response.status).to eq(204)
+      expect(Group.find_by_id(@group.id)).to be_nil
     end
     
   end

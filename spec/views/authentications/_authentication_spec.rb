@@ -22,51 +22,51 @@ describe "authentications/_authentication" do
 
       
   it "has a named root" do
-    @auth.should_not == nil
+    expect(@auth).not_to eq(nil)
   end
 
   it "should have two hyperlinks" do
-    @links.size.should == 2
+    expect(@links.size).to eq(2)
   end
 
   it "should have a self hyperlink" do
-    @links.should be_hyperlinked('self', /authentications/)
+    expect(@links).to be_hyperlinked('self', /authentications/)
   end
 
   it "should have a creator hyperlink" do
-    @links.should be_hyperlinked('creator', /api_users/)
+    expect(@links).to be_hyperlinked('creator', /api_users/)
   end
 
   it "should have a string token" do
-    @auth['token'].should be_a String
+    expect(@auth['token']).to be_a String
   end
 
   it "should have a max_age in seconds" do
-    @auth['max_age'].should be_an Integer
+    expect(@auth['max_age']).to be_an Integer
   end
 
   it "should have a created_at time" do
-    @auth['created_at'].should be_a String
+    expect(@auth['created_at']).to be_a String
   end
 
   it "should have an expired_at time" do
-    @auth['expires_at'].should be_a String
+    expect(@auth['expires_at']).to be_a String
   end
   
   it "should have an ApiUser username" do
-    @auth['username'].should == @api_user_name
+    expect(@auth['username']).to eq(@api_user_name)
   end
 
   it "should have a numerical ApiUser ID" do
-    @auth['user_id'].should == @api_user_id
+    expect(@auth['user_id']).to eq(@api_user_id)
   end
 
   it "should have a right" do
-    @auth['right'].should == [{"app"=>"quux", "context"=>"*"}]
+    expect(@auth['right']).to eq([{"app"=>"quux", "context"=>"*"}])
   end
 
   it "should have an array of Group names" do
-    @auth['group_names'].should == ["Superusers", "Some Other Group"]
+    expect(@auth['group_names']).to eq(["Superusers", "Some Other Group"])
   end
 
 end
