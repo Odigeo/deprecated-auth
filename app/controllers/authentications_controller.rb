@@ -2,8 +2,6 @@ class AuthenticationsController < ApplicationController
 
   ocean_resource_controller required_attributes: [],
                             extra_actions: { 'cleanup' => ['cleanup', "PUT"]}
-
-  respond_to :json
   
   skip_before_action :require_x_api_token, only: [:create, :show]
   skip_before_action :authorize_action,    only: [:create, :show]

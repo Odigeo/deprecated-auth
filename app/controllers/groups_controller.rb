@@ -4,8 +4,6 @@ class GroupsController < ApplicationController
                                              'roles'     => ['roles', "GET"],
                                              'rights'    => ['rights', "GET"]}
 
-  respond_to :json
-
   before_action :find_group, :except => [:index, :create]
   before_action :find_connectee, :only => [:connect, :disconnect]
  

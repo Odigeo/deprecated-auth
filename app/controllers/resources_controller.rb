@@ -3,8 +3,6 @@ class ResourcesController < ApplicationController
   ocean_resource_controller extra_actions: { 'rights'       => ['rights', "GET"],
                                              'right_create' => ["rights", "POST"]}
 
-  respond_to :json
-
   before_action :find_resource, except: :index
   
   

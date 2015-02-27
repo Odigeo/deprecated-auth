@@ -3,9 +3,7 @@ class RolesController < ApplicationController
   ocean_resource_controller extra_actions: { 'api_users' => ['api_users', "GET"],
                                              'groups'    => ['groups',    "GET"],
                                              'rights'    => ["rights",    "POST"]}
- 
-  respond_to :json
- 
+  
   before_action :find_role, :except => [:index, :create]
   before_action :find_connectee, :only => [:connect, :disconnect]
   

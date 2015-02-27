@@ -7,8 +7,6 @@ class ApiUsersController < ApplicationController
                                              'roles'           => ['roles', "GET"],
                                              'groups'          => ['groups', "GET"]}
                             
-  respond_to :json
-
   before_action :find_api_user, :except => [:index, :create]
   before_action :find_connectee, :only => [:connect, :disconnect]
   

@@ -4,8 +4,6 @@ class RightsController < ApplicationController
                                              'roles'    => ["roles",    "GET"]},
                             required_attributes: [:lock_version, :description, 
                                                   :hyperlink, :verb, :app, :context]
-
-  respond_to :json
   
   before_action :find_right, except: :index
   before_action :find_connectee, only: [:connect, :disconnect]

@@ -140,7 +140,6 @@ describe ApiUser do
     it "should have a login_blocked boolean" do
       build(:api_user).login_blocked.should == false
       build(:api_user, login_blocked: true).login_blocked.should == true
-      build(:api_user, login_blocked: "quoi?").login_blocked.should == false
     end
 
     it "should have a login_blocked_reason string" do
@@ -152,7 +151,6 @@ describe ApiUser do
     it "should have an indestructible flag" do
       create(:api_user).indestructible.should == false
       create(:api_user, indestructible: true).indestructible.should == true
-      create(:api_user, indestructible: "quoi?").indestructible.should == false
     end
   end
 

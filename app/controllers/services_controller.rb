@@ -2,8 +2,6 @@ class ServicesController < ApplicationController
 
   ocean_resource_controller extra_actions: { 'resources'       => ['resources', "GET"]}
   
-  respond_to :json
-
   before_action :find_service, except: :index
   
   
